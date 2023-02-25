@@ -93,22 +93,14 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="{{url('Admin/Dashboard')}}" class="brand-link">
-                <img src="{{url('public/main-logo-white.png')}}" class="brand-image"
-                    >
-                {{-- <span class="brand-text font-weight-light">Admin Panel</span> --}}
-            </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="width: 100%;">
                     <div class="image">
-                        <!-- <img src="{{url('public/img/default.jpg')}}" class="img-circle elevation-2" alt="User Image"> -->
+                        <img src="{{url('public/main-logo-white.png')}}" style="width: 80%;" class="brand-image">
                     </div>
-                    {{-- <div class="info">
-                        <a href="#" class="d-block">Admin Panel</a>
-                    </div> --}}
                 </div>
 
                 <!-- Sidebar Menu -->
