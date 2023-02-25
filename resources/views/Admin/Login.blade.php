@@ -89,21 +89,6 @@
 
     $("#LoginBtn").click(function() {
 
-        // var fields = $("input[class*='required']");
-        // console.log(fields.val());
-        // for (let i = 0; i <= fields.length; i++) {
-        //   // console.log(fields);
-        //   if ($(fields[i]).val() === '') {
-        //     var currentElement = $(fields[i]).attr('id');
-        //     var value = currentElement.replaceAll('_', ' ');
-        //     $("#show_error").removeClass().html('');
-        //     $("#show_error").show().addClass('alert alert-danger text-center').html('The ' + value + ' is required.');
-        //     return false;
-        //   } else {
-        //     $("#show_error").hide().removeClass().html('');
-        //   }
-        // }
-
         $("#LoginBtn").prop("disabled", true);
 
         $.post("{{route('LoginUser')}}", $('#loginForm').serialize())
@@ -122,40 +107,6 @@
         });
         $("#LoginBtn").prop("disabled", false);
 
-       /*  $.ajax({
-            type: "post",
-            url: "{{url('Login-Store')}}",
-            data: $('#loginForm').serialize(),
-            error: function(jqXHR, textStatus, errorThrown) {
-                $("#LoginBtn").prop("disabled", false);
-                $("#show_error").removeClass().html('').show();
-                $("#show_error").addClass('alert alert-danger text-center').html(errorThrown);
-                return false;
-            },
-            success: function(data) {
-                $("#LoginBtn").prop("disabled", false);
-
-                if (data["success"] == true) {
-                    $("#show_error").removeClass().html('').show();
-                    $("#show_error").addClass("alert alert-success text-center").html(data[
-                        'message']);
-                    window.location.href = "{{route('Dashboard')}}";
-                } else {
-                    if (data.validation && data.validation == false) {
-                        $("#show_error").removeClass().html('').show();
-                        $("#show_error").addClass("alert alert-danger text-center").html(data[
-                            'message'][0]);
-                        return false;
-                    } else {
-                        $("#show_error").removeClass().html('').show();
-                        $("#show_error").addClass("alert alert-danger text-center").html(data[
-                            'message']);
-                        return false;
-                    }
-                }
-                // window.location.href = "{{url('Retailer/Dashboard')}}";
-            }
-        }); */
     });
     </script>
 
