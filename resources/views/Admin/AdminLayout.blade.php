@@ -94,8 +94,8 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{url('Admin/Dashboard')}}" class="brand-link">
-                <img src="{{url('public/main-logo.svg')}}" class="brand-image"
-                    style="opacity: .8">
+                <img src="{{url('public/main-logo-white.png')}}" class="brand-image"
+                    >
                 {{-- <span class="brand-text font-weight-light">Admin Panel</span> --}}
             </a>
 
