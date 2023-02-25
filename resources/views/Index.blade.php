@@ -247,10 +247,13 @@ height=0 width=0 style=display:none;visibility:hidden></iframe></noscript>
                     </div>
                 </div>
         </header>
-        <div class="space">
+        <div class="space" style="margin-top: 156px">
 
         </div>
 
+        <div>
+            @yield('content')
+        </div>
         <footer id=footer class="footer divider layer-overlay overlay-dark-9" data-bg-img=https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/images/bg/bg2.jpg>
             <div class=container>
                 <div class=row>
