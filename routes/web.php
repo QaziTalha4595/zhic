@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\AuthMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function () {return ('front page');});
+
+Route::get('/ControlPanel/Login', [AdminController::class, 'Login'])->name('Login');
+Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->name('LoginUser');
+
+Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], function()
+{
+    Route::get('/Dashboard', function () {return view('Admin.AdminLayout');})->name('Dashboard');
 });
