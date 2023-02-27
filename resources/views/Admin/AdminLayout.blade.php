@@ -134,13 +134,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{('Admin-Sub-Category')}}" class="nav-link">
+                                    <a href="{{url('ControlPanel/SubCategory')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Sub Category</p>
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{('Admin-Third-Category')}}" class="nav-link">
+                                    <a href="{{url('ControlPanel/ThirdCategory')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Third Category</p>
                                     </a>
