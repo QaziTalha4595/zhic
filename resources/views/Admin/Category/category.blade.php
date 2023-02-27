@@ -27,7 +27,7 @@
                             <div class="modal-body">
                                 <form id="CategoryStoreForm">
                                     @csrf
-                                    <input type="text" id="cat_id" name="cat_id">
+                                    <input type="hidden" id="cat_id" name="cat_id">
                                     <div class="form-group">
                                     <lable>Category Name</lable>
                                     <input type="text" class="form-control form-control-user required " name="category_name"
@@ -155,6 +155,39 @@ function CategoryEdit(id)
       $("#cat_id").val(data.data[0]['id']);
       $("#category_name").val(data.data[0]['category_name']);
     });
+  }
+
+  function CategoryRemove(id)
+  {
+    swal({
+			title : "Are You Sure?",
+			text : "Once Deleted You will not be able to recover this file",
+			icon : "warning",
+			buttons : true,
+			dangerMode : true,
+
+		})
+    .then((willDelete) => {
+			if(willDelete)
+			{
+				$.get("{{route('CategoryRemove')}}",{id:id},function(data){
+				console.log(data);	
+					if(data['success'] == true)
+					{
+						swal("Proof! Category Have been Deleted..!",
+						{
+							icon: "success",
+						});
+						tables = $("#DataTable").dataTable();
+						tables.fnPageChange('first',1);
+					}
+				});
+			} 
+	        else 
+	        {
+	            swal("Your file is safe!");
+	        }
+		});
   }
 </script>
 
