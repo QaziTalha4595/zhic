@@ -93,14 +93,22 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
+            <a href="{{url('Admin/Dashboard')}}" class="brand-link">
+                <img src="{{url('public/main-logo.svg')}}" class="brand-image"
+                    style="opacity: .8">
+                {{-- <span class="brand-text font-weight-light">Admin Panel</span> --}}
+            </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="width: 100%;">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{url('public/main-logo-white.png')}}" style="width: 80%;" class="brand-image">
+                        <!-- <img src="{{url('public/img/default.jpg')}}" class="img-circle elevation-2" alt="User Image"> -->
                     </div>
+                    {{-- <div class="info">
+                        <a href="#" class="d-block">Admin Panel</a>
+                    </div> --}}
                 </div>
 
                 <!-- Sidebar Menu -->
@@ -108,7 +116,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item main_active ">
-                            <a href="{{url('Admin/Dashboard')}}" class="nav-link">
+                            <a href="{{url('/Dashboard')}}" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -120,7 +128,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item main_active ">
-                                    <a href="{{('Admin-Category')}}" class="nav-link">
+                                    <a href="{{url('ControlPanel/Category')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Category</p>
                                     </a>
@@ -315,6 +323,7 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <!-- ChartJS -->
     <script src="{{url('public/Admin/plugins/chart.js/Chart.min.js')}}"></script>
+    <script src="{{url('public/Admin/dist/js/scripts.js')}}"></script>
     <!-- jQuery -->
 
     <!-- Bootstrap 4 -->

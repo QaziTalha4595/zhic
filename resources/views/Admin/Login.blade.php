@@ -63,8 +63,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div style="margin-top: 15px;" id="response"></div>
-                        <div id="success" class="alert alert-success text-center" style="display: none;">Login
-                            Successfull</div>
+                        <div id="success" class="alert alert-success text-center" style="display: none;"></div>
                     </div>
                 </div>
             </div>
@@ -89,6 +88,21 @@
 
     $("#LoginBtn").click(function() {
 
+        // var fields = $("input[class*='required']");
+        // console.log(fields.val());
+        // for (let i = 0; i <= fields.length; i++) {
+        //   // console.log(fields);
+        //   if ($(fields[i]).val() === '') {
+        //     var currentElement = $(fields[i]).attr('id');
+        //     var value = currentElement.replaceAll('_', ' ');
+        //     $("#show_error").removeClass().html('');
+        //     $("#show_error").show().addClass('alert alert-danger text-center').html('The ' + value + ' is required.');
+        //     return false;
+        //   } else {
+        //     $("#show_error").hide().removeClass().html('');
+        //   }
+        // }
+
         $("#LoginBtn").prop("disabled", true);
 
         $.post("{{route('LoginUser')}}", $('#loginForm').serialize())
@@ -106,7 +120,6 @@
             alertmsg("Opps Something went wrong", "danger")
         });
         $("#LoginBtn").prop("disabled", false);
-
     });
     </script>
 
