@@ -7,11 +7,25 @@ use Session;
 use Validator;
 use DB;
 use Hash;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function Login(Request $req)
     {
+        $data = ["name"=>"talha", "password"=> ("4595"), "email"=> "talha@gmail.com"];
+        // User::create($data);
+        if (Auth::attempt($data)) {
+            // Get the authenticated user
+            $user = Auth::user();
+
+            // Generate a new personal access token for the user
+            $token = $user->createToken('My Token')->accessToken;
+
+            // Use the token as needed
+            return response()->json(['token' => $token]);
+        }
         return view('Admin.Login');
     }
 
