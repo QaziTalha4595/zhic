@@ -34,14 +34,14 @@
                 <form id="loginForm">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control required"
+                        <input type="email" name="user_email" class="form-control required"
                             placeholder="Email">
                         <div class="input-group-append">
                             <div class="input-group-text"> <span class="fas fa-envelope"></span> </div>
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" name="password" class="form-control required"
+                        <input type="password" name="user_password" class="form-control required"
                             placeholder="Password">
                         <div class="input-group-append">
                             <div class="input-group-text"> <span class="fas fa-lock"></span> </div>
