@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Middleware\AuthMiddleware;
 
 /*
@@ -47,4 +47,6 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::get('/ThirdCategoryEdit', [CategoryController::class, 'ThirdCategoryEdit'])->name('ThirdCategoryEdit');
     // Route::get('/CategoryRemove', [CategoryController::class, 'CategoryDestroy'])->name('CategoryRemove');
 
+    // Slider management
+    Route::get('/Slider', [SliderController::class, 'Slider'])->name('Slider');
 });
