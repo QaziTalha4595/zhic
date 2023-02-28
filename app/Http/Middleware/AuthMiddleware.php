@@ -18,11 +18,7 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-<<<<<<< Updated upstream
-        if(Hash::check(Session::get('token'), env('JWT_SECRET'))){
-=======
         if(Hash::check(env('JWT_SECRET'),Session::get('token'))){
->>>>>>> Stashed changes
             return $next($request);
         }
         else{

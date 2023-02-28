@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\Admin\Category;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -31,14 +31,14 @@ class CategoryController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
-    } 
+    }
     public function CategoryEdit(Request $request)
     {
         $cat_id = $request->input('id');
         $category = Category::where('id',$cat_id)->get();
         return response()->json(["data" => $category]);
     }
-    public function CategoryStore(Request $req)                         
+    public function CategoryStore(Request $req)
     {
         $category = new Category();
         if($req->input('cat_id'))
@@ -48,11 +48,11 @@ class CategoryController extends Controller
             $validator = Validator::make($req->all(), [
                 'category_name' => 'required'
             ]);
-    
+
             if($validator->fails()) {
                 return response()->json(["validate" => true, "message" =>$validator->errors()->all()[0]]);
             }
-    
+
             $category->category_name = $req->input('category_name');
             // $customer->cus_name = $request->input('cus_name_edit');
             if($category->save())
@@ -77,7 +77,7 @@ class CategoryController extends Controller
         }
 
         $category->category_name = $req->input('category_name');
-       
+
         if($category->save())
         {
             return response()->json(["success" => true, "message" => "Category Detail Stored Successfully"]);
@@ -129,14 +129,14 @@ class CategoryController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
-    } 
+    }
     public function SubCategoryEdit(Request $request)
     {
 
         $sub_cat_id = $request->input('id');
         $SubCategories = SubCategory::where('id',$sub_cat_id)->get();
         return response()->json(["data" => $SubCategories]);
-        
+
     }
     public function SubCategoryStore(Request $req)
     {
@@ -149,11 +149,11 @@ class CategoryController extends Controller
                 'category_id' => 'required',
                 'sub_category_name' => 'required'
             ]);
-    
+
             if($validator->fails()) {
                 return response()->json(["validate" => true, "message" =>$validator->errors()->all()[0]]);
             }
-    
+
             $SubCategory->sub_category_name = $req->input('sub_category_name');
             $SubCategory->category_id = $req->input('category_id');
             if($SubCategory->save())
@@ -180,7 +180,7 @@ class CategoryController extends Controller
 
         $SubCategory->sub_category_name = $req->input('sub_category_name');
         $SubCategory->category_id = $req->input('category_id');
-        
+
         if($SubCategory->save())
         {
             return response()->json(["success" => true, "message" => "Sub Category Detail Stored Successfully"]);
@@ -225,14 +225,14 @@ class CategoryController extends Controller
             $validator = Validator::make($req->all(), [
                 'category_id' => 'required',
                 'sub_category_id' => 'required',
-                'third_category_name' => 'required',              
+                'third_category_name' => 'required',
                 'slug' => 'required'
             ]);
-    
+
             if($validator->fails()) {
                 return response()->json(["validate" => true, "message" =>$validator->errors()->all()[0]]);
             }
-            
+
             $ThirdCategory->category_id = $req->input('category_id');
             $ThirdCategory->sub_category_id = $req->input('sub_category_id');
             $ThirdCategory->third_category_name = $req->input('third_category_name');
@@ -253,7 +253,7 @@ class CategoryController extends Controller
         $validator = Validator::make($req->all(), [
             'category_id' => 'required',
             'sub_category_id' => 'required',
-            'third_category_name' => 'required',              
+            'third_category_name' => 'required',
             'slug' => 'required'
         ]);
 
@@ -265,7 +265,7 @@ class CategoryController extends Controller
         $ThirdCategory->sub_category_id = $req->input('sub_category_id');
         $ThirdCategory->third_category_name = $req->input('third_category_name');
         $ThirdCategory->slug = $req->input('slug');
-        
+
         if($ThirdCategory->save())
         {
             return response()->json(["success" => true, "message" => "Third Category Stored Successfully"]);
@@ -296,12 +296,12 @@ class CategoryController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
-    } 
+    }
     public function ThirdCategoryEdit(Request $request)
     {
         $third_cat_id = $request->input('id');
         $ThirdCategories = ThirdCategory::where('id',$third_cat_id)->get();
         return response()->json(["data" => $ThirdCategories]);
-        
+
     }
 }
