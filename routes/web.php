@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Middleware\AuthMiddleware;
 
@@ -16,8 +17,10 @@ use App\Http\Middleware\AuthMiddleware;
 |
 */
 
-Route::get('/', function () {return view('index');});
-Route::get('/Home',function () {return view('home');});
+Route::get('/', [WebsiteController::class, 'Categories'])->name('Home');
+Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
+Route::get('/Category', [WebsiteController::class, 'BookCategory'])->name('BookCategory');
+
 
 Route::get('/ControlPanel/Login', [AdminController::class, 'Login'])->name('Login');
 Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->name('LoginUser');
