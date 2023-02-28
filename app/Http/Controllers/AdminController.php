@@ -14,11 +14,8 @@ class AdminController extends Controller
 {
     public function Login(Request $req)
     {
-        return $env('JWT_SECRET');
         $data = ["name"=>"talha", "password"=> ("4595"), "email"=> "talha@gmail.com"];
-        // User::create($data);
         if (Auth::attempt($data)) {
-            // Get the authenticated user
             $user = Auth::user();
 
             // Generate a new personal access token for the user
