@@ -146,7 +146,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{('Admin-Language')}}" class="nav-link">
+                                    <a href="{{url('ControlPanel/Language')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Language</p>
                                     </a>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Category;
+namespace App\Http\Controllers\Category;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\ThirdCategory;
+use App\Models\Language;
 use Yajra\Datatables\Datatables;
 
 class CategoryController extends Controller
@@ -31,6 +32,18 @@ class CategoryController extends Controller
             ->make(true);
     }
     public function CategoryEdit(Request $req)
+        ->addColumn('action', function ($Category) {
+            return
+            '<button class="btn btn-primary" data-toggle="modal" data-target="#CategoryStoreModal"
+            onclick="CategoryEdit('.$Category->id.')">
+            <i class="fa fa-edit"></i></button>
+            <button class="btn btn-danger" onclick="CategoryRemove('.$Category->id.')"><i class="fa fa-trash"></i>
+            </button>';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+    public function CategoryEdit(Request $request)
     {
         $category = Category::where('id', $req->input('id'))->get();
         return response()->json(["data" => $category]);
@@ -39,7 +52,7 @@ class CategoryController extends Controller
     public function CategoryStore(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            'category_name' => 'required'
+            'category_name' => 'required|regex:/^[a-zA-Z]+$/u'
         ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
@@ -119,7 +132,7 @@ class CategoryController extends Controller
 
             $validator = Validator::make($req->all(), [
                 'category_id' => 'required',
-                'sub_category_name' => 'required'
+                'sub_category_name' => 'required|regex:/^[a-zA-Z]+$/u'
             ]);
 
             if ($validator->fails()) {
@@ -164,7 +177,7 @@ class CategoryController extends Controller
             $validator = Validator::make($req->all(), [
                 'category_id' => 'required',
                 'sub_category_id' => 'required',
-                'third_category_name' => 'required',
+                'third_category_name' => 'required|regex:/^[a-zA-Z]+$/u',
                 'slug' => 'required'
             ]);
 
@@ -184,29 +197,28 @@ class CategoryController extends Controller
             return false;
         } else {
 
-            $validator = Validator::make($req->all(), [
-                'category_id' => 'required',
-                'sub_category_id' => 'required',
-                'third_category_name' => 'required',
-                'slug' => 'required'
-            ]);
+        $validator = Validator::make($req->all(), [
+            'category_id' => 'required',
+            'sub_category_id' => 'required',
+            'third_category_name' => 'required|regex:/^[a-zA-Z]+$/u',
+            'slug' => 'required'
+        ]);
 
             if ($validator->fails()) {
                 return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
             }
 
-            $ThirdCategory->category_id = $req->input('category_id');
-            $ThirdCategory->sub_category_id = $req->input('sub_category_id');
-            $ThirdCategory->third_category_name = $req->input('third_category_name');
-            $ThirdCategory->slug = $req->input('slug');
+        $ThirdCategory->category_id = $req->input('category_id');
+        $ThirdCategory->sub_category_id = $req->input('sub_category_id');
+        $ThirdCategory->third_category_name = $req->input('third_category_name');
+        $ThirdCategory->slug = $req->input('slug');
 
-            if ($ThirdCategory->save()) {
-                return response()->json(["success" => true, "message" => "Third Category Stored Successfully"]);
-            } else {
-                return response()->json(["success" => false, "message" => "Third Category Store failed..!"]);
-            }
+        if($ThirdCategory->save())
+        {
+            return response()->json(["success" => true, "message" => "Third Category Stored Successfully"]);
         }
     }
+}
     public function ThirdCategoryShow()
     {
         $ThirdCategory = ThirdCategory::with(['category'], ['subcategory'])->OrderBy('id', 'DESC');
@@ -224,14 +236,123 @@ class CategoryController extends Controller
             <i class="fa fa-edit"></i></button>
             <button class="btn btn-danger" onclick="ThirdCategoryRemove(' . $ThirdCategory->id . ')"><i class="fa fa-trash"></i>
             </button>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        })
+        ->rawColumns(['action'])
+        ->make(true);
     }
     public function ThirdCategoryEdit(Request $req)
     {
         $third_cat_id = $req->input('id');
         $ThirdCategories = ThirdCategory::where('id', $third_cat_id)->get();
         return response()->json(["data" => $ThirdCategories]);
+
     }
+    public function ThirdCategoryDestroy(Request $req)
+    {
+        $ThirdCategory = ThirdCategory::where('id',$req->input('id'))->delete();
+
+        if($ThirdCategory)
+        {
+            return response()->json(['success' => true, 'message' => 'Third Category Deleted Successfully']);
+        }
+        else
+        {
+            return response()->json(['success' => false, 'message' => 'Delete Failed..!']);
+        }
+    }
+    //Language Section
+    public function Language()
+    {
+        return view('Admin.Category.Languages');
+    }
+    public function LanguageStore(Request $req)
+    {
+        $Language = new Language();
+        if($req->input('lang_id'))
+        {
+            $Language = Language::find($req->input('lang_id'));
+
+            $validator = Validator::make($req->all(), [
+
+                'language' => 'required|regex:/^[a-zA-Z]+$/u'
+
+            ]);
+
+            if($validator->fails()) {
+                return response()->json(["validate" => true, "message" =>$validator->errors()->all()[0]]);
+            }
+
+            $Language->language = $req->input('language');
+
+            if($Language->save())
+            {
+                return response()->json(["success" => true, "message" => "Language Updated Successfully"]);
+            }
+            else
+            {
+                return response()->json(["success" => false, "message" => "Language Updated failed..!"]);
+            }
+            return false;
+        }
+        else
+        {
+
+        $validator = Validator::make($req->all(), [
+
+            'language' => 'required|regex:/^[a-zA-Z]+$/u'
+
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(["validate" => true, "message" =>$validator->errors()->all()[0]]);
+        }
+
+        $Language->language = $req->input('language');
+
+        if($Language->save())
+        {
+            return response()->json(["success" => true, "message" => "Language Stored Successfully"]);
+        }
+        else
+        {
+            return response()->json(["success" => false, "message" => "Language Store failed..!"]);
+        }
+    }
+    }
+    public function LanguageShow()
+    {
+        $Language = Language::OrderBy('id','DESC');
+        return Datatables::of($Language)
+        ->addColumn('action', function ($Language) {
+            return
+            '<button class="btn btn-primary" data-toggle="modal" data-target="#LanguageStoreModal"
+            onclick="LanguageEdit('.$Language->id.')">
+            <i class="fa fa-edit"></i></button>
+            <button class="btn btn-danger" onclick="LanguageRemove('.$Language->id.')"><i class="fa fa-trash"></i>
+            </button>';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+    public function LanguageEdit(Request $request)
+    {
+        $lang_id = $request->input('id');
+        $Language = Language::where('id',$lang_id)->get();
+        return response()->json(["data" => $Language]);
+
+    }
+    public function LanguageDestroy(Request $req)
+    {
+        $Language = Language::where('id',$req->input('id'))->delete();
+
+        if($Language)
+        {
+            return response()->json(['success' => true, 'message' => 'Language Deleted Successfully']);
+        }
+        else
+        {
+            return response()->json(['success' => false, 'message' => 'Delete Failed..!']);
+        }
+    }
+
 }

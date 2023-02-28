@@ -26,12 +26,12 @@
                                         <div class="modal-body">
                                             <form id="ThirdCategoryStoreForm">
                                                 @csrf
-                                                <input type="text" id="third_cat_id" name="third_cat_id">
+                                                <input type="hidden" id="third_cat_id" name="third_cat_id">
                                                 <div class="form-group">
                                                     <label>Category</label>
                                                     <select class="form-control select2" name="category_id"
                                                         id="category_id" style="width:100%;">
-                                                        <option>Select</option>
+                                                        <option selected disabled>Select</option>
                                                         @foreach($Category as $item)
                                                         <option value="{{ $item->id }}">{{ $item->category_name }}</option>      
                                                         @endforeach
@@ -41,7 +41,7 @@
                                                     <label>Sub Category</label>
                                                     <select class="form-control select2" name="sub_category_id"
                                                         id="sub_category_id" style="width:100%;">
-                                                        <option>Select</option>
+                                                        <option selected disabled>Select</option>
                                                         @foreach($SubCategory as $item)
                                                         <option value="{{ $item->id }}">{{ $item->sub_category_name }}</option>      
                                                         @endforeach
@@ -183,6 +183,39 @@ function ThirdCategoryEdit(id)
       $("#third_category_name").val(data.data[0]['third_category_name']);
       $("#slug").val(data.data[0]['slug']);
     });
+  }
+
+  function ThirdCategoryRemove(id)
+  {
+    swal({
+			title : "Are You Sure?",
+			text : "Once Deleted You will not be able to recover this file",
+			icon : "warning",
+			buttons : true,
+			dangerMode : true,
+
+		})
+    .then((willDelete) => {
+			if(willDelete)
+			{
+				$.get("{{route('ThirdCategoryRemove')}}",{id:id},function(data){
+				console.log(data);	
+					if(data['success'] == true)
+					{
+						swal("Proof! Sub Category Have been Deleted..!",
+						{
+							icon: "success",
+						});
+						tables = $("#DataTable").dataTable();
+						tables.fnPageChange('first',1);
+					}
+				});
+			} 
+	        else 
+	        {
+	            swal("Your file is safe!");
+	        }
+		});
   }
 </script>
 
