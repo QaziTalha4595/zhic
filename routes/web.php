@@ -22,6 +22,9 @@ Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail'
 Route::get('/Category', [WebsiteController::class, 'BookCategory'])->name('BookCategory');
 
 
+Route::get('/',[WebsiteController::class, 'Home'])->name('Home');
+
+
 Route::get('/ControlPanel/Login', [AdminController::class, 'Login'])->name('Login');
 Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->name('LoginUser');
 

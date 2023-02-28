@@ -7,6 +7,7 @@ use DB;
 
 class WebsiteController extends Controller
 {
+
     public function Home()
     {
 
@@ -29,4 +30,5 @@ class WebsiteController extends Controller
         // echo $Categories;       
         return view('index', ['Categories'=>$Categories]);
     }
+
 }
