@@ -17,7 +17,7 @@ use App\Http\Middleware\AuthMiddleware;
 */
 
 Route::get('/', function () {return view('index');});
-Route::get('/Home')
+Route::get('/Home',function () {return view('home');});
 
 Route::get('/ControlPanel/Login', [AdminController::class, 'Login'])->name('Login');
 Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->name('LoginUser');
