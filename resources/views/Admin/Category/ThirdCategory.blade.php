@@ -12,7 +12,7 @@
                             <div class="h5 mb-0 font-weight-bold text-gray-800">Third Category</div>
                         </div>
                         <div class="col-auto">
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                            <button type="button" id="add_btn" class="btn btn-primary" data-toggle="modal"
                                 data-target="#ThirdCategoryStoreModal">Add</button>
 
                             <div class="modal fade" id="ThirdCategoryStoreModal">
@@ -33,7 +33,7 @@
                                                         id="category_id" style="width:100%;">
                                                         <option selected disabled>Select</option>
                                                         @foreach($Category as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->category_name }}</option>      
+                                                        <option value="{{ $item->id }}">{{ $item->category_name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -41,11 +41,15 @@
                                                     <label>Sub Category</label>
                                                     <select class="form-control select2" name="sub_category_id"
                                                         id="sub_category_id" style="width:100%;">
-                                                        <option selected disabled>Select</option>
-                                                        @foreach($SubCategory as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->sub_category_name }}</option>      
-                                                        @endforeach
                                                     </select>
+                                                    <select class="form-control select2" name="sub_category_id"
+                                                        id="sub_category_id" style="width:100%;">
+                                                         @foreach($SubCategory as $item)
+                                                       <option id='rest' value="{{ $item->id }}">{{ $item->sub_category_name }}</option>
+                                                       @endforeach
+                                                    </select>
+
+                        
                                                 </div>
                                                 <div class="form-group">
                                                     <lable class="text-bold">Third Category Name</lable>
@@ -123,6 +127,8 @@ function alertmsg(msg, type) {
 
 $(function() {
 
+
+
 var DataTable = $("#DataTable").DataTable({
     "processing": true,
     "serverSide": true,
@@ -146,6 +152,32 @@ var DataTable = $("#DataTable").DataTable({
         }
     ]
 });
+//Data Table Ends HEre
+        $("#category_id").change(function(event){
+
+            
+
+        var idCategory = this.value;
+        $("#sub_category_id").html('');
+
+        $.ajax({
+
+        type : "POST",
+        url : "{{route('FetchSubCategory')}}",
+        dataType : 'json',
+        data : {cat_id: idCategory,_token:"{{ csrf_token() }}"},
+        success : function(response)
+        {
+            $("#sub_category_id").html('<option value="">Select SubCategory</option>');
+            $.each(response.sub_categories,function(index, val){
+                console.log(val);
+            $("#sub_category_id").append('<option value="'+val.id+'">'+val.sub_category_name+'</option>')
+            });
+        }
+
+        });
+
+        });
 });
 
 

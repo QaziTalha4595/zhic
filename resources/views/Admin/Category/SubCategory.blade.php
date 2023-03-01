@@ -39,7 +39,7 @@
                                                 <div class="form-group">
                                                     <lable class="text-bold">Sub Category Name</lable>
                                                     <input type="text"
-                                                        class="form-control form-control-user border-primary required "
+                                                        class="form-control form-control-user border-primary required"
                                                         id="sub_category_name" name="sub_category_name"
                                                         autocomplete=" off">
                                                 </div>
