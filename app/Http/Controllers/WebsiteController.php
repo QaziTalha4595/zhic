@@ -24,11 +24,11 @@ class WebsiteController extends Controller
         return view('Website.BookCategory');
     }
 
-    public function Categories()
-    {
-        $Categories = DB::table('category')->get();
-        // echo $Categories;       
-        return view('index', ['Categories'=>$Categories]);
-    }
+    // public function Categories()
+    // {
+    //     $Categories = DB::table('category')->get();
+    //     // echo $Categories;       
+    //     return view('index', ['categories'=>$Categories]);
+    // }
 
 }

@@ -17,7 +17,7 @@ use App\Http\Middleware\AuthMiddleware;
 |
 */
 
-Route::get('/', [WebsiteController::class, 'Categories'])->name('Home');
+Route::get('/', [WebsiteController::class, 'Home'])->name('Home');
 Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
 Route::get('/Category', [WebsiteController::class, 'BookCategory'])->name('BookCategory');
 
