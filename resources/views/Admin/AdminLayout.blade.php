@@ -121,32 +121,32 @@
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        <li class="nav-item has-treeview main_active ">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link {{ Request::is('ControlPanel/Category') }} || {{ Request::is('ControlPanel/SubCategory')}} || {{ Request::is('ControlPanel/ThirdCategory')}} || {{ Request::is('ControlPanel/Language') }} ? 'collapse active':'collapsed'">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>Category Master<i class="fas fa-angle-left right"></i></p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item main_active ">
-                                    <a href="{{url('ControlPanel/Category')}}" class="nav-link">
+                                    <a class="nav-link {{ Request::is('ControlPanel/Category') ? 'active' : '' }}" href="{{url('ControlPanel/Category')}}">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Category</p>
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{url('ControlPanel/SubCategory')}}" class="nav-link">
+                                    <a class="nav-link {{ Request::is('ControlPanel/SubCategory') ? 'active' : '' }}" href="{{url('ControlPanel/SubCategory')}}">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Sub Category</p>
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{url('ControlPanel/ThirdCategory')}}" class="nav-link">
+                                    <a class="nav-link {{ Request::is('ControlPanel/ThirdCategory') ? 'active' : '' }}" href="{{url('ControlPanel/ThirdCategory')}}">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Third Category</p>
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{url('ControlPanel/Language')}}" class="nav-link">
+                                    <a class="nav-link {{ Request::is('ControlPanel/Language') ? 'active' : '' }}" href="{{url('ControlPanel/Language')}}">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>Language</p>
                                     </a>
