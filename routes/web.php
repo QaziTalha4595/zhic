@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Middleware\AuthMiddleware;
 
 /*
@@ -17,7 +16,13 @@ use App\Http\Middleware\AuthMiddleware;
 |
 */
 
+Route::get('/', [WebsiteController::class, 'Home'])->name('Home');
+Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
+Route::get('/Category', [WebsiteController::class, 'BookCategory'])->name('BookCategory');
+
+
 Route::get('/',[WebsiteController::class, 'Home'])->name('Home');
+
 
 Route::get('/ControlPanel/Login', [AdminController::class, 'Login'])->name('Login');
 Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->name('LoginUser');
@@ -45,8 +50,14 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::post('/ThirdCategoryStore', [CategoryController::class, 'ThirdCategoryStore'])->name('ThirdCategoryStore');
     Route::get('/ThirdCategoryShow', [CategoryController::class, 'ThirdCategoryShow'])->name('ThirdCategoryShow');
     Route::get('/ThirdCategoryEdit', [CategoryController::class, 'ThirdCategoryEdit'])->name('ThirdCategoryEdit');
-    // Route::get('/CategoryRemove', [CategoryController::class, 'CategoryDestroy'])->name('CategoryRemove');
-
-    // Slider management
-    Route::get('/Slider', [SliderController::class, 'Slider'])->name('Slider');
+    Route::get('/ThirdCategoryRemove', [CategoryController::class, 'ThirdCategoryDestroy'])->name('ThirdCategoryRemove');
+    Route::post('/FetchSubCategory', [CategoryController::class, 'FetchSubCategory'])->name('FetchSubCategory');
+    
+    // Thired category management
+    Route::get('/Language', [CategoryController::class, 'Language'])->name('Language');
+    Route::post('/LanguageStore', [CategoryController::class, 'LanguageStore'])->name('LanguageStore');
+    Route::get('/LanguageShow', [CategoryController::class, 'LanguageShow'])->name('LanguageShow');
+    Route::get('/LanguageEdit', [CategoryController::class, 'LanguageEdit'])->name('LanguageEdit');
+    Route::get('/LanguageRemove', [CategoryController::class, 'LanguageDestroy'])->name('LanguageRemove');
+    
 });

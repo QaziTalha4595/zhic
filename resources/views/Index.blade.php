@@ -103,119 +103,8 @@ height=0 width=0 style=display:none;visibility:hidden></iframe></noscript>
                         <div class=container>
                             <nav id=menuzord class="menuzord bg-theme-colored pull-left flip menuzord-responsive">
                                 <ul id=menu-enmain_menu class=menuzord-menu>
-                                    <li id=menu-item-6369 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-6208 current_page_item menu-item-has-children menu-item-6369"><a title=Home href=https://www.mbzuh.ac.ae/en/ aria-current=page>Home</a>
-                                        <ul class=sub-menu>
-                                            <li id=menu-item-5872 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5872"><a title="Welcome Statement &#8211;  PRESIDENT OF HIGHER ACADEMIC COUNCIL" href="#">Welcome Statement &#8211; PRESIDENT
-                                                OF HIGHER ACADEMIC COUNCIL</a>
-                                            </li>
-                                            <li id=menu-item-3547 class="unclickable menu-item menu-item-type-custom menu-item-object-custom menu-item-3547"><a title="Welcome statement &#8211; Chairman of the Board of Trustees" href="#">Welcome statement &#8211; Chairman of the Board of Trustees</a>
-                                            </li>
-                                            <li id=menu-item-3548 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3548"><a title="Welcome statement &#8211; Chancellor" href="#">Welcome statement &#8211; Chancellor</a>
-                                            </li>
-                                            <li id=menu-item-5877 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5877"><a title="Higher Academic Council" href="#">Higher Academic Council</a>
-                                            </li>
-                                            <li id=menu-item-3555 class="unclickable menu-item menu-item-type-custom menu-item-object-custom menu-item-3555"><a title="Board of Trustees" href="#">Board of Trustees</a>
-                                            </li>
-                                            <li id=menu-item-3554 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3554"><a title="Organizational Chart" href="#">Organizational Chart</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-3546 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3546"><a title="About the university" href=#>About the university</a>
-                                        <ul class=sub-menu>
-                                            <li id=menu-item-3740 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3740"><a title="About Mohamed Bin Zayed University for Humanities" href="#">About Mohamed Bin Zayed University for Humanities</a>
-                                            </li>
-                                            <li id=menu-item-6339 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6339"><a title="Vision ,mission ,values ,priorities" href="#">Vision ,mission ,values ,priorities</a>
-                                            </li>
-                                            <li id=menu-item-6297 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6297"><a title="Brand Story" href="#">Brand Story</a>
-                                            </li>
-                                            <li id=menu-item-6295 class="clickable menu-item menu-item-type-post_type menu-item-object-page menu-item-6295"><a title=Accreditation href="#">Accreditation</a>
-                                            </li>
-                                            <li id=menu-item-6293 class="unclickable menu-item menu-item-type-post_type menu-item-object-page menu-item-6293"><a title=Achievements href="#">Achievements</a>
-                                            </li>
-                                            <li id=menu-item-6106 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6106"><a title="Branch campuses" href="#">Branch campuses</a>
-                                            </li>
-                                            <li id=menu-item-3550 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3550"><a title="Why Mohamed Bin Zayed University for Humanities?" href="#">Why Mohamed Bin Zayed University for Humanities?</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-3562 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3562"><a title=Colleges href=#>Colleges</a>
-                                        <ul class=sub-menu>
-                                            <li id=menu-item-4200 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4200"><a title="College of Islamic Studies" href="#">College of Islamic Studies</a>
-                                            </li>
-                                            <li id=menu-item-3565 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3565"><a title="College of Arts and Humanities" href="#">College of Arts and Humanities</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-3566 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3566"><a title=Faculty href="#">Faculty</a>
-                                    </li>
-                                    <li id=menu-item-3567 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3567"><a title=Admission href=#>Admission</a>
-                                        <ul class=sub-menu>
-                                            <li id=menu-item-3568 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3568"><a title="Admission Application" target=_blank rel=noopener href="#">Admission Application</a></li>
-                                            <li id=menu-item-3569 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3569"><a title="Admission Requirements" href="#">Admission Requirements</a>
-                                            </li>
-                                            <li id=menu-item-3570 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3570"><a title="Required Registration Documents" href="#">Required Registration Documents</a>
-                                            </li>
-                                            <li id=menu-item-3571 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3571"><a title="Students&#8217; Handbook" href="#">Students&#8217; Handbook</a>
-                                            </li>
-                                            <li id=menu-item-3572 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3572"><a title="Academic Calendar" href="#">Academic Calendar</a>
-                                            </li>
-                                            <li id=menu-item-6242 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6242"><a title="Apply Now" target=_blank rel=noopener href="#">Apply Now</a></li>
-                                            <li id=menu-item-8715 class="hide menu-item menu-item-type-post_type menu-item-object-page menu-item-8715"><a title="University Fees" href="#">University Fees</a>
-                                            </li>
-                                            <li id=menu-item-9854 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9854"><a href="#">Tuition Fees</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-3573 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a title="Student Affairs" href=#>Student Affairs</a>
-                                        <ul class=sub-menu>
-                                            <li id=menu-item-3574 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3574"><a title="Students&#8217; Rights and Obligations" href="#">Students&#8217; Rights and Obligations</a>
-                                            </li>
-                                            <li id=menu-item-3575 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3575"><a title="Students&#8217; ِConduct and Responsibilities" href="#">Students&#8217; ِConduct and Responsibilities</a>
-                                            </li>
-                                            <li id=menu-item-3576 class="unclickable menu-item menu-item-type-custom menu-item-object-custom menu-item-3576"><a title="Student Facilities" href="#">Student Facilities</a>
-                                            </li>
-                                            <li id=menu-item-3577 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3577"><a title=Scholarships href=#>Scholarships</a></li>
-                                            <li id=menu-item-3578 class="unclickable menu-item menu-item-type-custom menu-item-object-custom menu-item-3578"><a title="Student Life" href="#">Student Life</a>
-                                            </li>
-                                            <li id=menu-item-5495 class="unclickable menu-item menu-item-type-post_type menu-item-object-page menu-item-5495"><a title="Alumni Association" href="#">Alumni Association</a>
-                                            </li>
-                                            <li id=menu-item-3580 class="unclickable menu-item menu-item-type-custom menu-item-object-custom menu-item-3580"><a title="Alumni Success Stories" href="#">Alumni Success Stories</a>
-                                            </li>
-                                            <li id=menu-item-7255 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7255"><a title="Graduation Certificate Request Service" href="#">Graduation Certificate Request Service</a>
-                                            </li>
-                                            <li id=menu-item-6097 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6097"><a title="Email access" target=_blank rel=noopener href="#">Email access</a></li>
-                                            <li id=menu-item-6098 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6098"><a title="D2L access" target=_blank rel=noopener href="#">D2L access</a></li>
-                                            <li id=menu-item-6099 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6099"><a title="SIS access" target=_blank rel=noopener href="#">SIS access</a>
-                                            </li>
-                                            <li id=menu-item-8496 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8496"><a title="University Management System (UMS)" target=_blank rel=noopener href="#">University Management System (UMS)</a></li>
-                                            <li id=menu-item-6101 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6101"><a title="IT service request" target=_blank rel=noopener href="#">IT service request</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-3581 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3581"><a title="Scientific Research" href=#>Scientific Research</a>
-                                        <ul class=sub-menu>
-                                            <li id=menu-item-3582 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3582"><a title="Scientific Research Policy" href=#>Scientific Research Policy</a></li>
-                                            <li id=menu-item-3584 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3584"><a title="Scientific Bulletin" href=#>Scientific Bulletin</a></li>
-                                            <li id=menu-item-3585 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3585"><a title="Scientific Magazine" href="#">Scientific Magazine</a>
-                                            </li>
-                                            <li id=menu-item-3586 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3586"><a title="Graduate Theses" href=#>Graduate Theses</a></li>
-                                            <li id=menu-item-12492 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-12492"><a title=Publications href="#">Publications</a>
-                                            </li>
-                                            <li id=menu-item-10619 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-10619"><a title="MBZUH Citation Guide" target=_blank rel=noopener href="#">MBZUH Citation Guide</a>
-                                            </li>
-                                            <li id=menu-item-3587 class="hide menu-item menu-item-type-custom menu-item-object-custom menu-item-3587"><a title="Scientific Seminars and Conferences" href="#">Scientific Seminars and Conferences</a>
-                                            </li>
-                                            <li id=menu-item-5913 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5913"><a title="Cultural Seasons" href="#">Cultural Seasons</a>
-                                            </li>
-                                            <li id=menu-item-5912 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5912"><a title="House of wisdom series" href="#">House of wisdom series</a>
-                                            </li>
-                                            <li id=menu-item-8575 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-8575"><a href="#">Values of Islam</a>
-                                            </li>
-                                            <li id=menu-item-7197 class="unclickable menu-item menu-item-type-post_type menu-item-object-page menu-item-7197"><a title="Open courses" href="#">Open courses</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Library</a>
-                                        <ul class=sub-menu>
+                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Home</a>
+                                         <ul class=sub-menu>
                                             <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
                                             <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
                                             <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
@@ -223,25 +112,10 @@ height=0 width=0 style=display:none;visibility:hidden></iframe></noscript>
                                             <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
                                             </li>
                                             <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-5553 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5553"><a title="Research Centers" href="#">Research Centers</a>
-                                    </li>
-                                    <li id=menu-item-3594 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3594"><a title="Discover more" href=#>Discover more</a>
-                                        <ul class=sub-menu>
-                                            <li id=menu-item-3593 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3593"><a title="Media Center News" href="#">Media Center news</a>
-                                            </li>
-                                            <li id=menu-item-3560 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3560"><a title="Partnerships and Agreements" href="#">Partnerships and Agreements</a>
-                                            </li>
-                                            <li id=menu-item-6284 class="unclickable menu-item menu-item-type-post_type menu-item-object-page menu-item-6284"><a title="Community Initiatives" href="#">Community Initiatives</a>
-                                            </li>
-                                            <li id=menu-item-3596 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3596"><a title=Events href="#">Events</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li id=menu-item-6009 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6009"><a title="Contact us" href="#">Contact us</a>
+                                        </ul> 
                                     </li>
                                 </ul>
+                               
                             </nav>
                         </div>
                     </div>
