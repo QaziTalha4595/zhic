@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\Admin\Category;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,8 +13,7 @@ use Yajra\Datatables\Datatables;
 
 class CategoryController extends Controller
 {
-    //For Category
-    public function Category(Request $req)
+    public function Category()
     {
         return view('Admin.Category.Category');
     }
@@ -31,22 +30,10 @@ class CategoryController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
+
     public function CategoryEdit(Request $req)
-        ->addColumn('action', function ($Category) {
-            return
-            '<button class="btn btn-primary" data-toggle="modal" data-target="#CategoryStoreModal"
-            onclick="CategoryEdit('.$Category->id.')">
-            <i class="fa fa-edit"></i></button>
-            <button class="btn btn-danger" onclick="CategoryRemove('.$Category->id.')"><i class="fa fa-trash"></i>
-            </button>';
-        })
-        ->rawColumns(['action'])
-        ->make(true);
-    }
-    public function CategoryEdit(Request $request)
     {
-        $category = Category::where('id', $req->input('id'))->get();
-        return response()->json(["data" => $category]);
+        return response()->json(["data" => Category::where('id', $req->input('id'))->get()]);
     }
 
     public function CategoryStore(Request $req)
@@ -69,8 +56,7 @@ class CategoryController extends Controller
     }
     public function CategoryDestroy(Request $req)
     {
-        $category = Category::where('id', $req->input('id'))->delete();
-        if ($category) {
+        if (Category::where('id', $req->input('id'))->delete()) {
             return response()->json(["success" => true, "message" => "Category Deleted Succesfully"]);
         } else {
             return response()->json(["success" => false, "message" => "Category Remove Failed...!"]);
