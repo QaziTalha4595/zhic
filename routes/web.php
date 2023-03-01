@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Middleware\AuthMiddleware;
 

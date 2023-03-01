@@ -103,7 +103,7 @@ height=0 width=0 style=display:none;visibility:hidden></iframe></noscript>
                         <div class=container>
                             <nav id=menuzord class="menuzord bg-theme-colored pull-left flip menuzord-responsive">
                                 <ul id=menu-enmain_menu class=menuzord-menu>
-                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Home</a>
+                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>The Holy Quran</a>
                                          <ul class=sub-menu>
                                             <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
                                             <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
@@ -114,6 +114,50 @@ height=0 width=0 style=display:none;visibility:hidden></iframe></noscript>
                                             <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
                                         </ul> 
                                     </li>
+                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Islamic Cultural Books</a>
+                                        <ul class=sub-menu>
+                                           <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
+                                           <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
+                                           <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
+                                           </li>
+                                           <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
+                                           </li>
+                                           <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
+                                       </ul> 
+                                   </li>
+                                   <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Arabic Learning Books</a>
+                                    <ul class=sub-menu>
+                                       <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
+                                       <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
+                                       <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
+                                       </li>
+                                       <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
+                                       </li>
+                                       <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
+                                   </ul> 
+                               </li>
+                               <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Children books</a>
+                                <ul class=sub-menu>
+                                   <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
+                                   <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
+                                   <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
+                                   </li>
+                                   <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
+                                   </li>
+                                   <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
+                               </ul> 
+                           </li>
+                           <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Articles</a>
+                            <ul class=sub-menu>
+                               <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
+                               <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
+                               <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
+                               </li>
+                               <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
+                               </li>
+                               <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
+                           </ul> 
+                       </li>
                                 </ul>
                                
                             </nav>
