@@ -31,7 +31,6 @@ class CategoryController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
-
     public function CategoryEdit(Request $req)
     {
         return response()->json(["data" => Category::where('id', $req->input('id'))->get()]);
@@ -39,7 +38,7 @@ class CategoryController extends Controller
     public function CategoryStore(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            'category_name' => 'required|regex:/^[a-zA-Z]+$/u'
+            'category_name' => 'required|regex:/^[a-z A-Z]+$/u'
         ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
@@ -51,28 +50,19 @@ class CategoryController extends Controller
             );
             return response()->json(["success" => true, "message" => $category->wasRecentlyCreated ? "Category Detail Create Successfully" : "Category Detail Updated Successfully"]);
         } catch (\Throwable $th) {
-            return response()->json(["success" => false, "message" => "Opps an Error Occured", "err"=>$th]);
+            return response()->json(["success" => false, "message" => "Oops an Error Occurred", "err"=>$th]);
         }
     }
-
-
     public function CategoryDestroy(Request $req)
     {
         if (Category::where('id', $req->input('id'))->delete()) {
-            return response()->json(["success" => true, "message" => "Category Deleted Succesfully"]);
-        }
-        else
-        {
+            return response()->json(["success" => true, "message" => "Category Deleted Successfully"]);
+        }else{
             return response()->json(["success" => false, "message" => "Category Remove Failed...!" ]);
         }
     }
-    //For Sub Category
     public function SubCategory()
     {
-        // $SubCategory = new SubCategory();
-        // $SubCategory = SubCategory::with(['Category']);
-        // return view('Admin.Category.SubCategory',compact('SubCategory'));
-
         $categories = Category::all();
         return view('Admin.Category.SubCategory',compact('categories'));
     }
@@ -94,19 +84,15 @@ class CategoryController extends Controller
         ->rawColumns(['action'])
         ->make(true);
     }
-    public function SubCategoryEdit(Request $request)
+    public function SubCategoryEdit(Request $req)
     {
-
-        $sub_cat_id = $request->input('id');
-        $SubCategories = SubCategory::where('id',$sub_cat_id)->get();
-        return response()->json(["data" => $SubCategories]);
-
+        return response()->json(["data" => SubCategory::where('id',$req->input('id'))->get()]);
     }
     public function SubCategoryStore(Request $req)
     {
         $validator = Validator::make($req->all(), [
             'category_id' => 'required',
-            'sub_category_name' => 'required|regex:/^[a-zA-Z_ ]+$/u'
+            'sub_category_name' => 'required|regex:/^[a-z A-Z]+$/u'
         ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
@@ -121,26 +107,18 @@ class CategoryController extends Controller
             );
             return response()->json(["success" => true, "message" => $SubCategory->wasRecentlyCreated ? "Sub Category Create Successfully" : "Sub Category Updated Successfully"]);
         } catch (\Throwable $th) {
-            return response()->json(["success" => false, "message" => "Opps an Error Occured", "err"=>$th]);
+            return response()->json(["success" => false, "message" => "Oops an Error Occurred", "err"=>$th]);
         }
 
     }
     public function SubCategoryDestroy(Request $req)
     {
-        $SubCategory = SubCategory::where('id',$req->input('id'))->delete();
-
-        if($SubCategory)
-        {
+        if(SubCategory::where('id',$req->input('id'))->delete()){
             return response()->json(['success' => true, 'message' => 'SubCategory Remove Successfully']);
-        }
-        else
-        {
+        }else{
             return response()->json(['success' => false, 'message' => 'SubCategory Remove Failed..!']);
         }
-
-
     }
-    //Third Category
     public function FetchSubCategory(Request $req)
     {
         $SubCategories['sub_categories'] = SubCategory::where('category_id',$req->cat_id)->get();
@@ -148,8 +126,6 @@ class CategoryController extends Controller
     }
     public function ThirdCategory()
     {
-        $ThirdCategory = new ThirdCategory();
-        // $ThirdCategory = ThirdCategory::with(['category','subcategory'])->get();
         $Category = Category::all();
         $SubCategory = SubCategory::all();
         return view('Admin.Category.ThirdCategory',compact('Category','SubCategory'));

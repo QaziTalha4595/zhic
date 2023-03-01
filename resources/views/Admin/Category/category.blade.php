@@ -32,12 +32,10 @@
                                     <lable>Category Name</lable>
                                     <input type="text" class="form-control form-control-user required " name="category_name"
                                         id="category_name" placeholder="Enter category">
-                                        <div id="category_name_error" style="display:none"></div>
                                     </div>
-
                                 </form>
                             </div>
-    
+
                             <!-- Modal footer -->
                             <div class="modal-footer">
                             <span id="category_error_area" style="display: none;" class="m-auto"></span>
@@ -85,16 +83,12 @@
 
 <script>
 
-function alertmsg(msg, type) {
-            $("#category_name_error").removeClass().html('').show();
-            $("#category_name_error").css('color : red').html(msg);
-        }
 
 function alertmsg(msg, type) {
     $("#category_error_area").removeClass().html('').show();
     $("#category_error_area").addClass(`alert alert-${type} text-center`).html(msg);
     $("#category_error_area").fadeOut(3000);
-}        
+}
 
 $(function() {
 
@@ -103,9 +97,6 @@ var DataTable = $("#DataTable").DataTable({
     "serverSide": true,
     ajax: {
         url: "{{route('CategoryShow')}}",
-        // data: {
-        //   client_id: ""
-        // }
     },
     columns: [{
             data: 'id',
@@ -135,7 +126,7 @@ $.post("{{route('CategoryStore')}}", $('#CategoryStoreForm').serialize())
             $("#btnSubmit").prop("disabled", false);
              if(res.success){
                 alertmsg(res.message,"success");
-                window.location.href = "{{route('Category')}}";
+                $("#DataTable").DataTable().ajax.reload();
              }else if(res.validate){
                 alertmsg(res.message, "warning")
              }else{
@@ -144,14 +135,14 @@ $.post("{{route('CategoryStore')}}", $('#CategoryStoreForm').serialize())
             })
         .fail((err)=>{
             alertmsg("Something went wrong", "danger")
-        });
+        })
         $("#LoginBtn").prop("disabled", false);
+
 }
 
 function CategoryEdit(id)
   {
-    $.get("{{route('CategoryEdit')}}", {id:id}, function(data)
-    {
+    $.get("{{route('CategoryEdit')}}", {id:id}, (data)=>{
       $("#cat_id").val(data.data[0]['id']);
       $("#category_name").val(data.data[0]['category_name']);
     });
@@ -161,32 +152,23 @@ function CategoryEdit(id)
   {
     swal({
 			title : "Are You Sure?",
-			text : "Once Deleted You will not be able to recover this file",
+			text : "Once Deleted You will not be able to go back",
 			icon : "warning",
 			buttons : true,
 			dangerMode : true,
 
 		})
-    .then((willDelete) => {
-			if(willDelete)
-			{
+    .then((del) => {
+			if(del){
 				$.get("{{route('CategoryRemove')}}",{id:id},function(data){
-				console.log(data);	
-					if(data['success'] == true)
+					if(data.success)
 					{
-						swal("Proof! Category Have been Deleted..!",
-						{
-							icon: "success",
-						});
+						swal("Proof! Category Have been Deleted..!",{icon: "success"});
 						tables = $("#DataTable").dataTable();
 						tables.fnPageChange('first',1);
 					}
 				});
-			} 
-	        else 
-	        {
-	            swal("Your file is safe!");
-	        }
+			}
 		});
   }
 </script>
