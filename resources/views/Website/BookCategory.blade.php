@@ -1,4 +1,4 @@
-@extends('index')
+@extends('Layout')
 
 @section('content')
 <div class="breadcrumbs-area mb-70">

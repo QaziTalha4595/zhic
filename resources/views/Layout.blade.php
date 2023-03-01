@@ -25,6 +25,8 @@
     <script src=https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/js/jquery-2.2.4.min.js></script>
     <script src=https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/js/jquery-plugin-collection.js></script>
 
+    
+
 </head>
 
 <body class="home page-template page-template-page-home-demo page-template-page-home-demo-php page page-id-6208 wp-custom-logo class-name no-sidebar" id=innerbody>
@@ -103,67 +105,76 @@ height=0 width=0 style=display:none;visibility:hidden></iframe></noscript>
                         <div class=container>
                             <nav id=menuzord class="menuzord bg-theme-colored pull-left flip menuzord-responsive">
                                 <ul id=menu-enmain_menu class=menuzord-menu>
-                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>The Holy Quran</a>
-                                         <ul class=sub-menu>
-                                            <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
-                                            <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
-                                            <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
-                                            </li>
-                                            <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
-                                            </li>
-                                            <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
-                                        </ul> 
+                                    @foreach ($Categories as $category)
+                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>{{$category->category_name ?? " "}}</a>
+                                         <ul id=menu-enmain_menu class=sub-menu >
+                                            @foreach ($Categories_sub as $Category_sub)
+                                            @if($Category_sub->category_id == $category->category_id)
+                                            <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a href="#">{{$Category_sub->sub_cat_name ?? " "}}</a></li>
+                                            <ul>
+                                                @foreach ($Categories_third as $Category_third)
+                                                @if($Category_third->sub_cat_id == $Category_sub->sub_cat_id)
+                                                <li href="#"><a>{{$Category_third->third_cat_name ?? " "}}</a></li>
+                                                @endif
+                                                @endforeach
+                                            </ul>
+                                            @endif
+                                            @endforeach
+                                           </ul>
                                     </li>
-                                    <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Islamic Cultural Books</a>
-                                        <ul class=sub-menu>
-                                           <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
-                                           <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
-                                           <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
-                                           </li>
-                                           <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
-                                           </li>
-                                           <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
-                                       </ul> 
-                                   </li>
-                                   <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Arabic Learning Books</a>
-                                    <ul class=sub-menu>
-                                       <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
-                                       <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
-                                       <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
-                                       </li>
-                                       <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
-                                       </li>
-                                       <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
-                                   </ul> 
-                               </li>
-                               <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Children books</a>
-                                <ul class=sub-menu>
-                                   <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
-                                   <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
-                                   <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
-                                   </li>
-                                   <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
-                                   </li>
-                                   <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
-                               </ul> 
-                           </li>
-                           <li id=menu-item-3588 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588"><a title=Library>Articles</a>
-                            <ul class=sub-menu>
-                               <li id=menu-item-3589 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3589"><a title=Database target=_blank rel=noopener href="#">Database</a></li>
-                               <li id=menu-item-3590 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590"><a title="Digital Warehouse" target=_blank rel=noopener href="#">Digital Warehouse</a></li>
-                               <li id=menu-item-3591 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-3591"><a title="Library Catalog" target=_blank rel=noopener href="#">Library Catalog</a>
-                               </li>
-                               <li id=menu-item-6628 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6628"><a title="Additional Library Sources" href="#">Additional Library Sources</a>
-                               </li>
-                               <li id=menu-item-7291 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7291"><a title="Library use guide" target=_blank rel=noopener href="#">Library use guide</a></li>
-                           </ul> 
-                       </li>
+                                    @endforeach
                                 </ul>
-                               
+
                             </nav>
                         </div>
                     </div>
                 </div>
+
+                {{-- <div class="mobile-menu-area d-lg-none d-block fix">
+                    <div class="container mean-container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="mobile-menu">
+                                    <div class="mean-push"></div>
+                                    <nav id="mobile-menu-active" style="display: none;">
+                                        <ul id="nav">
+                                            @foreach($Categories as $data)
+                                            <li><a
+                                                    href="{{url('/')}}/EBook-{{$data->category_slug ?? ''}}">{{$data->category_name ?? ''}}</a>
+                                                <ul>
+                                                    @foreach($Categories_sub as $row)
+                                                    @if($row->category_id == $data->category_id)
+                                                    <li><a
+                                                            href="{{url('/')}}/EBook-{{$data->category_slug}}/{{$row->slug}}">{{$row->sub_cat_name ?? ''}}
+                                                        </a>
+                                                        <ul>
+                                                            @foreach($Categories_third as $third_cat)
+                                                            @if($third_cat->sub_cat_id == $row->sub_cat_id)
+                                                            <li>
+                                                                <a class="text-black"
+                                                                    href="{{url('/')}}/EBook-{{$data->category_slug}}/{{$row->slug}}/{{$third_cat->third_cat_slug}}">{{$third_cat->third_cat_name}}
+                                                                </a>
+                                                            </li>
+                                                            @endif
+                                                            @endforeach
+                                                            <li class="bg-theme">
+                                                                <a href="{{url('/')}}/EBook-{{$category->category_slug}}/{{$sub_category->slug}}"
+                                                                    style="color:#000 !important">Show More</a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    @endif
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
         </header>
         <div class="space" style="margin-top: 156px">
 

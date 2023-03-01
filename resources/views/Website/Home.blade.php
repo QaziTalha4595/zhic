@@ -1,12 +1,48 @@
-@extends('index')
+@extends('Layout')
 
 @section('content')
 
 <!-- shop-main-area-start -->
+
 <div class="shop-main-area" style="overflow:hidden;">
     <div class="slider-area">
         <div class="slider-active owl-carousel">
-            {{-- @foreach($sliders as $slider)
+            @foreach($sliders as $slider)
+            {{$slider->slider_heading}}
+            <div class="single-slider pt-40 pb-40 bg-img" style="background-color:{{$slider->slider_bg ?? ''}};">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6 order-1 order-lg-0">
+                            <div class="slider-content slider-animated-1 mt-70">
+                                <h4>{{$slider->slider_heading ?? ''}}</h4>
+                                <p>{{Str::limit($slider->slider_caption,278) ?? ''}}</p>
+                                <a href="{{$slider->link ?? ''}}">Know More</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 order-0 order-lg-1 slider-animated-1">
+                            <img src="{{url('public/Website/image/images')}}"
+                                alt="" class="slider-auto_img mx-auto wow" data-wow-delay="1s">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+<div class="carousel-item">
+    <img src="{{url('public/Website/image/images')}}" alt="...">
+    <div class="carousel-caption d-none d-md-block">
+      <h5>Title</h5>
+      <p>description</p>
+    </div>
+  </div>
+
+<div class="shop-main-area" style="overflow:hidden;">
+    <div class="slider-area">
+        <div class="slider-active owl-carousel">
+            @foreach($sliders as $slider)
             <div class="single-slider pt-40 pb-40 bg-img" style="background-color:{{$slider->slider_bg ?? ''}};">
                 <div class="container">
                     <div class="row">
@@ -24,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            @endforeach --}}
+            @endforeach
         </div>
     </div>
 </div>

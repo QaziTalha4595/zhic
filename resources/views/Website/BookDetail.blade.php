@@ -1,4 +1,4 @@
-@extends('index')
+@extends('Layout')
 
 @section('content')
 <div class="product-main-area mb-10 pt-100">
