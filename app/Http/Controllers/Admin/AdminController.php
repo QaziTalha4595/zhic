@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+
 
 class AdminController extends Controller
 {
@@ -21,29 +20,29 @@ class AdminController extends Controller
     public function LoginUser(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            'email' => 'required|email',
-            'password' => 'required'
+            'user_email' => 'required|email',
+            'user_password' => 'required'
         ]);
 
         if($validator->fails()) {
             return response()->json(["validate" => true, "message" =>$validator->errors()->all()[0]]);
         }
 
-        // $user = DB::table('users')->where(["admin_email" => $req->input('user_email')])->first();
-
-        $data = $req->input();
-        unset($data['_token']);
-        if (Auth::attempt($data)) {
-            $user = Auth::user();
-            Session::put('admin_id', $user->id);
-            Session::put('admin_name', $user->name);
-            Session::put('admin_email', $user->email);
-            Session::put('token',Hash::make(env('JWT_SECRET')));
+        $user = DB::table('users')->where(["admin_email" => $req->input('user_email')])->first();
+    
+        if(!$user){
+        return response()->json(["success" => false, "message" => "Invalid Credential"]);
+        }
+      
+        if(Hash::check($req->input('user_password'), $user->admin_password)){
+            Session::put('admin_id', $user->admin_id);
+            Session::put('admin_name', $user->admin_name);
+            Session::put('admin_email', $user->admin_email);
             Session::save();
             return response()->json(["success" => true, "message" => "Login Successfull"]);
         }
         else{
-        return response()->json(["success" => false, "message" => "Invalid Credential"]);
+            return response()->json(["success" => false, "message" => "Invalid Credential"]);
         }
     }
 }
