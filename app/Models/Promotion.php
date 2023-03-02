@@ -2,21 +2,26 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubCategory extends Model
+class Promotion extends Model
 {
     use HasFactory;
-    protected $table = 'sub_categories';
+
+    protected $table = 'promotion';
 
     protected $fillable = [
-        'category_id','sub_category_name'
+        'category_id',
+        'sub_cat_id',
+        'promotion_attachment'
     ];
-    protected $guarded = [];
     public function category()
     {
         return $this->belongsTo('App\Models\Category','category_id','id');
+    }
+    public function subcategory()
+    {
+        return $this->belongsTo('App\Models\SubCategory','sub_cat_id','id');
     }
 }
