@@ -20,8 +20,8 @@ use App\Http\Middleware\AuthMiddleware;
 Route::get('/', [WebsiteController::class, 'Categories'])->name('Categories');
 Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
 Route::get('/Category', [WebsiteController::class, 'BookCategory'])->name('BookCategory');
-Route::get('/Home', [WebsiteController::class, 'Home'])->name('Home');
-
+Route::get('/Home/{locale?}', [WebsiteController::class, 'Home'])->name('Home');
+// Route::get('/test/{locale?}', [WebsiteController::class, 'test'])->name('test');
 
 
 
