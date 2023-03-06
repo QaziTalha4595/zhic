@@ -13,76 +13,7 @@
                         </div>
                         <div class="col-auto">
                             <button type="button" id="add_btn" class="btn btn-primary" data-toggle="modal"
-                                data-target="#ThirdCategoryStoreModal">Add</button>
-
-                            <div class="modal fade" id="ThirdCategoryStoreModal">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content border-primary">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Add Third Category</h4>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            <form id="ThirdCategoryStoreForm">
-                                                @csrf
-                                                <input type="hidden" id="third_cat_id" name="third_cat_id">
-                                                <div class="form-group">
-                                                    <label>Category</label>
-                                                    <select class="form-control select2" name="category_id"
-                                                        id="category_id" style="width:100%;">
-                                                        <option selected disabled>Select</option>
-                                                        @foreach($Category as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->category_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Sub Category</label>
-                                                    <select class="form-control select2" name="sub_category_id"
-                                                        id="sub_category_id" style="width:100%;">
-                                                    </select>
-                                                    <select class="form-control select2" name="sub_category_id"
-                                                        id="sub_category_id" style="width:100%;">
-                                                         @foreach($SubCategory as $item)
-                                                       <option id='rest' value="{{ $item->id }}">{{ $item->sub_category_name }}</option>
-                                                       @endforeach
-                                                    </select>
-
-                        
-                                                </div>
-                                                <div class="form-group">
-                                                    <lable class="text-bold">Third Category Name</lable>
-                                                    <input type="text"
-                                                        class="form-control form-control-user border-primary required "
-                                                        id="third_category_name" name="third_category_name"
-                                                        onkeyup="slugGenrator()">
-                                                </div>
-                                                <div class="form-group">
-                                                    <lable class="text-bold">Third Category Slug</lable>
-                                                    <input type="text"
-                                                        class="form-control form-control-user border-primary required "
-                                                        id="slug" name="slug" autocomplete=" off">
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                        <div class="form-row mt-3 mx-auto">
-                                            <div class="form-group text-center">
-                                                <span id="show_error" style="display: none;" class="m-auto"></span>
-                                            </div>
-                                        </div>
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer">
-                                            <span id="third_category_error_area" style="display: none;" class="m-auto"></span>
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="button" id="btnSubmit" onclick="ThirdCategoryStore()"
-                                                class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                data-target="#ThirdCategoryStoreModal">Add</button>   
                         </div>
                     </div>
                 </div>
@@ -90,6 +21,135 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="ThirdCategoryStoreModalForEdit">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Third Category</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="ThirdCategoryStoreForm">
+                    @csrf
+                    <input type="text" id="third_cat_id" name="third_cat_id" val="">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control select2" name="category_id"
+                            id="category_id" style="width:100%;">
+                            <option selected disabled>Select</option>
+                            @foreach($Category as $item)
+                            <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sub Category</label>
+                        
+                        <select class="form-control select2" name="sub_category_id"
+                            id="sub_category_id" style="width:100%;">
+                            <option selected disabled>Select</option>
+                            @foreach($SubCategory as $item)
+                            <option value="{{ $item->id }}">{{ $item->sub_category_name }}</option>
+                            @endforeach
+                        </select>
+
+
+                    </div>
+                    <div class="form-group">
+                        <lable class="text-bold">Third Category Name</lable>
+                        <input type="text"
+                            class="form-control form-control-user border-primary required "
+                            id="third_category_name" name="third_category_name"
+                            onkeyup="slugGenrator()">
+                    </div>
+                    <div class="form-group">
+                        <lable class="text-bold">Third Category Slug</lable>
+                        <input type="text"
+                            class="form-control form-control-user border-primary required "
+                            id="slug" name="slug" autocomplete=" off">
+                    </div>
+
+                </form>
+            </div>
+            <div class="form-row mt-3 mx-auto">
+                <div class="form-group text-center">
+                    <span id="show_error" style="display: none;" class="m-auto"></span>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <span id="third_category_error_area" style="display: none;" class="m-auto"></span>
+                <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                <button type="button" id="btnSubmit" onclick="ThirdCategoryStore()"
+                    class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ThirdCategoryStoreModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-primary">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Third Category</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="ThirdCategoryStoreForm">
+                    @csrf
+                    <input type="hidden" id="third_cat_id" name="third_cat_id">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control select2" name="category_id"
+                            id="category_id" style="width:100%;">
+                            <option selected disabled>Select</option>
+                              
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sub Category</label>
+                        <select disabled class="form-control select2" name="sub_category_id"
+                            id="sub_category_id" style="width:100%;">
+                            <option value="" selected>Select SubCategory</option>
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <lable class="text-bold">Third Category Name</lable>
+                        <input type="text"
+                            class="form-control form-control-user border-primary required "
+                            id="third_category_name" name="third_category_name"
+                            onkeyup="slugGenrator()">
+                    </div>
+                    <div class="form-group">
+                        <lable class="text-bold">Third Category Slug</lable>
+                        <input type="text"
+                            class="form-control form-control-user border-primary required "
+                            id="slug" name="slug" autocomplete=" off">
+                    </div>
+
+                </form>
+            </div>
+            <div class="form-row mt-3 mx-auto">
+                <div class="form-group text-center">
+                    <span id="show_error" style="display: none;" class="m-auto"></span>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <span id="third_category_error_area" style="display: none;" class="m-auto"></span>
+                <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal">Close</button>
+                <button type="button" id="btnSubmit" onclick="ThirdCategoryStore()"
+                    class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="container-fluid">
     <div class="card shadow mb-4">
@@ -158,18 +218,18 @@ var DataTable = $("#DataTable").DataTable({
             
 
         var idCategory = this.value;
-        $("#sub_category_id").html('');
+        $("#sub_category_id").html(' <option value="" selected>Select SubCategory</option> ');
+        $("#sub_category_id").attr("disabled", false)
 
         $.ajax({
 
-        type : "POST",
+        type : "GET",
         url : "{{route('FetchSubCategory')}}",
         dataType : 'json',
-        data : {cat_id: idCategory,_token:"{{ csrf_token() }}"},
+        data : {cat_id: idCategory},
         success : function(response)
         {
-            $("#sub_category_id").html('<option value="">Select SubCategory</option>');
-            $.each(response.sub_categories,function(index, val){
+            $.each(response.data.sub_categories,function(index, val){
                 console.log(val);
             $("#sub_category_id").append('<option value="'+val.id+'">'+val.sub_category_name+'</option>')
             });

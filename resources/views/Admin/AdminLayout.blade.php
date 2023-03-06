@@ -154,13 +154,13 @@
                             </ul>
                         </li>
                         <li class="nav-item main_active ">
-                            <a href="{{('Admin-Slider')}}" class="nav-link">
+                            <a href="{{url('ControlPanel/Slider')}}" class="nav-link">
                                 <i class="nav-icon fas fa-sliders-h"></i>
                                 <p>Slider</p>
                             </a>
                         </li>
                         <li class="nav-item main_active ">
-                            <a href="{{('Promotion')}}" class="nav-link">
+                            <a href="{{url('ControlPanel/Promotion')}}" class="nav-link">
                                 <i class="nav-icon fab fa-adversal"></i>
                                 <p>Promotion</p>
                             </a>

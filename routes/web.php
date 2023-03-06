@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Category\CategoryController;
-use App\Http\Controllers\WebsiteController;
+use App\Http\Controllers\Admin\MainSlider\SliderController;
+use App\Http\Controllers\Admin\Promotion\PromotionController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Middleware\AuthMiddleware;
 
@@ -20,8 +21,8 @@ use App\Http\Middleware\AuthMiddleware;
 Route::get('/', [WebsiteController::class, 'Categories'])->name('Categories');
 Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
 Route::get('/Category', [WebsiteController::class, 'BookCategory'])->name('BookCategory');
-Route::get('/Home/{locale?}', [WebsiteController::class, 'Home'])->name('Home');
-// Route::get('/test/{locale?}', [WebsiteController::class, 'test'])->name('test');
+Route::get('/Home', [WebsiteController::class, 'Home'])->name('Home');
+
 
 
 
@@ -52,7 +53,7 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::get('/ThirdCategoryShow', [CategoryController::class, 'ThirdCategoryShow'])->name('ThirdCategoryShow');
     Route::get('/ThirdCategoryEdit', [CategoryController::class, 'ThirdCategoryEdit'])->name('ThirdCategoryEdit');
     Route::get('/ThirdCategoryRemove', [CategoryController::class, 'ThirdCategoryDestroy'])->name('ThirdCategoryRemove');
-    Route::post('/FetchSubCategory', [CategoryController::class, 'FetchSubCategory'])->name('FetchSubCategory');
+    Route::get('/FetchSubCategory', [CategoryController::class, 'FetchSubCategory'])->name('FetchSubCategory');
 
     // Thired category management
     Route::get('/Language', [CategoryController::class, 'Language'])->name('Language');
@@ -61,4 +62,18 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::get('/LanguageEdit', [CategoryController::class, 'LanguageEdit'])->name('LanguageEdit');
     Route::get('/LanguageRemove', [CategoryController::class, 'LanguageDestroy'])->name('LanguageRemove');
 
+    // Slider management
+    Route::get('/Slider', [SliderController::class, 'Slider'])->name('Slider');
+    Route::post('/SliderStore', [SliderController::class, 'SliderStore'])->name('SliderStore');
+    Route::get('/SliderShow', [SliderController::class, 'SliderShow'])->name('SliderShow');
+    Route::get('/SliderEdit', [SliderController::class, 'SliderEdit'])->name('SliderEdit');
+    Route::get('/SliderRemove', [SliderController::class, 'SliderDestroy'])->name('SliderRemove');
+
+     // Promotion management
+    Route::get('/Promotion', [PromotionController::class, 'Promotion'])->name('Promotion');
+    Route::get('/FetchSubCategory', [PromotionController::class, 'FetchSubCategory'])->name('FetchSubCategory');
+    Route::post('/PromotionStore', [SliderController::class, 'PromotionStore'])->name('PromotionStore');
+    //  Route::get('/SliderShow', [SliderController::class, 'SliderShow'])->name('SliderShow');
+    //  Route::get('/SliderEdit', [SliderController::class, 'SliderEdit'])->name('SliderEdit');
+    //  Route::get('/SliderRemove', [SliderController::class, 'SliderDestroy'])->name('SliderRemove');
 });

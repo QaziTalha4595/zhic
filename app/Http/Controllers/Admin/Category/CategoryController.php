@@ -14,7 +14,8 @@ use Yajra\Datatables\Datatables;
 
 class CategoryController extends Controller
 {
-    public function Category()
+    //For Category
+    public function Category(Request $request)
     {
         return view('Admin.Category.Category');
     }
@@ -22,23 +23,27 @@ class CategoryController extends Controller
     {
         $Category = Category::OrderBy('id','DESC');
         return Datatables::of($Category)
-            ->addColumn('action', function ($Category) {
-                return ('
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#CategoryStoreModal" onclick=" CategoryEdit(' . $Category->id . ')"><i class="fa fa-edit"></i></button>
-                        <button class="btn btn-danger" onclick="CategoryRemove('. $Category->id . ')"><i class="fa fa-trash"></i></button>
-                        ');
-            })
-            ->rawColumns(['action'])
-            ->make(true);
-    }
-    public function CategoryEdit(Request $req)
+        ->addColumn('action', function ($Category) {
+            return
+            '<button class="btn btn-primary" data-toggle="modal" data-target="#CategoryStoreModal"
+            onclick="CategoryEdit('.$Category->id.')">
+            <i class="fa fa-edit"></i></button>
+            <button class="btn btn-danger" onclick="CategoryRemove('.$Category->id.')"><i class="fa fa-trash"></i>
+            </button>';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    } 
+    public function CategoryEdit(Request $request)
     {
-        return response()->json(["data" => Category::where('id', $req->input('id'))->get()]);
+        $cat_id = $request->input('id');
+        $category = Category::where('id',$cat_id)->get();
+        return response()->json(["data" => $category]);
     }
-    public function CategoryStore(Request $req)
+    public function CategoryStore(Request $req)                         
     {
         $validator = Validator::make($req->all(), [
-            'category_name' => 'required|regex:/^[a-z A-Z]+$/u'
+            'category_name' => 'required|regex:/^[a-zA-Z]+$/u'
         ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
@@ -50,19 +55,31 @@ class CategoryController extends Controller
             );
             return response()->json(["success" => true, "message" => $category->wasRecentlyCreated ? "Category Detail Create Successfully" : "Category Detail Updated Successfully"]);
         } catch (\Throwable $th) {
-            return response()->json(["success" => false, "message" => "Oops an Error Occurred", "err"=>$th]);
+            return response()->json(["success" => false, "message" => "Opps an Error Occured", "err"=>$th]);
         }
     }
+
+
     public function CategoryDestroy(Request $req)
     {
-        if (Category::where('id', $req->input('id'))->delete()) {
-            return response()->json(["success" => true, "message" => "Category Deleted Successfully"]);
-        }else{
+        $category = Category::where('id',$req->input('id'))->delete();
+
+        if($category)
+        {
+            return response()->json(["success" => true, "message" => "Category Deleted Succesfully"]);
+        }
+        else
+        {
             return response()->json(["success" => false, "message" => "Category Remove Failed...!" ]);
         }
     }
+    //For Sub Category
     public function SubCategory()
     {
+        // $SubCategory = new SubCategory();
+        // $SubCategory = SubCategory::with(['Category']);
+        // return view('Admin.Category.SubCategory',compact('SubCategory'));
+
         $categories = Category::all();
         return view('Admin.Category.SubCategory',compact('categories'));
     }
@@ -83,16 +100,20 @@ class CategoryController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
-    }
-    public function SubCategoryEdit(Request $req)
+    } 
+    public function SubCategoryEdit(Request $request)
     {
-        return response()->json(["data" => SubCategory::where('id',$req->input('id'))->get()]);
+
+        $sub_cat_id = $request->input('id');
+        $SubCategories = SubCategory::where('id',$sub_cat_id)->get();
+        return response()->json(["data" => $SubCategories]);
+        
     }
     public function SubCategoryStore(Request $req)
     {
         $validator = Validator::make($req->all(), [
             'category_id' => 'required',
-            'sub_category_name' => 'required|regex:/^[a-z A-Z]+$/u'
+            'sub_category_name' => 'required|regex:/^[a-zA-Z_ ]+$/u'
         ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
@@ -107,25 +128,35 @@ class CategoryController extends Controller
             );
             return response()->json(["success" => true, "message" => $SubCategory->wasRecentlyCreated ? "Sub Category Create Successfully" : "Sub Category Updated Successfully"]);
         } catch (\Throwable $th) {
-            return response()->json(["success" => false, "message" => "Oops an Error Occurred", "err"=>$th]);
+            return response()->json(["success" => false, "message" => "Opps an Error Occured", "err"=>$th]);
         }
-
+          
     }
     public function SubCategoryDestroy(Request $req)
     {
-        if(SubCategory::where('id',$req->input('id'))->delete()){
+        $SubCategory = SubCategory::where('id',$req->input('id'))->delete();
+
+        if($SubCategory)
+        {
             return response()->json(['success' => true, 'message' => 'SubCategory Remove Successfully']);
-        }else{
+        }
+        else
+        {
             return response()->json(['success' => false, 'message' => 'SubCategory Remove Failed..!']);
         }
+
+
     }
+    //Third Category
     public function FetchSubCategory(Request $req)
     {
         $SubCategories['sub_categories'] = SubCategory::where('category_id',$req->cat_id)->get();
-        return response()->json($SubCategories);
+        return response()->json(["data" => $SubCategories]);
     }
     public function ThirdCategory()
     {
+        $ThirdCategory = new ThirdCategory();
+        // $ThirdCategory = ThirdCategory::with(['category','subcategory'])->get();
         $Category = Category::all();
         $SubCategory = SubCategory::all();
         return view('Admin.Category.ThirdCategory',compact('Category','SubCategory'));
@@ -133,11 +164,11 @@ class CategoryController extends Controller
     public function ThirdCategoryStore(Request $req)
     {
         $ThirdCategory = new ThirdCategory();
-
+        
             $validator = Validator::make($req->all(), [
                 'category_id' => 'required',
                 'sub_category_id' => 'required',
-                'third_category_name' => 'required|regex:/^[a-z A-Z]+$/u',
+                'third_category_name' => 'required|regex:/^[a-z A-Z]+$/u',              
                 'slug' => 'required'
             ]);
             if ($validator->fails()) {
@@ -151,7 +182,7 @@ class CategoryController extends Controller
                         'sub_category_id' => $req->input('sub_category_id'),
                         'third_category_name' => $req->input('third_category_name'),
                         'slug' => $req->input('slug')
-
+                    
                     ]
                 );
                 return response()->json(["success" => true, "message" => $ThirdCategory->wasRecentlyCreated ? "Third Category Create Successfully" : "Third Category Updated Successfully"]);
@@ -171,7 +202,7 @@ class CategoryController extends Controller
         })
         ->addColumn('action', function ($ThirdCategory) {
             return
-            '<button class="btn btn-primary" data-toggle="modal" data-target="#ThirdCategoryStoreModal"
+            '<button class="btn btn-primary" data-toggle="modal" data-target="#ThirdCategoryStoreModalForEdit"
             onclick="ThirdCategoryEdit('.$ThirdCategory->id.')">
             <i class="fa fa-edit"></i></button>
             <button class="btn btn-danger" onclick="ThirdCategoryRemove('.$ThirdCategory->id.')"><i class="fa fa-trash"></i>
@@ -179,13 +210,13 @@ class CategoryController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
-    }
+    } 
     public function ThirdCategoryEdit(Request $request)
     {
         $third_cat_id = $request->input('id');
         $ThirdCategories = ThirdCategory::where('id',$third_cat_id)->get();
         return response()->json(["data" => $ThirdCategories]);
-
+        
     }
     public function ThirdCategoryDestroy(Request $req)
     {
@@ -213,17 +244,17 @@ class CategoryController extends Controller
             $Language = Language::find($req->input('lang_id'));
 
             $validator = Validator::make($req->all(), [
-
-                'language' => 'required|regex:/^[a-zA-Z]+$/u'
-
+                
+                'language' => 'required|regex:/^[a-zA-Z]+$/u'             
+                
             ]);
-
+    
             if($validator->fails()) {
                 return response()->json(["validate" => true, "message" =>$validator->errors()->all()[0]]);
             }
-
+            
             $Language->language = $req->input('language');
-
+            
             if($Language->save())
             {
                 return response()->json(["success" => true, "message" => "Language Updated Successfully"]);
@@ -238,9 +269,9 @@ class CategoryController extends Controller
         {
 
         $validator = Validator::make($req->all(), [
-
-            'language' => 'required|regex:/^[a-zA-Z]+$/u'
-
+            
+            'language' => 'required|regex:/^[a-zA-Z]+$/u'             
+                
         ]);
 
         if($validator->fails()) {
@@ -248,7 +279,7 @@ class CategoryController extends Controller
         }
 
         $Language->language = $req->input('language');
-
+        
         if($Language->save())
         {
             return response()->json(["success" => true, "message" => "Language Stored Successfully"]);
@@ -273,13 +304,13 @@ class CategoryController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
-    }
+    } 
     public function LanguageEdit(Request $request)
     {
         $lang_id = $request->input('id');
         $Language = Language::where('id',$lang_id)->get();
         return response()->json(["data" => $Language]);
-
+        
     }
     public function LanguageDestroy(Request $req)
     {
