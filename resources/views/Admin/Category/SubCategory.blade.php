@@ -26,7 +26,7 @@
                                         <div class="modal-body">
                                             <form id="SubCategoryStoreForm">
                                                 @csrf
-                                                <input type="text" id="sub_cat_id" name="sub_cat_id">
+                                                <input type="hidden" id="sub_cat_id" name="sub_cat_id">
                                                 <div class="form-group">
                                                     <label>Category</label>
                                                     <select class="form-control select2" name="category_id"
@@ -68,6 +68,27 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-body">
+        <form action="">
+                <div class="row ml-5">
+                    <div class="col-md-3">
+                        <input type="date" id="date_from" name="date_from" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" id="date_to" name="date_to" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <select name="cat_name" id="cat_name" class="form-control">
+                            <option value="">All Sub Category</option>
+                            @foreach($categories as $item)
+                            <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" id="Filter_submit" onclick=" Getdata()" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
+            </form>
             <div class="table-responsive">
                 <table id="DataTable" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
@@ -75,6 +96,7 @@
                             <th>UID</th>
                             <th>Category</th>
                             <th>Name</th>
+                            <th>Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -99,11 +121,29 @@ function alertmsg(msg, type) {
 
 $(function() {
 
-var DataTable = $("#DataTable").DataTable({
+    Getdata();
+
+
+$("#department_supervised_by").select2({
+    theme: "classic",
+    // width: 'resolve'
+});
+
+});
+function Getdata()
+{
+
+    $("#DataTable").DataTable().destroy();
+    var DataTable = $("#DataTable").DataTable({
     "processing": true,
     "serverSide": true,
     ajax: {
         url: "{{route('SubCategoryShow')}}",
+        data: {
+                    from_date: $('#date_from').val(),
+                    to_date: $('#date_to').val(),
+                    category_name : $('#cat_name').val()
+                },
     },
     columns: [{
             data: 'id',
@@ -115,17 +155,23 @@ var DataTable = $("#DataTable").DataTable({
             data: 'sub_category_name',
         },
         {
+            data: 'created_at',
+        },
+        {
             data: 'action',
         }
     ]
-});
-
-$("#department_supervised_by").select2({
-    theme: "classic",
-    // width: 'resolve'
-});
 
 });
+
+$("input[type=date]").val("")
+$('#cat_name').prop('selectedIndex',0);
+// var $dates = $('#date_from, #date_to').datepicker();
+// $dates.datepicker('setDate', null);
+// $("#cat_name").val("")
+
+
+}
 
 function SubCategoryStore() {
 

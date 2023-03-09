@@ -27,6 +27,18 @@
                                         <div class="modal-body">
                                             <form id="PromotionStoreForm">
                                                 @csrf
+                                                <input type="hidden" id="promo_id" name="promo_id">
+                                                <div class="form-row justify-content-center mt-3">
+                                                    <div class="form-group col-md-4 mt-3">
+                                                        <div id="image-preview" class="mt-3"></div>
+                                                    </div>                
+                                                </div>
+                                                <div class="form-group row justify-content-center">
+                                                    <input type="file" id="promotion_attachment" name="promotion_attachment"
+                                                        placeholder="Enter promotion Image">
+                                                        <img id="image_id" style="width:100px; height: 100px; display:none">
+                                                
+                                                </div>
                                                 <div class="form-group">
                                                     <label>Category</label>
                                                     <select class="form-control select2" name="category_id"
@@ -42,22 +54,18 @@
                                                     <select class="form-control select2" name="sub_cat_id"
                                                         id="sub_cat_id" style="width:100%;">
                                                         <option selected disabled>Select</option>
+                                                        @foreach($SubCategories as $SubCategory)
+                                                        <option value="{{ $SubCategory->id }}">{{ $SubCategory->sub_category_name }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <lable>Promotion Image</lable>
-                                                    <input type="file" class="form-control form-control-user required"
-                                                        id="promotion_attachment" name="promotion_attachment"
-                                                        placeholder="Enter promotion Image">
-                                                </div>
+                                                
 
                                             </form>
                                         </div>
-                                        <div class="form-group text-center">
-                                            <span id="show_error" style="display: none;" class="m-auto"></span>
-                                        </div>
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
+                                            <span id="promotion_error_area" style="display: none;" class="m-auto"></span>
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
                                             <button type="button" id="btnSubmit" onclick="PromotionStore()"
@@ -97,29 +105,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="PromotionEditModal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-primary">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Category Update</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body" id="PromotionBody">
-            </div>
-            <div class="form-group text-center">
-                <span id="edit_show_error" style="display: none;" class="m-auto"></span>
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <span id="visitor_error_area" style="display: none;" class="m-auto"></span>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="btnUpdate" onclick="CategoryUpdate()" class="btn btn-primary">Update</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <style>
@@ -133,13 +118,38 @@
 <script>
 
 function alertmsg(msg, type) {
-    $("#third_category_error_area").removeClass().html('').show();
-    $("#third_category_error_area").addClass(`alert alert-${type} text-center`).html(msg);
-    $("#third_category_error_area").fadeOut(3000);
+    $("#promotion_error_area").removeClass().html('').show();
+    $("#promotion_error_area").addClass(`alert alert-${type} text-center`).html(msg);
+    $("#promotion_error_area").fadeOut(3000);
 }        
-
-
-$(function(){
+$(function() {
+var DataTable = $("#DataTable").DataTable({
+    "processing": true,
+    "serverSide": true,
+    ajax: {
+        url: "{{route('PromotionShow')}}",
+    },
+    columns: [{
+            data: 'id',
+        },
+        {
+            data: 'Category',
+        },
+        {
+            data: 'Sub Category',
+        },
+        {
+            data: 'promotion_attachment',
+            render : function(data)
+                {
+                    return '<img src="{{url("public/Promotion")}}/'+data+'" style="width:35px; height:auto;">';
+                }
+        },
+        {
+            data: 'action',
+        }
+    ]
+});
     $("#category_id").change(function(event){
 
                 
@@ -165,33 +175,135 @@ $(function(){
     });
 
     });
-});
+        $image_crop = $('#image-preview').croppie({
+        enableExif:true,
+        viewport:{
+        width:100,
+        height:100,
+        type:'circle'
+        },
+        boundary:{
+        width:200,
+        height:200
+        }
+    });
+
+    $('#promotion_attachment').change(function(event){
+        var reader = new FileReader();
+
+        reader.onload = function(event){
+        $image_crop.croppie('bind', {
+            url:event.target.result
+        }).then(function(){
+            console.log('jQuery bind complete');
+        });
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+});    
 
 function PromotionStore() {
 
+
+//     $("#promotion_attachment").ijaboCropTool({
+
+// //  preview : '.image-previewer',
+// //   setRatio:1,
+// //   allowedExtensions: ['jpg', 'jpeg','png'],
+// //   buttonsText:['CROP','QUIT'],
+// //   buttonsColor:['#30bf7d','#ee5155', -15],
+//     processUrl:'{{ route("PromotionStore") }}',
+//     onSuccess:function(message, element, status){
+//         alert(message);
+//     },
+//     onError:function(message, element, status){
+//         alert(message);
+//     }
+
+//     });
+
+    $image_crop.croppie('result', {
+      type:'canvas',
+      size:'viewport'
+      }).then(function(response){
+        
+      var _token = $('input[name=_token]').val();        
+      let slider_form_data = document.getElementById("PromotionStoreForm");
+      let form_data = new FormData(slider_form_data);
+      form_data.append('image',response);
+      
 $("#btnSubmit").prop("disabled", true);
 
-$.post("{{route('PromotionStore')}}", $('#PromotionStoreForm').serialize())
-        .done((res)=>{
-            $("#btnSubmit").prop("disabled", false);
-             if(res.success){
-                $("#btnSubmit").prop("disabled", true);
-                alertmsg(res.message,"success");
-                window.location.href = "{{route('Promotion')}}";
-             }else if(res.validate){
-                alertmsg(res.message, "warning")
-             }else{
-                alertmsg(res.message, "danger")
-             }
-            })
-        .fail((err)=>{
-            
-            alertmsg("Something went wrong", "danger");
-            $("#btnSubmit").prop("disabled", false);
-        });
-        $("#LoginBtn").prop("disabled", false);
+$.ajax({
+    type: "POST",
+    url: "{{route('PromotionStore')}}",
+    data: form_data,
+    processData: false,
+    contentType: false,
+    success : (res)=>
+    {
+        $("#btnSubmit").prop("disabled", false);
+         if(res.success){
+            $("#btnSubmit").prop("disabled", true);
+            alertmsg(res.message,"success");
+            window.location.href = "{{route('Promotion')}}";
+         }else if(res.validate){
+            alertmsg(res.message, "warning")
+         }else{
+            alertmsg(res.message, "danger")
+         }
+    },
+    error : (err)=>{
+        
+        alertmsg("Something went wrong", "danger");
+        $("#btnSubmit").prop("disabled", false);
+    }
+});    
+});
 }
 
+function PromotionEdit(id)
+{
+    $.get("{{route('PromotionEdit')}}",{id:id}, function(data){
+
+      $("#promo_id").val(data.data[0]['id']);
+      $("#category_id").val(data.data[0]['category_id']);
+      $("#sub_cat_id").val(data.data[0]['sub_cat_id']);
+      $("#image_id").attr("src", "{{url('public/Promotion')}}/"+data.data[0]['promotion_attachment']);
+    });
+}
+function PromotionRemove(id)
+  {
+    swal({
+			title : "Are You Sure?",
+			text : "Once Deleted You will not be able to recover this file",
+			icon : "warning",
+			buttons : true,
+			dangerMode : true,
+
+		})
+    .then((willDelete) => {
+			if(willDelete)
+			{
+				$.get("{{route('PromotionRemove')}}",{id:id},function(data){
+				console.log(data);	
+					if(data['success'] == true)
+					{
+						swal("Proof! promotion Have been Deleted..!",
+						{
+							icon: "success",
+						});
+						tables = $("#DataTable").dataTable();
+						tables.fnPageChange('first',1);
+					}
+				});
+			} 
+	        else 
+	        {
+	            swal("Your file is safe!");
+	        }
+		});
+  }
 
 </script>
 

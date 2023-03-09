@@ -21,7 +21,10 @@
     <link rel="stylesheet" href="{{url('public/Admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{url('public/Admin/plugins/toastr/toastr.min.css')}}">
-
+   <!-- for Croper.js -->
+   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.css"> -->
+   <link rel="stylesheet" href="{{url('public/Admin/dist/css/croppie.css')}}"> 
+   <!-- for Croper.js -->             
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="{{url('public/Admin/plugins/jquery/jquery.min.js')}}"></script>
@@ -172,7 +175,7 @@
                             </a>
                         </li>
                         <li class="nav-item main_active ">
-                            <a href="{{('Admin-Ebook')}}" class="nav-link">
+                            <a href="{{url('ControlPanel/Ebook')}}" class="nav-link">
                                 <i class="nav-icon fas fa-file-alt"></i>
                                 <p>E-Book Manage</p>
                             </a>
@@ -190,7 +193,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item main_active ">
-                                    <a href="{{('Admin-Ebook-View')}}" class="nav-link">
+                                    <a href="{{url('ControlPanel/Ebook')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>E-Book Views</p>
                                     </a>
@@ -202,7 +205,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{('Access')}}" class="nav-link">
+                                    <a href="" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>E Book Report</p>
                                     </a>
@@ -330,6 +333,11 @@
     <script src="{{url('public/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{url('public/Admin/dist/js/adminlte.min.js')}}"></script>
+    <!-- for croper js  -->
+    <script src="{{url('public/Admin/dist/js/croppie.js')}}"></script>
+    <script src="{{url('public/Admin/dist/js/croppie.min.js')}}"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.js"></script> -->
+   <!--END for croper js  -->
     <!-- //sweet Alert -->
     <script src="{{url('public/Admin/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Sweet Aleert Toast -->
