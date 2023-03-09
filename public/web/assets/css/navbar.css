@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    border-bottom: 1px solid #ccc;
+    background: #fff;
+    padding: 13px 16px;
+    height: 100%;
+}
+
+.header nav ul li {
+    padding: 20px;
+    font-size: 13px;
+}
+
+.header nav ul li a {
+    color: black;
+    font-weight: 600;
+}
+
+.navbar-brand img {
+    position: relative;
+    bottom: 6px;
+    width: 130px;
+    margin: auto 20px;
+}
+
+.p-r {
+    position: relative;
+    top: 6px;
+}
+
+.Search-group-bg {
+    position: absolute;
+    width: 97%;
+    float: right;
+    z-index: 99;
+    bottom: 0px;
+    height: 81%;
+    left: -20px;
+    background: #fff;
+    transition: all ease-in-out 0.6s;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.Search-group-bg-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.Search-group {
+    display: flex;
+    justify-content: flex-end;
+    float: right;
+    width: 0;
+    transition: all ease-in-out 0.4s;
+}
+
+.Search-group-active {
+    width: 60%;
+}
+
+
+/* ---==== Dropdown menu ====--- */
+
+.submenu {
+    position: absolute;
+    top: 67px;
+    width: 211px;
+    z-index: 99;
+    transform: scaleY(0);
+    background: rgb(255, 255, 255) !important;
+    transform-origin: 0 0 0;
+    transition: all ease-in-out 0.4s;
+}
+
+nav .main-menu li:hover .submenu {
+    transform: scaleY(1);
+}
+
+.submenu li {
+    position: relative;
+    padding: 14px 27px !important;
+    background: #fff;
+    z-index: 2;
+    transition: all ease-in-out 0.4s;
+    border-bottom: 1px solid #ccc;
+}
+
+.submenu li:hover .nav-a {
+    color: #fff !important;
+}
+
+.submenu li:hover .megasubmenu {
+    transform: scaleY(1);
+}
+
+.submenu li::after {
+    position: absolute;
+    top: 0;
+    left: auto;
+    right: 0;
+    content: "";
+    height: 100%;
+    width: 0%;
+    background: #0098be;
+    color: #fff !important;
+    z-index: -1;
+    transition: all ease-in-out 0.4s;
+}
+
+.bg-theme {
+    background: #0098BE !important;
+}
+
+.submenu li:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.submenu li a {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text-black {
+    color: #080808 !important;
+}
+
+.megasubmenu {
+    position: absolute;
+    width: 211px;
+    left: 212px;
+    top: 0px;
+    transform: scaleY(0);
+    transition: all ease-in-out 0.4s;
+    transform-origin: 0 0 0;
+    z-index: 99;
+}
+
+.megasubmenu li a {
+    color: #080808 !important;
+}
+
+.megasubmenu li:hover .text-black {
+    color: #fff !important;
+}
+
+@media (max-width:768px) {
+    .header {
+        display: none;
+    }
+}

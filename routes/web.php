@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\MainSlider\SliderController;
 use App\Http\Controllers\Admin\Promotion\PromotionController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\websiteController;
 use App\Http\Middleware\AuthMiddleware;
 
 /*
@@ -20,8 +21,8 @@ use App\Http\Middleware\AuthMiddleware;
 
 Route::get('/', [WebsiteController::class, 'Categories'])->name('Categories');
 Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
-Route::get('/Category', [WebsiteController::class, 'BookCategory'])->name('BookCategory');
-Route::get('/Home', [WebsiteController::class, 'Home'])->name('Home');
+Route::get('/Home/{locale?}', [WebsiteController::class, 'Home'])->name('Home');
+// Route::get('/Home/{locale?}', [WebsiteController::class, 'test'])->name('Home');
 
 
 

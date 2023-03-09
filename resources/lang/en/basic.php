@@ -1,0 +1,31 @@
+<?php
+return[
+    'lang'=>'العربية',
+    'Applynow'=>'Apply Now',
+    'Continuous' => 'Continuous Education Center',
+    'Top' => 'TOP SEARCHABLE',
+    'BTC' => 'Browse the collection of our searchable and top interesting e-books. ',
+    'e-books'=>'ll definitely find what you are looking for..',
+    'THQ' => 'The Holy Quran',
+    'featured' => 'Browse the collection of our featured and top interesting e-books.',
+    'meaning' => 'The Meaning Of The Holy Quran',
+    'CULTURAL' => 'ISLAMIC CULTURAL BOOKS',
+    'ARABIC' => 'ARABIC LEARNING BOOKS',
+    'CHILDREN' => 'CHILDREN BOOKS',
+    'Adress' => 'Mohamed Bin Zayed University for
+    Humanities, Al Muroor Street, P.O.Box 106621, Signal 23, Abu Dhabi',
+    'Adress1' => 'Sheikh Maktoum Bin Rashid Street,
+    Mailbox 26262, Ajman, UAE',
+    'Working' => 'Working hours',
+    'Monday' => 'nday to Thursday',
+    'MondayTime1' => ' 7:30 a.m.',
+'MondayTime2' => '3:30 p.m',
+    'MondayTime3' => ' 9:30 a.m.',
+    'MondayTime4' => '5:30 p.m',
+    'friday' => 'Friday',
+    'fridayTIme1' => '7:30am',
+    'fridayTIme2' => '12:00 pm',
+    'fridayTime3' => '8:00am',
+    'fridayTime4' => '12:30pm',
+];
+?>
