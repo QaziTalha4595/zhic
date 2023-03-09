@@ -25,22 +25,23 @@ class SliderController extends Controller
                 'slider_bg_color' => 'required',
                 'slider_image' => $req->input('slider_id') ? '' : 'required|image|mimes:jpeg,jpg,png|max:2048'
             ]);
+
             if ($validator->fails()) {
-                return response()->json(["validate" => true, "message" => $validator->errors()->all()]);
+                return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
             }
             $imageNameWithExt = $imageName = $extention = $imageNameToStore = $image = '';
 
             if($req->hasFile('slider_image'))
             {
-                
                 $imageNameWithExt = $req->file('slider_image')->getClientOriginalName();
                 $imageName = pathinfo($imageNameWithExt, PATHINFO_FILENAME);
                 $extention = $req->file('slider_image')->getClientOriginalExtension();
                 $imageNameToStore = $imageName.'_'.time().'.'.$extention;
-                        
+                $image = $req->file('slider_image')->move(public_path('Slider'),$imageNameToStore);
+                                        
                 if($req->input('slider_id'))
                 {
-                    $image = $req->file('slider_image')->move(public_path('Slider'),$imageNameToStore);
+
                     $findImage = Slider::where('id',$req->input('slider_id'))->first();
                     
                     if(file_exists('public/Slider/'.$findImage->slider_image) AND !empty($findImage->slider_image))
@@ -54,7 +55,6 @@ class SliderController extends Controller
             {
                 $data = Slider::where('id',$req->input('slider_id'))->get();
                 $imageNameToStore = $data[0]->slider_image;
-                
             }
     
             try {
