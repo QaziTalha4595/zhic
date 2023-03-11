@@ -14,6 +14,7 @@ use App\Models\Ebook\Ebook__Cover;
 use Yajra\Datatables\Datatables;
 use App\Models\FetchThirdCategory;
 
+
 class EbookController extends Controller
 {
     public function Ebook()
@@ -54,6 +55,8 @@ class EbookController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
+        // $unique_id = strtoupper(substr(str_shuffle(uniqid() . "0123456789abcdefghijklmnopqrstvwxyz" . mt_rand(99, 999999)), 0, 20));
+        $unique_id = uniqid();
         try {
 
             $Ebook = Ebook::updateOrCreate(
@@ -72,6 +75,7 @@ class EbookController extends Controller
                     'publishing_date' => $req->input('publishing_date'),
                     'direction' => $req->input('direction'),
                     'ebook_slug' => $req->input('slug'),
+                    'unique_id' => $unique_id,
                     'downloadable' => $req->input('downloadable') == "" ? 0 : 1,
                     'printable' => $req->input('printable') == "" ? 0 : 1,
                     'searchable' => $req->input('searchable') == "" ? 0 : 1,
@@ -79,7 +83,7 @@ class EbookController extends Controller
                 ]
             );
             if ($Ebook) {
-                return response()->json(["success" => true, "message" => $Ebook->wasRecentlyCreated ? "Ebook Create Successfully" : "Ebook Updated Successfully", 'file_id' => $Ebook->file_id]);
+                return response()->json(["success" => true, "message" => $Ebook->wasRecentlyCreated ? "Ebook Create Successfully" : "Ebook Updated Successfully", "file_id" => $Ebook->file_id]);
             } else {
                 return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
             }
@@ -89,9 +93,11 @@ class EbookController extends Controller
     }
     public function EbookBasicView($file_id)
     {
-        $Ebook = Ebook::where('file_id', $file_id)->get();
-        $language = Language::all();
-        return view("Admin.Ebook.EbookBasicTab", ['data' => $Ebook, 'file_id' => $file_id, 'languages' => $language]);
+        $Ebook = Ebook::with('category','subcategory','thirdcategory','language')->find( $file_id);
+        $Category = Category::all();
+        $Languages = Language::all();
+        // return $Ebook->ebook_name;
+        return view("Admin.Ebook.EbookBasicTab", ['data' => $Ebook, 'file_id' => $file_id, 'Languages' => $Languages, 'Category'=>$Category]);
     }
     public function EbookCoverImageView($file_id)
     {
@@ -103,10 +109,49 @@ class EbookController extends Controller
 
         return view("Admin.Ebook.Ebook_CoverTab", ['data' => $Ebook, 'file_id' => $file_id, 'files' => $Ebook__Cover]);
     }
+    public function EbookShow(Request $request)
+    {
+        $Ebook = Ebook::with(['category','subcategory','thirdcategory','ebookcover'])->OrderBy('file_id','DESC');
+        // return $ImgCover;
+ 
+        return Datatables::of($Ebook)
+            ->addColumn('Category', function ($Ebook) {
+                return $Ebook->category->category_name;
+            })
+            ->addColumn('SubCategory', function ($Ebook) {
+                return $Ebook->subcategory->sub_category_name;
+            })
+            ->addColumn('ThirdCategory', function ($Ebook) {
+                return $Ebook->thirdcategory->third_category_name;
+            })
+            ->addColumn('Thumbnail', function ($Ebook) {
+                return $Ebook->ebookcover['ebook_cover'];
+            })
+            ->addColumn('Action', function ($Ebook) {
+                return 
+                '<button class="btn btn-sm btn-danger btn-circle" onclick="FileRemove(' . $Ebook->file_id . ')">
+                <i class="fa fa-trash"></i></button>
+                <a href="Ebook-'.$Ebook->file_id.'-Basic" class="btn btn-sm btn-warning btn-circle">
+                <i class="fas fa-pencil-alt"></i></a>';
+            })
+            ->addColumn('file_read', function ($Ebook) {
+                return '<a type="button" onclick="FileRead(' . $Ebook->unique_id . ')" class="">' . $Ebook->unique_id . '</a>';
+            })
+            ->rawColumns(['Action', 'file_read'])
+            ->make(true);
+    }
     public function EbookCoverStore(Request $req)
     {
 
         $Files = Ebook::where('file_id', $req->input('file_id'))->get();
+        $validator = Validator::make($req->all(), [
+            'ebook_cover' => $req->input('file_id') ? 'required|regex:([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)' : '',
+            'ebook_position' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u',
+            'ebook_bg_color' => 'required'
+            ]);
+        if ($validator->fails()) {
+            return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
+        }
         if ($req->hasfile('file_thumbnail')) {
 
                 $imageNameWithExt = $req->file('file_thumbnail')->getClientOriginalName();
@@ -116,20 +161,27 @@ class EbookController extends Controller
                 $extension = $req->file('file_thumbnail')->extension();
                 $imageThumbnail = mt_rand(100, 99999) . '_' . $imageNameWithExt;
                 $Image = $req->file('file_thumbnail')->move('public/Files/E_Book_CoverImg/', $imageThumbnail);
+        }    
+        try {
 
-                $Ebook_Cov = Ebook__Cover::create([
+            $Ebook = Ebook::updateOrCreate(
 
-                    'file_id' => $req->input('file_id'),
+                ['ebook__cover_id'   => $req->input('ebook_attachment_id')],
+                [
                     'ebook_position' => $req->input('ebook_position'),
                     'ebook_bg_color' => $req->input('ebook_bg_color'),
-                    'ebook__cover' => $imageThumbnail
-                ]);
-        }    
-        if($Ebook_Cov) {
-            return response()->json(['success' => true, 'file_id' => $req->input('file_id'), 'message' => 'Data has been uploaded successfully']);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
+                    'ebook_cover' => $imageThumbnail
+                ]
+            );
+            if($Ebook) {
+                return response()->json(['success' => true, 'file_id' => $req->input('file_id'), 'message' => 'Data has been uploaded successfully']);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
         }
+
        
     
     }
@@ -142,9 +194,9 @@ class EbookController extends Controller
 
         if (count($FileImg) > 0) {
             foreach ($FileImg as $Image) {
-                $Thumbnail = url('/') . 'public/Files/E-Book-CoverImg/' . $Image->ebook__cover;
-                if (file_exists('public/Files/E-Book-CoverImg/' . $Image->ebook__cover)) {
-                    $deleted = unlink('public/Files/E-Book-CoverImg/' . $Image->ebook__cover);
+                $Thumbnail = url('/') . 'public/Files/E-Book-CoverImg/' . $Image->ebook_cover;
+                if (file_exists('public/Files/E-Book-CoverImg/' . $Image->ebook_cover)) {
+                    $deleted = unlink('public/Files/E-Book-CoverImg/' . $Image->ebook_cover);
                 }
             }
         }
@@ -230,19 +282,29 @@ class EbookController extends Controller
             }
             else
             {
-            $Ebook->ebook_attachment = $req->$imageNameToStore;
-            $Ebook->p_r_ebook = $req->printable;
-            $Ebook->ebook_audio = $req->ebook_audio;
-            $Ebook->ebook_link = $req->ebook_link;
-            $Ebook->ebook_download_link = $req->ebook_download_link;
-        }
-        if ($Ebook) 
-        {
-            return response()->json(['success' => true, 'file_id' => $req->input('file_id'), 'message' => 'Data has uploaded successfully']);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
+            $Ebook->ebook_attachment = $imageNameToStore;
+            $Ebook->p_r_ebook = $PrintableEbook;
+            $Ebook->ebook_audio = $Ebook_Audio;
+            $Ebook->ebook_link = $req->input('ebook_link');
+            $Ebook->ebook_download_link = $req->input('ebook_download_link');
 
+            if ($Ebook->save()) 
+            {
+                return response()->json(['success' => true, 'file_id' => $req->input('file_id'), 'message' => 'Data has uploaded successfully']);
+            } 
+            else 
+            {
+                return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
+
+            }
         }
+        
+    }
+    public function EbookEdit($file_id)
+    {
+        $Ebook = Ebook::find($file_id);
+        $Categories = Category::all();
+        return view('Admin.Ebook.Ebook_Edit',compact('Ebook','Categories'));
     }
 
 }
