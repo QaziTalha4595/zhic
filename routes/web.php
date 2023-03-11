@@ -88,7 +88,8 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::get('EbookCoverImageRemove', [EbookController::class, 'EbookCoverImageRemove'])->name('EbookCoverImageRemove');
     Route::get('Ebook-{file_id}-Upload', [EbookController::class, 'EbookCoverUploadView']);
     Route::post('EbookUploadStore', [EbookController::class, 'EbookUploadStore'])->name('EbookUploadStore');
-
+    Route::get('EbookShow', [EbookController::class, 'EbookShow'])->name('EbookShow');
+    Route::get('Ebook/Edit/{file_id}',[EbookController::class,'EbookEdit']);
     
     
    
