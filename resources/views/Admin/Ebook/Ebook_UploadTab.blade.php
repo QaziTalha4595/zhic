@@ -24,7 +24,7 @@
 @else
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="justify-content: center;">
     <li class="nav-item" role="presentation">
-        <a class="nav-link" href="Ebook-{{$file_id}}-Basic" aria-selected="true">Basic Information</a>
+        <a class="nav-link" href="{{ url('ControlPanel/Ebook-'.$file_id.'-Basic') }}" aria-selected="true">Basic Information</a>
     </li>
     <li class="nav-item" role="presentation">
         <a class="nav-link" href="Ebook-{{$file_id}}-CoverImage">Book Cover</a>
@@ -55,6 +55,7 @@
                                     <lable class="text-bold">Book</lable>
                                     <input type="file" class="form-control form-control-user border-primary"
                                         id="ebook_attachment" name="ebook_attachment" placeholder="" accept=".pdf">
+                                        {{$data->ebook_attachment ?? ''}}
                                 </div>
                             </div>
                             <div class="col">
@@ -89,6 +90,7 @@
                             <lable class="text-bold">Book Audio</lable>
                             <input type="file" class="form-control form-control-user border-primary"
                                 id="ebook_audio" name="ebook_audio" placeholder="" accept=".*">
+                                {{$data->ebook_audio ?? ''}}
                         </div>
                     </form>
                 </div>
@@ -133,9 +135,7 @@ $.ajax({
             $("#btnSubmit").prop("disabled", false);
             console.log(data);
             // return false;
-            if (data["success"] == true) {
-                console.log(data);
-                return false;
+            if (data["success"] == true) { 
                 $("#Upload_error_area").removeClass().html('').show();
                 $("#Upload_error_area").addClass("alert alert-success").html(data['message']);
                 setTimeout(() => {
