@@ -19,11 +19,11 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         return $next($request);
-        if(Hash::check(env('JWT_SECRET'),Session::get('token'))){
+        /* if(Hash::check(env('JWT_SECRET'),Session::get('token'))){
             return $next($request);
         }
         else{
             return redirect('/ControlPanel/Login');
-        }
+        } */
     }
 }

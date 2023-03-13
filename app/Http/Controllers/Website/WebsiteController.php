@@ -126,4 +126,18 @@ class WebsiteController extends Controller
             ]
         );
     }
+
+    public function demo(){
+
+        $Categories = DB::table('category')->get();
+        $Categories_sub = DB::table('category__sub')->get();
+        $Categories_third = DB::table('category__third')->get();
+
+        return view('form',
+        [
+            'Categories'=>$Categories,
+            'Categories_sub'=>$Categories_sub,
+            'Categories_third'=>$Categories_third,
+        ]);
+    }
 }

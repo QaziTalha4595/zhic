@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\MainSlider\SliderController;
 use App\Http\Controllers\Admin\Promotion\PromotionController;
 use App\Http\Controllers\Admin\Ebook\EbookController;
+use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\WebsiteMiddleware;
@@ -20,6 +21,7 @@ use App\Http\Middleware\WebsiteMiddleware;
 |
 */
 
+Route::get('/demo',  [WebsiteController::class, 'demo']);
 Route::get('/', function(){return redirect("/en");});//to redirect to defualt lang
 Route::get('/en', [WebsiteController::class, 'Home'])->name('Home'); // home page
 Route::get('/ar', [WebsiteController::class, 'Home'])->name('Home'); // home page
