@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubCategory extends Model
 {
     use HasFactory;
-    protected $table = 'sub_categories';
+    protected $table = 'category__sub';
 
     protected $fillable = [
         'category_id','sub_category_name'
@@ -19,4 +19,5 @@ class SubCategory extends Model
     {
         return $this->belongsTo('App\Models\Category','category_id','id');
     }
+    
 }

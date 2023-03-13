@@ -4,9 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\MainSlider\SliderController;
 use App\Http\Controllers\Admin\Promotion\PromotionController;
+use App\Http\Controllers\Admin\Ebook\EbookController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\websiteController;
-use App\Http\Controllers\WebsiteController as ControllersWebsiteController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\WebsiteMiddleware;
 
@@ -52,6 +51,8 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::get('/CategoryShow', [CategoryController::class, 'CategoryShow'])->name('CategoryShow');
     Route::get('/CategoryEdit', [CategoryController::class, 'CategoryEdit'])->name('CategoryEdit');
     Route::get('/CategoryRemove', [CategoryController::class, 'CategoryDestroy'])->name('CategoryRemove');
+    // Route::get('/FilterCategory', [CategoryController::class, 'FilterCategory'])->name('FilterCategory');
+
 
      //Sub category management
      Route::get('/SubCategory', [CategoryController::class, 'SubCategory'])->name('SubCategory');
@@ -85,9 +86,29 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
      // Promotion management
     Route::get('/Promotion', [PromotionController::class, 'Promotion'])->name('Promotion');
     Route::get('/FetchSubCategory', [PromotionController::class, 'FetchSubCategory'])->name('FetchSubCategory');
-    Route::post('/PromotionStore', [SliderController::class, 'PromotionStore'])->name('PromotionStore');
-    //  Route::get('/SliderShow', [SliderController::class, 'SliderShow'])->name('SliderShow');
-    //  Route::get('/SliderEdit', [SliderController::class, 'SliderEdit'])->name('SliderEdit');
-    //  Route::get('/SliderRemove', [SliderController::class, 'SliderDestroy'])->name('SliderRemove');
+    Route::post('/PromotionStore', [PromotionController::class, 'PromotionStore'])->name('PromotionStore');
+    Route::get('/PromotionShow', [PromotionController::class, 'PromotionShow'])->name('PromotionShow');
+    Route::get('/PromotionEdit', [PromotionController::class, 'PromotionEdit'])->name('PromotionEdit');
+     Route::get('/PromotionRemove', [PromotionController::class, 'PromotionDestroy'])->name('PromotionRemove');
+    // Route::get('/PromotionCrop',[PromotionController::class,'PromotionCrop'])->name('PromotionCrop');
+
+    Route::get('/Ebook', [EbookController::class, 'Ebook'])->name('Ebook');
+    Route::get('EbookUpload', [EbookController::class, 'EbookUpload'])->name('EbookUpload');
+     Route::post('/EbookStore', [EbookController::class, 'EbookStore'])->name('EbookStore');
+    // Route::get('/PromotionShow', [PromotionController::class, 'PromotionShow'])->name('PromotionShow');
+    // Route::get('/PromotionEdit', [PromotionController::class, 'PromotionEdit'])->name('PromotionEdit');
+    //  Route::get('/PromotionRemove', [PromotionController::class, 'PromotionDestroy'])->name('PromotionRemove');
+    Route::get('/FetchThirdCategory', [EbookController::class, 'FetchThirdCategory'])->name('FetchThirdCategory');
+    Route::get('Ebook-{file_id}-Basic', [EbookController::class, 'EbookBasicView']);
+    Route::get('Ebook-{file_id}-CoverImage', [EbookController::class, 'EbookCoverImageView']);
+    Route::post('EbookCoverStore', [EbookController::class, 'EbookCoverStore'])->name('EbookCoverStore');
+    Route::get('EbookCoverImageRemove', [EbookController::class, 'EbookCoverImageRemove'])->name('EbookCoverImageRemove');
+    Route::get('Ebook-{file_id}-Upload', [EbookController::class, 'EbookCoverUploadView']);
+    Route::post('EbookUploadStore', [EbookController::class, 'EbookUploadStore'])->name('EbookUploadStore');
+    Route::get('EbookShow', [EbookController::class, 'EbookShow'])->name('EbookShow');
+    Route::get('Ebook/Edit/{file_id}',[EbookController::class,'EbookEdit']);
+
+
+
 });
 

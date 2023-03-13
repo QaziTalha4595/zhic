@@ -14,9 +14,15 @@ class PromotionController extends Controller
 {
     public function Promotion()
     {
+        $SubCategories = new SubCategory();
         $Categories = new Category();
         $Categories = Category::all();
-        return view('Admin.Promotion.Promotion',compact('Categories'));
+        $SubCategories = SubCategory::all();
+        return view('Admin.Promotion.Promotion',compact('Categories','SubCategories'));
+    }
+    public function PromotionCrop(Request $req)
+    {
+
     }
     public function FetchSubCategory(Request $req)
     {
@@ -27,61 +33,105 @@ class PromotionController extends Controller
     {
         $Promotion = new Promotion();
         
-            $validator = Validator::make($req->all(), [
-                'slider_heading' => 'required',
-                'slider_caption' => 'required',
-                'slider_link' => 'required|regex:/^[a-z A-Z]+$/u',              
-                'slider_bg_color' => 'required',
-                'slider_image' => $req->input('slider_id') ? '' : 'required|image|mimes:jpeg,jpg,png|max:2048'
-            ]);
-            if ($validator->fails()) {
-                return response()->json(["validate" => true, "message" => $validator->errors()->all()]);
-            }
-            $imageNameWithExt = $imageName = $extention = $imageNameToStore = $image = '';
+        $validator = Validator::make($req->all(), [
+            'category_id' => 'required',
+            'sub_cat_id' => 'required',
+            'promotion_attachment' => $req->input('promo_id') ? '' : 'required|image|mimes:jpeg,jpg,png|max:2048'
+        ]);
 
-            if($req->hasFile('slider_image'))
+        if ($validator->fails()) {
+            return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
+        }
+        if($req->hasFile('promotion_attachment'))
+        {
+            $folderPath = public_path('Promotion/');
+ 
+            $image_parts = explode(";base64,", $req->promotion_attachment);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            
+            $image_base64 = base64_decode($image_parts[1]);
+            
+            $imageName = uniqid() . '.png';
+     
+            $imageFullPath = $folderPath.$imageName;
+
+            if($req->input('promo_id'))
             {
+                $findImage = Promotion::where('id',$req->input('promo_id'))->first();
                 
-                $imageNameWithExt = $req->file('slider_image')->getClientOriginalName();
-                $imageName = pathinfo($imageNameWithExt, PATHINFO_FILENAME);
-                $extention = $req->file('slider_image')->getClientOriginalExtension();
-                $imageNameToStore = $imageName.'_'.time().'.'.$extention;
-                        
-                if($req->input('slider_id'))
+                if(file_exists('public/Promotion/'.$findImage->promotion_attachment) AND !empty($findImage->promotion_attachment))
                 {
-                    $image = $req->file('slider_image')->move(public_path('Slider'),$imageNameToStore);
-                    $findImage = Slider::where('id',$req->input('slider_id'))->first();
-                    
-                    if(file_exists('public/Slider/'.$findImage->slider_image) AND !empty($findImage->slider_image))
-                    {
-                        unlink('public/Slider/'.$findImage->slider_image);
-                    }
+                    unlink('public/Promotion/'.$findImage->promotion_attachment);
                 }
+            }
+        }
+        else
+        {
+            $data = Promotion::where('id',$req->input('promo_id'))->get();
+            $imageName = $data[0]->promotion_attachment;
+        }
 
-            }
-            else
-            {
-                $data = Slider::where('id',$req->input('slider_id'))->get();
-                $imageNameToStore = $data[0]->slider_image;
-                
-            }
-    
-            try {
-                $Slider = Slider::updateOrCreate(
+        try {
+            $Promotion = Promotion::updateOrCreate(
 
-                    ['id' => $req->input('slider_id')],
-                    [
-                        'slider_heading' => $req->input('slider_heading'),
-                        'slider_caption' => $req->input('slider_caption'),
-                        'slider_link' => $req->input('slider_link'),
-                        'slider_bg_color' => $req->input('slider_bg_color'),
-                        'slider_position' => $req->input('slider_link'),
-                        'slider_image' => $imageNameToStore
-                    ]
-                );
-                return response()->json(["success" => true, "message" => $Slider->wasRecentlyCreated ? "Slider Create Successfully" : "Slider Updated Successfully"]);
-            } catch (\Throwable $th) {
-                return response()->json(["success" => false, "message" => "Opps an Error Occured", "err"=>$th]);
-            }
+                ['id' => $req->input('promo_id')],
+                [
+                    'category_id' => $req->input('category_id'),
+                    'sub_cat_id' => $req->input('sub_cat_id'),
+                    'promotion_attachment' => $imageName
+                ]
+            );
+            return response()->json(["success" => true, "message" => $Promotion->wasRecentlyCreated ? "Promotion Create Successfully" : "Promotion Updated Successfully"]);
+        } catch (\Throwable $th) {
+            return response()->json(["success" => false, "message" => "Opps an Error Occured", "err"=>$th]);
+        }
+    }
+    public function PromotionShow()
+    {
+        $Promotion = Promotion::with(['category'],['subcategory'])->OrderBy('id','DESC');
+        return Datatables::of($Promotion)
+        ->addColumn('Category', function ($Promotion) {
+            return $Promotion->category->category_name;
+        })
+        ->addColumn('Sub Category', function($Promotion){
+            return $Promotion->subcategory->sub_category_name;
+        })
+        ->addColumn('action', function ($Promotion) {
+            return
+            '<button class="btn btn-primary" data-toggle="modal" data-target="#PromotionStoreModal"
+            onclick="PromotionEdit('.$Promotion->id.')">
+            <i class="fa fa-edit"></i></button>
+            <button class="btn btn-danger" onclick="PromotionRemove('.$Promotion->id.')"><i class="fa fa-trash"></i>
+            </button>';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    } 
+    public function PromotionEdit(Request $req)
+    {
+        $promo_id = $req->input('id');
+        $Promotion = Promotion::where('id',$promo_id)->get();
+        return response()->json(["data" => $Promotion]);
+    }
+    public function PromotionDestroy(Request $req)
+    {
+        $Promotion = Promotion::where('id',$req->input('id'))->first();
+        
+        if(file_exists('public/Promotion/'.$Promotion->promotion_attachment))
+        {
+            unlink('public/Promotion/'.$Promotion->promotion_attachment);
+        }
+        $data = Promotion::where('id',$req->input('id'))->delete();
+
+        if($data)
+        {
+            return response()->json(['success' => true, 'message' => 'Promotion Deleted Successfully']);
+        }
+        else
+        {
+            return response()->json(['success' => false, 'message' => 'Deleted Failed..!']);
+        }
+        
     }
 }

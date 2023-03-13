@@ -60,9 +60,9 @@
 
                                             </form>
                                         </div>
-                                        <div class="form-group text-center">
+                                        <!-- <div class="form-group text-center">
                                             <span id="show_error" style="display: none;" class="m-auto"></span>
-                                        </div>
+                                        </div> -->
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
                                             <span id="slider_error_area" style="display: none;" class="m-auto"></span>
