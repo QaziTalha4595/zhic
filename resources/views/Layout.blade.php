@@ -119,7 +119,7 @@
                                         <ul class=lng>
                                             <li class="lang-item lang-item-2 lang-item-ar lang-item-first"><a lang=ar
                                                     hreflang=ar
-                                                    href="{{ Request::is('Home/en') ? url('/Home/ar') : url('/Home/en') }}">{{ __('basic.lang') }}</a>
+                                                    href="{{ Request::is('en') ? url('ar') : url('en') }}">{{ __('basic.lang') }}</a>
                                             </li>
                                         </ul>
                                         <a class=zoomin title style="font-size: 19.5px;cursor: pointer;"
@@ -175,14 +175,14 @@
                                         <li id=menu-item-3588
                                             class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588">
                                             <a title=Library
-                                                style="color: White;" class="nav">{{  Request::is('Home/en') ? $category->category_name : $category->category_name_ar ?? ' '  }}</a>
+                                                style="color: White;" class="nav">{{  Request::is('en') ? $category->category_name : $category->category_name_ar ?? ' '  }}</a>
                                             <ul id=menu-enmain_menu class=sub-menu>
                                                 @foreach ($Categories_sub as $Category_sub)
                                                     @if ($Category_sub->category_id == $category->category_id)
                                                         <li id=menu-item-3588
                                                             class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588">
                                                             <a
-                                                                href="#">{{   Request::is('Home/en') ? $Category_sub->sub_cat_name : $Category_sub->sub_cat_name_ar ?? ' '}}</a>
+                                                                href="#">{{   Request::is('en') ? $Category_sub->sub_cat_name : $Category_sub->sub_cat_name_ar ?? ' '}}</a>
                                                         </li>
                                                         <ul>
                                                             @foreach ($Categories_third as $Category_third)

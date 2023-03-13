@@ -5,11 +5,11 @@
                 alt="{{$book->file_name}}">
         </div>
         <div class="meaning-q-card-body d-flex justify-content-between bg-theme">
-            <h3 class="mb-0 pt-1"> {{  Request::is('Home/en') ? $book->file_name : $book->file_name_ar ?? ''}}</h3>
+            <h3 class="mb-0 pt-1"> {{  Request::is('en') ? $book->file_name : $book->file_name_ar ?? ''}}</h3>
             @if($book->book_type == 0)
-            <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn btn-white">Read</a>
+            <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn btn-white">Read</a>
             @else
-            <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn btn-white">Listen</a>
+            <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn btn-white">Listen</a>
             @endif
         </div>
     </div>

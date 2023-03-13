@@ -15,12 +15,12 @@
                     <li>{{round($book->avg_rating)}}.0</li>
             </ul>
         </div> -->
-        <h5 class="text-white m-0 pt-1" style="font-size:16px;  font-weight: 100;"> {{  Request::is('Home/en') ? Str::limit($book->file_name,14) : Str::limit($book->file_name_ar,14) ?? ''}}</h5>
+        <h5 class="text-white m-0 pt-1" style="font-size:16px;  font-weight: 100;"> {{  Request::is('en') ? Str::limit($book->file_name,14) : Str::limit($book->file_name_ar,14) ?? ''}}</h5>
         <!-- <p>{{Str::limit($book->file_note,29)}}</p> -->
         @if($book->book_type == 0)
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn btn-white">Read</a>
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn btn-white">Read</a>
         @else
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn btn-white">Listen</a>
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn btn-white">Listen</a>
         @endif
     </div>
 </div>

@@ -26,12 +26,12 @@
                     <li>{{round($book->avg_rating)}}.0</li>
             </ul>
         </div>
-        <h5 class="card-title">  {{  Request::is('Home/en') ? Str::limit($book->file_name,50) : Str::limit($book->file_name_ar,50) ?? ''}}</h5>
-        <p> {{Request::is('/Home/en') ? Str::limit($book->file_note,60) : Str::limit($book->file_note_ar,60)}}</p>
+        <h5 class="card-title">  {{  Request::is('en') ? Str::limit($book->file_name,50) : Str::limit($book->file_name_ar,50) ?? ''}}</h5>
+        <p> {{Request::is('/en') ? Str::limit($book->file_note,60) : Str::limit($book->file_note_ar,60)}}</p>
         @if($book->book_type == 0)
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn card-btn">Read</a>
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn card-btn">Read</a>
         @else
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn card-btn">Listen</a>
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn card-btn">Listen</a>
         @endif
     </div>
 </div>

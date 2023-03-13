@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\MainSlider\SliderController;
 use App\Http\Controllers\Admin\Promotion\PromotionController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\websiteController;
+use App\Http\Controllers\WebsiteController as ControllersWebsiteController;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\WebsiteMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,12 +21,22 @@ use App\Http\Middleware\AuthMiddleware;
 |
 */
 
-Route::get('/', [WebsiteController::class, 'Categories'])->name('Categories');
-Route::get('/Book', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
-Route::get('/Home/{locale?}', [WebsiteController::class, 'Home'])->name('Home');
-// Route::get('/Home/{locale?}', [WebsiteController::class, 'test'])->name('Home');
+Route::get('/', function(){return redirect("/en");});//to redirect to defualt lang
+Route::get('/en', [WebsiteController::class, 'Home'])->name('Home'); // home page
+Route::get('/ar', [WebsiteController::class, 'Home'])->name('Home'); // home page
+Route::group(['prefix' => '/{locale}', 'middleware'=> 'WebsiteMiddleware'],function(){ // to get lang in every page
+    View::composer('*', function ($view) {
 
+        $Categories = DB::table('category')->get();
+        $Categories_sub = DB::table('category__sub')->get();
+        $Categories_third = DB::table('category__third')->get();
+        // return $Categories;
+        $view->with(['Categories'=>$Categories, 'Categories_sub'=>$Categories_sub, 'Categories_third'=>$Categories_third]);
 
+    });
+    Route::get('/hello', function(){ return view('newview');});
+    Route::get('en/EBook/{slug}', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
+});
 
 
 Route::get('/ControlPanel/Login', [AdminController::class, 'Login'])->name('Login');
@@ -78,3 +90,4 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     //  Route::get('/SliderEdit', [SliderController::class, 'SliderEdit'])->name('SliderEdit');
     //  Route::get('/SliderRemove', [SliderController::class, 'SliderDestroy'])->name('SliderRemove');
 });
+

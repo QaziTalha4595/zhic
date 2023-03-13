@@ -29,11 +29,11 @@ class AdminController extends Controller
         }
 
         $user = DB::table('users')->where(["admin_email" => $req->input('user_email')])->first();
-    
+
         if(!$user){
         return response()->json(["success" => false, "message" => "Invalid Credential"]);
         }
-      
+
         if(Hash::check($req->input('user_password'), $user->admin_password)){
             Session::put('admin_id', $user->admin_id);
             Session::put('admin_name', $user->admin_name);
