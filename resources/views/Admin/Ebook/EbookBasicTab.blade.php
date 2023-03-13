@@ -28,10 +28,10 @@
         <a class="nav-link active" href="Ebook-{{$file_id}}-Basic" aria-selected="true">Basic Information</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" href="">Book Cover</a>
+        <a class="nav-link" href="{{ url('ControlPanel/Ebook-'.$file_id.'-CoverImage') }}">Book Cover</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" href="">Book Uploade</a>
+        <a class="nav-link" href="{{url('ControlPanel/Ebook-'.$file_id.'-Upload')}}">Book Uploade</a>
     </li>
 </ul>
 @endif
@@ -47,12 +47,17 @@
                     <form id="EbookStoreForm" enctype="multipart/form-data">
                     @csrf
 
-                        <input type="show" id="file_id" name="file_id" value="{{$data[0]->file_id ?? ''}}">
+                        <input type="show" id="file_id" name="file_id" value="{{$data->file_id ?? ''}}">
                         <div class="form-group">
                             <label>Category</label>
                             <select class="form-control select2" name="category_id" id="category_id"
                                 style="width:100%;">
-                                <option selected disabled>Select</option>
+                                <!-- <option selected disabled>Select</option> -->
+                                @if(empty($file_id))
+                                <option selected disabled>Select Category</option>
+                                @else
+                                <option value="{{$data->category->id ?? ''}}">{{ $data->category->category_name ?? 'Select'}}</option>
+                                @endif
                                 @if(!empty($Ebook))
                                 @foreach($Category as $item)
                                 @if($Ebook[0]->category_id == $item->category_id)
@@ -73,22 +78,28 @@
                         <div class="form-group">
                             <label>Sub Category</label>
                             <select class="form-control select2" name="sub_category_id" id="sub_category_id" style="width:100%;">
-                                <option selected disabled>Select</option>
+                                <!-- <option selected disabled>Select</option> -->
+                                <option selected disabled value="{{$data->subcategory->id ?? ''}}">{{ $data->subcategory->sub_category_name ?? 'Select'}}</option>
+                                
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Third Category</label>
                             <select class="form-control select2" name="third_category_id" id="third_category_id" style="width:100%;">
-                            <option selected disabled>Select</option>
-                            </select>
+                            <!-- <option selected disabled>Select</option> -->
+                        <option selected disabled value="{{$data->thirdcategory->id ?? ''}}">{{ $data->thirdcategory->third_category_name ?? 'Select'}}</option>
+                                   
+                        </select>
                         </div>
                         <div class="form-group">
                             <lable class="text-bold">Book Languages</lable>
                             <select class="form-control select2" name="language_id" id="language_id" style="width:100%;">
                                 
-                                <option selected disabled>Select Language</option>
+                                <!-- <option selected disabled>Select Language</option> -->
+                                <option selected disabled value="{{$data->language->id ?? ''}}">{{ $data->language->language ?? 'Select'}}</option>
+                                
                                   @foreach($Languages as $Language)
-                                    <option value="{{$Language->id}}">{{ $Language->language }}</option>
+                                    <option value="{{$Language->id ?? ''}}">{{ $Language->language ?? ''}}</option>
                                   @endforeach
                             </select>
                         </div>
@@ -96,29 +107,30 @@
                             <lable class="text-bold">Book Title</lable>
                             <input type="text" class="form-control form-control-user required "
                                 id="ebook_name" name="ebook_name" placeholder="Enter Book Title"
-                                value="">
+                                value="{{ $data->ebook_name ?? '' }}">
                         </div>
                         <div class="form-group">
                             <lable class="text-bold">Book Publisher</lable>
                             <input type="text" class="form-control form-control-user"
-                                id="ebook_publisher" name="ebook_publisher" placeholder=" Book Publisher">
+                                id="ebook_publisher" name="ebook_publisher" placeholder=" Book Publisher" 
+                                value="{{ $data->ebook_publisher ?? '' }}">
                         </div>
                         <div class="form-group">
                             <lable class="text-bold">Publishing Date</lable>
                             <input type="date" class="form-control form-control-user"
                                 id="publishing_date" name="publishing_date" placeholder=" Book Publishing Date"
-                                value="">
+                                value="{{ $data->publishing_date ?? '' }}">
                         </div>
                         <div class="form-group">
                             <lable class="text-bold">Book ISBN</lable>
                             <input type="text" class="form-control form-control-user" id="ebook_isbn"
-                                name="ebook_isbn" placeholder=" Book ISBN" value="">
+                                name="ebook_isbn" placeholder=" Book ISBN" value="{{ $data->ebook_isbn ?? '' }}">
                         </div>
                         <div class="form-group">
                             <lable class="text-bold">Book Author</lable>
                             <input type="text" class="form-control form-control-user" id="ebook_author"
                                 name="ebook_author" placeholder="Enter Book Author"
-                                value="">
+                                value="{{ $data->ebook_author ?? '' }}">
                         </div>
                         <div class="form-group">
                             <lable class="text-bold">Direction</lable>
@@ -140,12 +152,12 @@
                         <div class="form-group">
                             <lable class="text-bold">Book Short Notes</lable>
                             <textarea class="form-control" id="ebook_note" name="ebook_note"
-                                placeholder="Enter Book Short Notes"></textarea>
+                                placeholder="Enter Book Short Notes" >{{ $data->ebook_note ?? '' }}</textarea>
                         </div>
                         <div class="form-group">
                             <lable class="text-bold">Book Slug</lable>
                             <input type="text" class="form-control form-control-user required" id="slug"
-                                name="slug" placeholder="Enter Book Slug" value="">
+                                name="slug" placeholder="Enter Book Slug" value="{{ $data->ebook_slug ?? '' }}">
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-6">
@@ -158,7 +170,7 @@
                             <div class="col-lg-3 col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <lable class="text-bold">Printabel</lable>
-                                    <input type="checkbox" id="printable" name="printable" value="">
+                                    <input type="checkbox" id="printable" name="printable" value="{{ $data->publishing_date ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-6 col-sm-6">
@@ -285,6 +297,10 @@ $("#btnSubmit").prop("disabled", true);
                     DataTable.fnPageChange('first', 1);
                     next_url = 'Ebook-' + data['file_id'] + '-CoverImage';
                     if ($("#file_id").val() == "" || $("#file_id").val() == null) {
+                        window.location.href = next_url;
+                    }
+                    else
+                    {
                         window.location.href = next_url;
                     }
                     console.log(data);

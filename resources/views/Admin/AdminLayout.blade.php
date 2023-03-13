@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{url('public/Admin/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('public/Admin/dist/css/adminlte.min.css')}}">
+
+    <link rel="stylesheet" href="{{url('public/Admin/plugins/bs-stepper/css/bs-stepper.min.css')}}>
     <!-- Bootstrap CDN -->
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{url('public/Admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
@@ -328,7 +330,8 @@
     <script src="{{url('public/Admin/plugins/chart.js/Chart.min.js')}}"></script>
     <script src="{{url('public/Admin/dist/js/scripts.js')}}"></script>
     <!-- jQuery -->
-
+    <!-- BS-Stepper -->
+    <script src="{{url('public/Admin/plugins/bs-stepper/js/bs-stepper.min.js')}}"></script>
     <!-- Bootstrap 4 -->
     <script src="{{url('public/Admin/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- AdminLTE App -->

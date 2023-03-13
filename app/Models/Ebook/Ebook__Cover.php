@@ -5,7 +5,7 @@ namespace App\Models\Ebook;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ebook__cover extends Model
+class Ebook__Cover extends Model
 {
     use HasFactory;
     protected $table = 'ebook__cover';
@@ -14,7 +14,7 @@ class ebook__cover extends Model
 
     protected $fillable = [
         'file_id',
-        'ebook__cover',
+        'ebook_cover',
         'ebook_position',
         'ebook_bg_color'
     ];

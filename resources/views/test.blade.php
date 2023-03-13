@@ -1,4 +1,4 @@
-@extends('layout1')
+@extends('layout')
 
 @section('content')
 <style>
@@ -33,10 +33,16 @@
           <p class="card-text">المصحف العادي</p>
           <p class="card-text" style="color: black;">Publisher ZHIC</p>
           <i class="fa fa-star-o" aria-hidden="true" style="color:#E8B322;"></i><i class="fa fa-star-o" aria-hidden="true"style="color:#E8B322;"></i><i class="fa fa-star-o" aria-hidden="true"style="color:#E8B322;"></i><i class="fa fa-star-o" aria-hidden="true"style="color:#E8B322;"></i><i class="fa fa-star-o" aria-hidden="true"style="color:#E8B322;"></i> <span>Rating 5.0</span><br><br>
-          <a href="#" class="btn btn-primary btn-small"> <i class="fa fa-download" aria-hidden="true" ></i></a>
-          <a href="#" class="btn btn-primary"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
-          <a href="#" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
-          <a href="#" class="btn btn-primary"><i class="fa fa-book" aria-hidden="true"></i></a>
+          <div class="audio-player card-body">
+
+            <p class="mb-0 ml-2 ">1# -title</p>
+            <audio controls class="player">
+                <source
+                    src="{{url('/public/Files/E-Book-Audio/17298634509145.mp3')}}"
+                    type="audio/mp3">
+            </audio>
+
+        </div>
         </div>
       </div>
     </div>
@@ -97,6 +103,8 @@
       </div>
 
   </div>
+
+
 
 
 @endsection

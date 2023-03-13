@@ -13,8 +13,8 @@
                     <div class="row">
                         <div class="col-lg-8 col-md-6 order-1 order-lg-0">
                             <div class="slider-content slider-animated-1 mt-70" style="color: white;">
-                                <h4 style="color: white;">{{  Request::is('Home/en') ? $slider->slider_heading : $slider->slider_heading_ar ?? ' '   ?? ''}}</h4>
-                                <p>{{  Request::is('Home/en') ? Str::limit($slider->slider_caption,278) : Str::limit($slider->slider_caption_ar,278) ?? ' '   ?? ''}}</p>
+                                <h4 style="color: white;">{{  Request::is('en') ? $slider->slider_heading : $slider->slider_heading_ar ?? ' '   ?? ''}}</h4>
+                                <p>{{  Request::is('en') ? Str::limit($slider->slider_caption,278) : Str::limit($slider->slider_caption_ar,278) ?? ' '   ?? ''}}</p>
                                 <a href="{{$slider->link ?? ''}}">Know More</a>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
         <div class="bookshelf mb-3">
             <div class="covers d-flex mx-auto">
                 @for($i = 0; $i < 5 ; $i++) <div class="thumb book-1">
-                    <a href="{{$bookshelf[$i]->ebook_slug ?? ''}}/Detail">
+                    <a href="en/EBook/{{$bookshelf[$i]->ebook_slug ?? ''}}">
                         <img src="{{url('public/Files/E-Book-CoverImg')}}/{{$bookshelf[$i]->ebook__cover ?? ''}}"
                             class="img-w-120">
                     </a>
@@ -50,7 +50,7 @@
     <div class="bookshelf">
         <div class="covers d-flex mx-auto">
             @for($i = 5; $i < 10 ; $i++) <div class="thumb book-1">
-                <a href="{{$bookshelf[$i]->ebook_slug ?? ''}}/Detail">
+                <a href="en/EBook/{{$bookshelf[$i]->ebook_slug ?? ''}}">
                     <img src="{{url('public/Files/E-Book-CoverImg')}}/{{$bookshelf[$i]->ebook__cover ?? ''}}"
                         class="img-w-120">
                 </a>
@@ -96,6 +96,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+                {{-- @php
+                    DD($Categories);
+                @endphp --}}
                 <div class="section-title text-center pt-50 mb-10 section-title-res">
                     <a href="{{url('/')}}/EBook-{{$Categories[0]->category_slug}}">
                         <h2>{{__('basic.THQ')}}</h2>

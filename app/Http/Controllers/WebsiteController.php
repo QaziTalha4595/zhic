@@ -20,7 +20,7 @@ class WebsiteController extends Controller
         $Categories_third = DB::table('category__third')->get();
 
         $books = DB::table('ebook')->get();
-        $sliders = DB::table('main_slider')->get();
+        $sliders = DB::table('sliders')->get();
 
         $bookshelf = DB::table('book_shelf')
             ->select('ebook.*', 'ebook__cover.*', 'book_shelf.*')
@@ -79,12 +79,6 @@ class WebsiteController extends Controller
         ]);
     }
 
-    public function BookDetail()
-    {
-        return view('Website.BookDetail');
-    }
-
-
     public function Categories()
     {
 
@@ -96,5 +90,40 @@ class WebsiteController extends Controller
     }
 
 
+    public function BookDetail(Request $request, $slug, $locale)
+    {
 
+        $Categories = DB::table('category')->get();
+        $Categories_sub = DB::table('category__sub')->get();
+        $Categories_third = DB::table('category__third')->get();
+
+
+        $promotion = DB::table('promotion')->get();
+        $BookDetail = DB::table('ebook')
+            ->where('ebook_slug', $slug)
+            ->first();
+        $BookDetail->covers = DB::table('ebook__cover')->where('file_id', $BookDetail->file_id)->get();
+        $audios = DB::table('ebook__audios')
+            ->where('file_id', $BookDetail->file_id)
+            ->get();
+            // die($audios);
+        // dd($BookDetail);
+
+        $BookDetails = DB::table('ebook')->get();
+        $Audios = DB::table('ebook__audios')->get();
+
+        return view('Cards.Book-Detaile',
+            [
+                'Categories'=>$Categories,
+                'Categories_sub'=>$Categories_sub,
+                'Categories_third'=>$Categories_third,
+
+                'BookDetails' => $BookDetails,
+                'Audios' => $Audios,
+                'BookDetail' => $BookDetail,
+                'promotion' => $promotion,
+                'audios' => $audios,
+            ]
+        );
+    }
 }

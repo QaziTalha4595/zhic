@@ -16,22 +16,22 @@
             <li>{{round($book->avg_rating)}}.0</li>
         </ul>
     </div>
-        <h5 class="card-title"> {{  Request::is('Home/en') ? $book->file_name : $book->file_name_ar ?? ''}}</h5>
-        <p class="card-text">{{  Request::is('Home/en') ? $book->file_note : $book->file_note_ar ?? ''}}</p>
+        <h5 class="card-title"> {{  Request::is('en') ? $book->file_name : $book->file_name_ar ?? ''}}</h5>
+        <p class="card-text">{{  Request::is('en') ? $book->file_note : $book->file_note_ar ?? ''}}</p>
         @if($book->book_type == 0)
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn card-btn">Read</a>
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn card-btn">Read</a>
         @else
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail" class="btn card-btn">Listen</a>
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn card-btn">Listen</a>
         @endif
     </div>
     <div class="book-card-overlay">
         <p> {{Str::limit($book->file_note, 80, $end='...')}} </p>
 
         @if($book->book_type == 0)
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail">Read More <i
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}">Read More <i
                 class="fas fa-angle-double-right right-icon"></i></a>
         @else
-        <a href="{{url('/')}}/{{$book->ebook_slug}}/Detail">Listen <i
+        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}">Listen <i
                 class="fas fa-angle-double-right right-icon"></i></a>
         @endif
     </div>

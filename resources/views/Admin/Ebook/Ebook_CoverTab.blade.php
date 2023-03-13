@@ -27,10 +27,10 @@
         <a class="nav-link" href="Ebook-{{$file_id}}-Basic" aria-selected="true">Basic Information</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link active" href="Ebook-{{$file_id}}-CoverImage">Book Cover</a>
+        <a class="nav-link active" href="{{url('ControlPanel/Ebook-'.$file_id.'-CoverImage')}}">Book Cover</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" href="Ebook-{{$file_id}}-Upload">Book Uploade</a>
+        <a class="nav-link" href="{{url('ControlPanel/Ebook-'.$file_id.'-Upload')}}">Book Uploade</a>
     </li>
 </ul>
 @endif
