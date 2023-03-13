@@ -124,21 +124,21 @@ class EbookController extends Controller
                     'ebook_bg_color' => $req->input('ebook_bg_color'),
                     'ebook__cover' => $imageThumbnail
                 ]);
-        }    
+        }
         if($Ebook_Cov) {
             return response()->json(['success' => true, 'file_id' => $req->input('file_id'), 'message' => 'Data has been uploaded successfully']);
         } else {
             return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
         }
-       
-    
+
+
     }
     public function EbookCoverImageRemove(Request $request)
     {
         // $FileImg = DB::table('ebook__cover')
         //     ->where('ebook__cover_id', $request->input('ebook__cover_id'))
         //     ->get();
-        $FileImg = Ebook__Cover::where('ebook__cover_id',$request->input('ebook__cover_id'))->get();    
+        $FileImg = Ebook__Cover::where('ebook__cover_id',$request->input('ebook__cover_id'))->get();
 
         if (count($FileImg) > 0) {
             foreach ($FileImg as $Image) {
@@ -148,7 +148,7 @@ class EbookController extends Controller
                 }
             }
         }
-        $FileImgremoved =  Ebook__Cover::where('ebook__cover_id',$request->input('ebook__cover_id'))->delete();    
+        $FileImgremoved =  Ebook__Cover::where('ebook__cover_id',$request->input('ebook__cover_id'))->delete();
 
 
         if ($FileImgremoved) {
@@ -162,7 +162,7 @@ class EbookController extends Controller
         // $data = DB::table('ebook')
         //     ->where('file_id', $file_id)
         //     ->get();
-        $Ebook = Ebook::where('file_id',$file_id)->get();    
+        $Ebook = Ebook::where('file_id',$file_id)->get();
         return view("Admin.Ebook.Ebook_UploadTab", ['data' => $Ebook[0], 'file_id' => $file_id]);
     }
     public function EbookUploadStore(Request $req)
@@ -183,7 +183,7 @@ class EbookController extends Controller
             $Image = $req->file('ebook_attachment')->move('public/Files/E-Book/', $imageNameToStore);
 
             $findImage = Ebook::where('file_id',$req->input('file_id'))->first();
-            
+
             if (file_exists('public/Files/E-Book/' . $Ebook->ebook_attachment) AND !empty($findImage->ebook_attachment)) {
                 unlink('public/Files/E-Book/' . $Ebook->ebook_attachment);
             }
@@ -230,13 +230,13 @@ class EbookController extends Controller
             }
             else
             {
-            $Ebook->ebook_attachment = $req->$imageNameToStore;
+            $Ebook->ebook_attachment = $imageNameToStore;
             $Ebook->p_r_ebook = $req->printable;
-            $Ebook->ebook_audio = $req->ebook_audio;
-            $Ebook->ebook_link = $req->ebook_link;
-            $Ebook->ebook_download_link = $req->ebook_download_link;
+            // $Ebook->ebook_audio = $req->ebook_audio;
+            $Ebook->ebook_link = $req->input('ebook_link');
+            $Ebook->ebook_download_link = $req->input('ebook_download_link');
         }
-        if ($Ebook) 
+        if ($Ebook->save())
         {
             return response()->json(['success' => true, 'file_id' => $req->input('file_id'), 'message' => 'Data has uploaded successfully']);
         } else {
