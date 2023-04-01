@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12 mb-2">
-            <div class="card shadow">
+            <div class="card shadow" style="border-left: 2px solid #007BFF;">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -37,7 +37,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <lable class="text-bold">Sub Category Name</lable>
+                                                    <label class="text-bold">Sub Category Name</label>
                                                     <input type="text"
                                                         class="form-control form-control-user border-primary required"
                                                         id="sub_category_name" name="sub_category_name"
@@ -48,7 +48,7 @@
                                         </div>
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
-                                            <span id="sub_category_error_area" style="display: none;" class="m-auto"></span>
+                                            <span id="error" style="display: none;" class="m-auto"></span>
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
                                             <button type="button" id="btnSubmit" onclick="SubCategoryStore()"
@@ -66,26 +66,26 @@
 </div>
 
 <div class="container-fluid">
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4" style="border-left: 2px solid #007BFF;">
         <div class="card-body">
-        <form action="">
-                <div class="row ml-5">
-                    <div class="col-md-3">
-                        <input type="date" id="date_from" name="date_from" class="form-control">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="date" id="date_to" name="date_to" class="form-control">
-                    </div>
-                    <div class="col-md-3">
+        <form action="" class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
                         <select name="cat_name" id="cat_name" class="form-control">
-                            <option value="">All Sub Category</option>
+                            <option value="">All Category</option>
                             @foreach($categories as $item)
                             <option value="{{ $item->id }}">{{ $item->category_name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <button type="button" id="Filter_submit" onclick=" Getdata()" class="btn btn-primary">Filter</button>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-6"><input type="date" id="date_from" name="date_from" class="form-control"></div>
+                            <div class="col-6"><input type="date" id="date_to" name="date_to" class="form-control"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="Filter_submit" style="width: 100%" onclick=" Getdata()" class="btn btn-primary">Filter</button>
                     </div>
                 </div>
             </form>
@@ -113,11 +113,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
-function alertmsg(msg, type) {
-    $("#sub_category_error_area").removeClass().html('').show();
-    $("#sub_category_error_area").addClass(`alert alert-${type} text-center`).html(msg);
-    $("#sub_category_error_area").fadeOut(3000);
-}        
+
 
 $(function() {
 
@@ -137,6 +133,13 @@ function Getdata()
     var DataTable = $("#DataTable").DataTable({
     "processing": true,
     "serverSide": true,
+    dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                "responsive": true,
+                buttons: ['pageLength'],
     ajax: {
         url: "{{route('SubCategoryShow')}}",
         data: {
@@ -164,8 +167,7 @@ function Getdata()
 
 });
 
-$("input[type=date]").val("")
-$('#cat_name').prop('selectedIndex',0);
+// $("input[type=date]").val("")
 // var $dates = $('#date_from, #date_to').datepicker();
 // $dates.datepicker('setDate', null);
 // $("#cat_name").val("")
@@ -191,7 +193,7 @@ $.post("{{route('SubCategoryStore')}}", $('#SubCategoryStoreForm').serialize())
              }
             })
         .fail((err)=>{
-            
+
             alertmsg("Something went wrong", "danger");
             $("#btnSubmit").prop("disabled", false);
         });
@@ -206,7 +208,7 @@ function SubCategoryEdit(id)
       $("#sub_category_name").val(data.data[0]['sub_category_name']);
     });
   }
-  
+
   function SubCategoryRemove(id)
   {
     swal({
@@ -221,7 +223,7 @@ function SubCategoryEdit(id)
 			if(willDelete)
 			{
 				$.get("{{route('SubCategoryRemove')}}",{id:id},function(data){
-				console.log(data);	
+				console.log(data);
 					if(data['success'] == true)
 					{
 						swal("Proof! Sub Category Have been Deleted..!",
@@ -232,8 +234,8 @@ function SubCategoryEdit(id)
 						tables.fnPageChange('first',1);
 					}
 				});
-			} 
-	        else 
+			}
+	        else
 	        {
 	            swal("Your file is safe!");
 	        }

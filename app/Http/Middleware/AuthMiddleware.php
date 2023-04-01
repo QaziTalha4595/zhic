@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Session;
 
 class AuthMiddleware
@@ -18,12 +17,11 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
-        /* if(Hash::check(env('JWT_SECRET'),Session::get('token'))){
+        if(Session::get('admin_id')){
             return $next($request);
         }
         else{
             return redirect('/ControlPanel/Login');
-        } */
+        }
     }
 }

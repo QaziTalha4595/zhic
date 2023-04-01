@@ -26,7 +26,7 @@
                                         <div class="modal-body">
                                             <form id="SliderStoreForm" enctype="multipart/form-data">
                                                 @csrf
-                                                <input type="text" id="slider_id" name="slider_id">
+                                                <input type="hidden" id="slider_id" name="slider_id">
                                                 <div class="form-group">
                                                     <lable>Heading</lable>
                                                     <input type="text" class="form-control form-control-user required " id="slider_heading" name="slider_heading" placeholder="Enter Slider Heading">
@@ -65,7 +65,7 @@
                                         </div> -->
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
-                                            <span id="slider_error_area" style="display: none;" class="m-auto"></span>
+                                            <span id="error" style="display: none;" class="m-auto"></span>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                             <button type="button" id="btnSubmit" onclick="SliderStore()" class="btn btn-primary">Submit</button>
                                         </div>
@@ -119,12 +119,26 @@
     $("#slider_error_area").removeClass().html('').show();
     $("#slider_error_area").addClass(`alert alert-${type} text-center`).html(msg);
     $("#slider_error_area").fadeOut(3000);
-}       
+}
 $(function() {
 
 var DataTable = $("#DataTable").DataTable({
     "processing": true,
     "serverSide": true,
+    dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                "responsive": true,
+                buttons: ['pageLength'
+                ],
+        ajax: {
+            url: "{{route('EbookShow')}}",
+            // data: {
+            //   client_id: ""
+            // }
+        },
     ajax: {
         url: "{{route('SliderShow')}}",
         // data: {
@@ -161,7 +175,7 @@ var DataTable = $("#DataTable").DataTable({
             data: 'Action'
         }
     ]
-}); 
+});
 });
 function SliderStore() {
 
@@ -190,11 +204,11 @@ $.ajax({
              }
         },
         error : (err)=>{
-            
+
             alertmsg("Something went wrong", "danger");
             $("#btnSubmit").prop("disabled", false);
         }
-        
+
 });
 }
   function SliderEdit(id)
@@ -224,7 +238,7 @@ $.ajax({
 			if(willDelete)
 			{
 				$.get("{{route('SliderRemove')}}",{id:id},function(data){
-				console.log(data);	
+				console.log(data);
 					if(data['success'] == true)
 					{
 						swal("Proof! Slider Have been Deleted..!",
@@ -235,8 +249,8 @@ $.ajax({
 						tables.fnPageChange('first',1);
 					}
 				});
-			} 
-	        else 
+			}
+	        else
 	        {
 	            swal("Your file is safe!");
 	        }

@@ -12,12 +12,11 @@ class SubCategory extends Model
     protected $table = 'category__sub';
 
     protected $fillable = [
-        'category_id','sub_category_name'
+        'category_id','sub_category_name','sub_category_slug'
     ];
-    protected $guarded = [];
     public function category()
     {
         return $this->belongsTo('App\Models\Category','category_id','id');
     }
-    
+
 }

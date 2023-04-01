@@ -1,14 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\MainSlider\SliderController;
 use App\Http\Controllers\Admin\Promotion\PromotionController;
 use App\Http\Controllers\Admin\Ebook\EbookController;
-use App\Http\Controllers\WebsiteController;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BookShelf\BookShelfController;
+use App\Http\Controllers\Admin\AudioBook\AudioBookController;
+use App\Http\Controllers\Admin\Reports\ViewController;
+use App\Http\Controllers\Admin\Feedback\FeedbackController;
+use App\Http\Controllers\Admin\Book\BookRequestController;
 use App\Http\Middleware\AuthMiddleware;
-use App\Http\Middleware\WebsiteMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,24 +24,7 @@ use App\Http\Middleware\WebsiteMiddleware;
 |
 */
 
-Route::get('/demo',  [WebsiteController::class, 'demo']);
-Route::get('/', function(){return redirect("/en");});//to redirect to defualt lang
-Route::get('/en', [WebsiteController::class, 'Home'])->name('Home'); // home page
-Route::get('/ar', [WebsiteController::class, 'Home'])->name('Home'); // home page
-Route::group(['prefix' => '/{locale}', 'middleware'=> 'WebsiteMiddleware'],function(){ // to get lang in every page
-    View::composer('*', function ($view) {
-
-        $Categories = DB::table('category')->get();
-        $Categories_sub = DB::table('category__sub')->get();
-        $Categories_third = DB::table('category__third')->get();
-        // return $Categories;
-        $view->with(['Categories'=>$Categories, 'Categories_sub'=>$Categories_sub, 'Categories_third'=>$Categories_third]);
-
-    });
-    Route::get('/hello', function(){ return view('newview');});
-    Route::get('en/EBook/{slug}', [WebsiteController::class, 'BookDetail'])->name('BookDetail');
-});
-
+Route::get('/', function () {return ('front page');});
 
 Route::get('/ControlPanel/Login', [AdminController::class, 'Login'])->name('Login');
 Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->name('LoginUser');
@@ -47,6 +33,10 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
 {
     Route::get('/Dashboard', function () {return view('Admin.AdminLayout');})->name('Dashboard');
     // ---==== Setup ====--- \\
+    //Dashboared
+    Route::get('/Admin/Dashboard',function(){
+        return view('Admin.Dashboard');
+    });
     // category management
     Route::get('/Category', [CategoryController::class, 'Category'])->name('Category');
     Route::post('/CategoryStore', [CategoryController::class, 'CategoryStore'])->name('CategoryStore');
@@ -94,23 +84,64 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
      Route::get('/PromotionRemove', [PromotionController::class, 'PromotionDestroy'])->name('PromotionRemove');
     // Route::get('/PromotionCrop',[PromotionController::class,'PromotionCrop'])->name('PromotionCrop');
 
+        // Book Shelf
+    Route::get('BookShelf', [BookshelfController::class, 'BookShelf'])->name('BookShelf');
+        // Route::get('ShelfItems', [BookshelfController::class, 'GetBookshelfItem'])->name('Get-Bookshelf-Item');
+        Route::post('BookShelfStore', [BookshelfController::class, 'BookShelfStore'])->name('BookShelfStore');
+    Route::get('BookShelfShow', [BookShelfController::class, 'BookShelfShow'])->name('BookShelfShow');
+        Route::get('BookShelfEdit', [BookshelfController::class, 'BookShelfEdit'])->name('BookShelfEdit');
+        // Route::post('Bookshelf-Update', [BookshelfController::class, 'BookshelfUpdate'])->name('Admin-Bookshelf-Update');
+        Route::get('BookShelfRemove', [BookshelfController::class, 'BookShelfRemove'])->name('BookShelfRemove');
+
+
+
     Route::get('/Ebook', [EbookController::class, 'Ebook'])->name('Ebook');
     Route::get('EbookUpload', [EbookController::class, 'EbookUpload'])->name('EbookUpload');
      Route::post('/EbookStore', [EbookController::class, 'EbookStore'])->name('EbookStore');
     // Route::get('/PromotionShow', [PromotionController::class, 'PromotionShow'])->name('PromotionShow');
     // Route::get('/PromotionEdit', [PromotionController::class, 'PromotionEdit'])->name('PromotionEdit');
     //  Route::get('/PromotionRemove', [PromotionController::class, 'PromotionDestroy'])->name('PromotionRemove');
+
     Route::get('/FetchThirdCategory', [EbookController::class, 'FetchThirdCategory'])->name('FetchThirdCategory');
     Route::get('Ebook-{file_id}-Basic', [EbookController::class, 'EbookBasicView']);
     Route::get('Ebook-{file_id}-CoverImage', [EbookController::class, 'EbookCoverImageView']);
     Route::post('EbookCoverStore', [EbookController::class, 'EbookCoverStore'])->name('EbookCoverStore');
     Route::get('EbookCoverImageRemove', [EbookController::class, 'EbookCoverImageRemove'])->name('EbookCoverImageRemove');
     Route::get('Ebook-{file_id}-Upload', [EbookController::class, 'EbookCoverUploadView']);
+    Route::get('GetEbookCoverImage', [EbookController::class, 'GetEbookCoverImage'])->name('GetEbookCoverImage');
     Route::post('EbookUploadStore', [EbookController::class, 'EbookUploadStore'])->name('EbookUploadStore');
     Route::get('EbookShow', [EbookController::class, 'EbookShow'])->name('EbookShow');
-    Route::get('Ebook/Edit/{file_id}',[EbookController::class,'EbookEdit']);
+    Route::get('EbookRemove', [EbookController::class, 'EbookRemove'])->name('EbookRemove');
+    Route::post('Ebook-{file_id}-Edit', [EbookController::class, 'EbookCoverStore'])->name('EbookEdit');
+    Route::get('EbookEdit',[EbookController::class,'EbookEdit'])->name('EbookEdit');
+    // Audio Book
+    Route::get('AudioBookShow', [AudioBookController::class,'AudioBookShow'])->name('AudioBookShow');
+    Route::get('AudioBook', [AudioBookController::class, 'AudioBook'])->name('AudioBook');
+    Route::get('AudioBookBasic', [AudioBookController::class, 'AudioBookBasicTab'])->name('AudioBookBasic');
+    Route::post('AudioBookStore', [AudioBookController::class, 'AudioBookBasicInfoStore'])->name('AudioBookStore');
+    Route::get('AudioBook-{file_id}-CoverImage', [AudioBookController::class, 'AudioBookCoverImageView']);
+    Route::post('AudioBookCoverImageStore', [AudioBookController::class, 'AudioBookCoverImageStore'])->name('AudioBookCoverImageStore');
+    Route::get('AudioBook-{file_id}-Upload', [AudioBookController::class, 'AudioBookFileUpload'])->name('AudioBookFileUploadEdit');
+    Route::post('AudioStore', [AudioBookController::class, 'AudioStore'])->name('AudioStore');
+    Route::get('AudioBookRemove', [AudioBookController::class, 'AudioBookRemove'])->name('AudioBookRemove');
+    Route::get('AudioBookCoverImageRemove', [AudioBookController::class, 'AudioBookCoverImageRemove'])->name('AudioBookCoverImageRemove');
+    Route::get('AudioBookFileRemove', [AudioBookController::class, 'AudioBookFileRemove'])->name('AudioBookFileRemove');
+    Route::get('GetAudioFile', [AudioBookController::class, 'GetAudioFile'])->name('GetAudioFile');
 
+    Route::get('AudioBook-{file_id}-Basic', [AudioBookController::class, 'AudioBookBasicForEdit'])->name('AudioBookBasicForEdit');
+    Route::get('AudioBookEdit',[AudioBookController::class,'AudioBookEdit'])->name('AudioBookEdit');
+    Route::get('AudioEdit', [AudioBookController::class, 'AudioEdit'])->name('AudioEdit');
+    //View Controller ROutes
+    Route::get('/EbookView', [ViewController::class, 'EbookView'])->name('EbookView');
+    Route::get('/EbookDuration', [ViewController::class, 'EbookDuration'])->name('EbookDuration');
+    Route::get('/EbookReport', [ViewController::class, 'EbookReport'])->name('EbookReport');
+    Route::get('/EbookLocationReport', [ViewController::class, 'EbookLocationReport'])->name('EbookLocationReport');
+    Route::get('/EbookReportView', [ViewController::class, 'EbookReportView'])->name('EbookReportView');
 
+    Route::get('/BookRequest', [BookRequestController::class, 'BookRequest'])->name('BookRequest');
+    Route::get('/BookRequestShow', [BookRequestController::class, 'BookRequestShow'])->name('BookRequestShow');
 
+    ///Feedback Routes
+    Route::get('/Feedback', [FeedbackController::class, 'Feedback'])->name('Feedback');
+    Route::get('/FeedbackShow', [FeedbackController::class, 'FeedbackShow'])->name('FeedbackShow');
 });
-

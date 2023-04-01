@@ -11,29 +11,49 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="{{url('public/web/assets/img/logo/main-logo.svg')}}">
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{{url('public/Admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{url('public/Admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{url('public/Admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{url('public/Admin/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('public/Admin/dist/css/adminlte.min.css')}}">
 
-    <link rel="stylesheet" href="{{url('public/Admin/plugins/bs-stepper/css/bs-stepper.min.css')}}>
+    <link rel="stylesheet" href="{{url('public/Admin/plugins/bs-stepper/css/bs-stepper.min.css')}}">
+    {{-- Dropzone --}}
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
     <!-- Bootstrap CDN -->
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{url('public/Admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{url('public/Admin/plugins/toastr/toastr.min.css')}}">
    <!-- for Croper.js -->
-   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.css"> -->
-   <link rel="stylesheet" href="{{url('public/Admin/dist/css/croppie.css')}}"> 
-   <!-- for Croper.js -->             
+   <!-- for Croper.js -->
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script src="{{url('public/Admin/plugins/jquery/jquery.min.js')}}"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.1/css/bootstrap-colorpicker.min.css"
-        rel="stylesheet">
     <!--Select2 CSS-->
+    <style>
+        td.text-center {
+            vertical-align: middle;
+        }
 
+        .left-col {
+            float: left;
+            width: 50%;
+            padding-bottom: 10px
+        }
+
+        .right-col {
+            float: left;
+            width: 50%;
+            padding-bottom: 10px
+        }
+        .dropdown-menu{
+            width: 150px!important;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -121,7 +141,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item main_active ">
-                            <a href="{{url('/Dashboard')}}" class="nav-link">
+                            <a href="{{url('ControlPanel/Dashboard')}}" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
@@ -171,7 +191,7 @@
                             </a>
                         </li>
                         <li class="nav-item main_active ">
-                            <a href="{{('Book-Shelf')}}" class="nav-link">
+                            <a href="{{url('ControlPanel/BookShelf')}}" class="nav-link">
                                 <i class="nav-icon  far fa-address-book"></i>
                                 <p>Book Shelf</p>
                             </a>
@@ -183,31 +203,31 @@
                             </a>
                         </li>
                         <li class="nav-item main_active ">
-                            <a href="{{('OnetimeGenerate')}}" class="nav-link">
-                                <i class="nav-icon fas fa-star"></i>
-                                <p>OneTime</p>
+                            <a href="{{url('ControlPanel/AudioBook')}}" class="nav-link">
+                                <i class="nav-icon fas fa-file-audio"></i>
+                                <p>Audio-Book Manage</p>
                             </a>
                         </li>
                         <li class="nav-item has-treeview main_active ">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
-                                <p>E-Book Reports<i class="fas fa-angle-left right"></i></p>
+                                <p>Reports<i class="fas fa-angle-left right"></i></p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item main_active ">
-                                    <a href="{{url('ControlPanel/Ebook')}}" class="nav-link">
+                                    <a href="{{url('ControlPanel/EbookView')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>E-Book Views</p>
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="{{('Admin-Ebook-Duration')}}" class="nav-link">
+                                    <a href="{{url('ControlPanel/EbookDuration')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
-                                        <p>E-Book Duration</p>
+                                        <p>E-Book Location</p>
                                     </a>
                                 </li>
                                 <li class="nav-item main_active ">
-                                    <a href="" class="nav-link">
+                                    <a href="{{url('ControlPanel/EbookReport')}}" class="nav-link">
                                         <i class="nav-icon far fa-circle"></i>
                                         <p>E Book Report</p>
                                     </a>
@@ -215,45 +235,13 @@
                             </ul>
                         </li>
                         <li class="nav-item main_active ">
-                            <a href="{{('Audio-File-Upload')}}" class="nav-link">
-                                <i class="nav-icon fas fa-file-audio"></i>
-                                <p>Audio-Book Manage</p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview main_active ">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-poll-h"></i>
-                                <p>AudioBook Reports<i class="fas fa-angle-left right"></i></p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item main_active ">
-                                    <a href="{{('AudioBook-View')}}" class="nav-link">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p> Audio-Book View</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item main_active ">
-                                    <a href="{{('AudioBook-Duration')}}" class="nav-link">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p>Audio-Book Duration</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item main_active ">
-                                    <a href="{{('AudioBook-Report')}}" class="nav-link">
-                                        <i class="nav-icon far fa-circle"></i>
-                                        <p>Audio-Book Report</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item main_active ">
-                            <a href="{{('Admin-Book-Request')}}" class="nav-link">
+                            <a href="{{url('ControlPanel/BookRequest')}}" class="nav-link">
                                 <i class="nav-icon fas fa-comment-alt"></i>
                                 <p>Book Request</p>
                             </a>
                         </li>
                         <li class="nav-item main_active ">
-                            <a href="{{('Admin-Feedback')}}" class="nav-link">
+                            <a href="{{url('ControlPanel/Feedback')}}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Feedbacks</p>
                             </a>
@@ -319,16 +307,29 @@
     </div>
     <!-- ./wrapper -->
     <script>
-    $(document).ready(function() {
-        // alert('as');
-    });
+    function alertmsg(msg, type) {
+    $("#error").removeClass().html('').show();
+    $("#error").addClass(`alert alert-${type} text-center`).html(msg);
+    $("#error").fadeOut(3000);
+    }
     </script>
     <!-- datatable -->
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{url('public/Admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/jszip/jszip.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/pdfmake/pdfmake.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/pdfmake/vfs_fonts.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+    <script src="{{url('public/Admin/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
     <!-- ChartJS -->
     <script src="{{url('public/Admin/plugins/chart.js/Chart.min.js')}}"></script>
     <script src="{{url('public/Admin/dist/js/scripts.js')}}"></script>
+
     <!-- jQuery -->
     <!-- BS-Stepper -->
     <script src="{{url('public/Admin/plugins/bs-stepper/js/bs-stepper.min.js')}}"></script>
@@ -337,10 +338,7 @@
     <!-- AdminLTE App -->
     <script src="{{url('public/Admin/dist/js/adminlte.min.js')}}"></script>
     <!-- for croper js  -->
-    <script src="{{url('public/Admin/dist/js/croppie.js')}}"></script>
-    <script src="{{url('public/Admin/dist/js/croppie.min.js')}}"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.js"></script> -->
-   <!--END for croper js  -->
+
     <!-- //sweet Alert -->
     <script src="{{url('public/Admin/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Sweet Aleert Toast -->

@@ -10,9 +10,9 @@ class Ebook extends Model
     use HasFactory;
     protected $table = 'ebook';
 
-    
+
     protected $primaryKey = 'file_id';
-    
+
     protected $fillable = [
         'category_id',
         'sub_cat_id',
@@ -26,6 +26,8 @@ class Ebook extends Model
         'publishing_date',
         'direction',
         'ebook_slug',
+        'unique_id',
+        'book_type',
         'downloadable',
         'printable',
         'searchable',
@@ -47,8 +49,16 @@ class Ebook extends Model
     {
         return $this->belongsTo('App\Models\Ebook\Ebook__Cover','file_id','file_id');
     }
+    public function ebookaudio()
+    {
+        return $this->belongsTo('App\Models\Ebook\Ebook__Audio','file_id','file_id');
+    }
     public function language()
     {
-        return $this->belongsTo('App\Models\Language','file_id','id');
+        return $this->belongsTo('App\Models\Language','language_id','id');
+    }
+    public function ebooklocation()
+    {
+        return $this->belongsTo('App\Models\Ebook\Ebook_location','file_id','file_id');
     }
 }

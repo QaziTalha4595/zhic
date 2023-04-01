@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12 mb-2">
-            <div class="card shadow">
+            <div class="card shadow" style="border-left: 2px solid #007BFF;">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -39,7 +39,7 @@
                                         </div>
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
-                                            <span id="language_error_area" style="display: none;" class="m-auto"></span>
+                                            <span id="error" style="display: none;" class="m-auto"></span>
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
                                             <button type="button" id="btnSubmit" onclick="LanguageStore()"
@@ -57,7 +57,7 @@
 </div>
 
 <div class="container-fluid">
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4" style="border-left: 2px solid #007BFF;">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold ">Language List</h6>
         </div>
@@ -82,17 +82,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
-    function alertmsg(msg, type) {
-    $("#language_error_area").removeClass().html('').show();
-    $("#language_error_area").addClass(`alert alert-${type} text-center`).html(msg);
-    $("#language_error_area").fadeOut(3000);
-}        
+
 
 $(function() {
 
 var DataTable = $("#DataTable").DataTable({
     "processing": true,
     "serverSide": true,
+    dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                "responsive": true,
+                buttons: ['pageLength'],
     ajax: {
         url: "{{route('LanguageShow')}}",
         // data: {
@@ -163,7 +166,7 @@ function LanguageEdit(id)
 			if(willDelete)
 			{
 				$.get("{{route('LanguageRemove')}}",{id:id},function(data){
-				console.log(data);	
+				console.log(data);
 					if(data['success'] == true)
 					{
 						swal("Proof! Language Have been Deleted..!",
@@ -174,8 +177,8 @@ function LanguageEdit(id)
 						tables.fnPageChange('first',1);
 					}
 				});
-			} 
-	        else 
+			}
+	        else
 	        {
 	            swal("Your file is safe!");
 	        }

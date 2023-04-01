@@ -8924,6 +8924,17 @@ button.bg-dark:focus {
   .my-sm-auto {
     margin-top: auto !important;
   }
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
   .mr-sm-auto,
   .mx-sm-auto {
     margin-right: auto !important;

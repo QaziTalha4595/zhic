@@ -32,11 +32,11 @@ class PromotionController extends Controller
     public function PromotionStore(Request $req)
     {
         $Promotion = new Promotion();
-        
+
         $validator = Validator::make($req->all(), [
             'category_id' => 'required',
             'sub_cat_id' => 'required',
-            'promotion_attachment' => $req->input('promo_id') ? '' : 'required|image|mimes:jpeg,jpg,png|max:2048'
+            'promotion_attachment' => $req->input('promo_id') ? 'mimes:jpeg,jpg,png|max:2048' : 'required|image|mimes:jpeg,jpg,png|max:2048'
         ]);
 
         if ($validator->fails()) {
@@ -45,21 +45,21 @@ class PromotionController extends Controller
         if($req->hasFile('promotion_attachment'))
         {
             $folderPath = public_path('Promotion/');
- 
+
             $image_parts = explode(";base64,", $req->promotion_attachment);
             $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            
-            $image_base64 = base64_decode($image_parts[1]);
-            
+            $image_type = $image_type_aux[0];
+
+            $image_base64 = base64_decode($image_parts[0]);
+
             $imageName = uniqid() . '.png';
-     
+
             $imageFullPath = $folderPath.$imageName;
 
             if($req->input('promo_id'))
             {
                 $findImage = Promotion::where('id',$req->input('promo_id'))->first();
-                
+
                 if(file_exists('public/Promotion/'.$findImage->promotion_attachment) AND !empty($findImage->promotion_attachment))
                 {
                     unlink('public/Promotion/'.$findImage->promotion_attachment);
@@ -69,7 +69,7 @@ class PromotionController extends Controller
         else
         {
             $data = Promotion::where('id',$req->input('promo_id'))->get();
-            $imageName = $data[0]->promotion_attachment;
+            $imageName = $data->promotion_attachment;
         }
 
         try {
@@ -95,7 +95,7 @@ class PromotionController extends Controller
             return $Promotion->category->category_name;
         })
         ->addColumn('Sub Category', function($Promotion){
-            return $Promotion->subcategory->sub_category_name;
+            return $Promotion->subcategory->sub_category_name ?? '';
         })
         ->addColumn('action', function ($Promotion) {
             return
@@ -107,7 +107,7 @@ class PromotionController extends Controller
         })
         ->rawColumns(['action'])
         ->make(true);
-    } 
+    }
     public function PromotionEdit(Request $req)
     {
         $promo_id = $req->input('id');
@@ -117,7 +117,7 @@ class PromotionController extends Controller
     public function PromotionDestroy(Request $req)
     {
         $Promotion = Promotion::where('id',$req->input('id'))->first();
-        
+
         if(file_exists('public/Promotion/'.$Promotion->promotion_attachment))
         {
             unlink('public/Promotion/'.$Promotion->promotion_attachment);
@@ -132,6 +132,6 @@ class PromotionController extends Controller
         {
             return response()->json(['success' => false, 'message' => 'Deleted Failed..!']);
         }
-        
+
     }
 }

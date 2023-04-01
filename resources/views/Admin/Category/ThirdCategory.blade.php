@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12 mb-2">
-            <div class="card shadow">
+            <div class="card shadow" style="border-left: 2px solid #007BFF;">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -13,7 +13,7 @@
                         </div>
                         <div class="col-auto">
                             <button type="button" id="add_btn" class="btn btn-primary" data-toggle="modal"
-                                data-target="#ThirdCategoryStoreModal">Add</button>   
+                                data-target="#ThirdCategoryStoreModal">Add</button>
                         </div>
                     </div>
                 </div>
@@ -45,9 +45,9 @@
                     </div>
                     <div class="form-group">
                         <label>Sub Category</label>
-                        
+
                         <select class="form-control select2" name="sub_category_id"
-                            id="sub_category_id" style="width:100%;">
+                            id="sub_category_id" style="width:100%;" disabled>
                             <option selected disabled>Select</option>
                             @foreach($SubCategory as $item)
                             <option value="{{ $item->id }}">{{ $item->sub_category_name }}</option>
@@ -60,14 +60,7 @@
                         <lable class="text-bold">Third Category Name</lable>
                         <input type="text"
                             class="form-control form-control-user border-primary required "
-                            id="third_category_name" name="third_category_name"
-                            onkeyup="slugGenrator()">
-                    </div>
-                    <div class="form-group">
-                        <lable class="text-bold">Third Category Slug</lable>
-                        <input type="text"
-                            class="form-control form-control-user border-primary required "
-                            id="slug" name="slug" autocomplete=" off">
+                            id="third_category_name" name="third_category_name">
                     </div>
 
                 </form>
@@ -79,7 +72,7 @@
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <span id="third_category_error_area" style="display: none;" class="m-auto"></span>
+                <span id="error" style="display: none;" class="m-auto"></span>
                 <button type="button" class="btn btn-secondary"
                     data-dismiss="modal">Close</button>
                 <button type="button" id="btnSubmit" onclick="ThirdCategoryStore()"
@@ -90,9 +83,9 @@
 </div>
 
 <div class="container-fluid">
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4" style="border-left: 2px solid #007BFF;">
         <div class="card-body">
-        <form action="">
+        <form action="" class="mb-3">
                 <div class="row ml-5">
                     <div class="col-md-2">
                         <input type="date" id="date_from" name="date_from" class="form-control">
@@ -143,22 +136,15 @@
 
 <script>
 
-function alertmsg(msg, type) {
-    $("#third_category_error_area").removeClass().html('').show();
-    $("#third_category_error_area").addClass(`alert alert-${type} text-center`).html(msg);
-    $("#third_category_error_area").fadeOut(3000);
-}        
-
-
 $(function() {
 
 Getdata();
-   
+
 //Data Table Ends HEre
 //For Modal
         $("#category_id").change(function(event){
 
-            
+
 
         var idCategory = this.value;
         $("#sub_category_id").html(' <option value="" selected>Select SubCategory</option> ');
@@ -184,7 +170,7 @@ Getdata();
 //for Filters
         $("#category_id_filter").change(function(event){
 
-                    
+
 
         var idCategory = this.value;
         $("#sub_category_id_filter").html(' <option value="" selected>Select SubCategory</option> ');
@@ -206,7 +192,7 @@ Getdata();
 
         });
 
-        });        
+        });
 });
 function Getdata(){
     $("#DataTable").DataTable().destroy();
@@ -214,6 +200,13 @@ function Getdata(){
 
     "processing": true,
     "serverSide": true,
+    dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                "responsive": true,
+                buttons: ['pageLength'],
     ajax: {
         url: "{{route('ThirdCategoryShow')}}",
         data: {
@@ -250,7 +243,9 @@ $('#sub_category_id_filter').prop('selectedIndex',0);
 
 function ThirdCategoryStore() {
 
-$("#btnSubmit").prop("disabled", true);
+    $("#sub_category_id").prop("disabled", false);
+    $("#btnSubmit").prop("disabled", true);
+
 
 $.post("{{route('ThirdCategoryStore')}}", $('#ThirdCategoryStoreForm').serialize())
         .done((res)=>{
@@ -266,7 +261,7 @@ $.post("{{route('ThirdCategoryStore')}}", $('#ThirdCategoryStoreForm').serialize
              }
             })
         .fail((err)=>{
-            
+
             alertmsg("Something went wrong", "danger");
             $("#btnSubmit").prop("disabled", false);
         });
@@ -280,7 +275,6 @@ function ThirdCategoryEdit(id)
       $("#category_id").val(data.data[0]['category_id']);
       $("#sub_category_id").val(data.data[0]['sub_category_id']);
       $("#third_category_name").val(data.data[0]['third_category_name']);
-      $("#slug").val(data.data[0]['slug']);
     });
   }
 
@@ -298,7 +292,7 @@ function ThirdCategoryEdit(id)
 			if(willDelete)
 			{
 				$.get("{{route('ThirdCategoryRemove')}}",{id:id},function(data){
-				console.log(data);	
+				console.log(data);
 					if(data['success'] == true)
 					{
 						swal("Proof! Sub Category Have been Deleted..!",
@@ -309,8 +303,8 @@ function ThirdCategoryEdit(id)
 						tables.fnPageChange('first',1);
 					}
 				});
-			} 
-	        else 
+			}
+	        else
 	        {
 	            swal("Your file is safe!");
 	        }

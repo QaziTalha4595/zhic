@@ -1,6 +1,8 @@
 @extends('Admin.AdminLayout')
 
 @section('content')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css"/>
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="row">
@@ -31,13 +33,13 @@
                                                 <div class="form-row justify-content-center mt-3">
                                                     <div class="form-group col-md-4 mt-3">
                                                         <div id="image-preview" class="mt-3"></div>
-                                                    </div>                
+                                                    </div>
                                                 </div>
                                                 <div class="form-group row justify-content-center">
                                                     <input type="file" id="promotion_attachment" name="promotion_attachment"
                                                         placeholder="Enter promotion Image">
                                                         <img id="image_id" style="width:100px; height: 100px; display:none">
-                                                
+
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Category</label>
@@ -59,13 +61,13 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                
+
 
                                             </form>
                                         </div>
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
-                                            <span id="promotion_error_area" style="display: none;" class="m-auto"></span>
+                                            <span id="error" style="display: none;" class="m-auto"></span>
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
                                             <button type="button" id="btnSubmit" onclick="PromotionStore()"
@@ -112,20 +114,33 @@
     width: 50px;
 }
 </style>
-<script src="{{url('public/plugins/jquery/jquery.min.js')}}"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 <script>
 
 function alertmsg(msg, type) {
     $("#promotion_error_area").removeClass().html('').show();
     $("#promotion_error_area").addClass(`alert alert-${type} text-center`).html(msg);
     $("#promotion_error_area").fadeOut(3000);
-}        
+}
 $(function() {
 var DataTable = $("#DataTable").DataTable({
     "processing": true,
     "serverSide": true,
+    dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                "responsive": true,
+                buttons: [
+                    'pageLength'
+                ],
+        ajax: {
+            url: "{{route('EbookShow')}}",
+            // data: {
+            //   client_id: ""
+            // }
+        },
     ajax: {
         url: "{{route('PromotionShow')}}",
     },
@@ -152,7 +167,7 @@ var DataTable = $("#DataTable").DataTable({
 });
     $("#category_id").change(function(event){
 
-                
+
 
     var idCategory = this.value;
     $("#sub_cat_id").html(' <option value="" selected>Select SubCategory</option> ');
@@ -200,7 +215,7 @@ var DataTable = $("#DataTable").DataTable({
         }
         reader.readAsDataURL(this.files[0]);
     });
-});    
+});
 
 function PromotionStore() {
 
@@ -226,12 +241,12 @@ function PromotionStore() {
       type:'canvas',
       size:'viewport'
       }).then(function(response){
-        
-      var _token = $('input[name=_token]').val();        
+
+      var _token = $('input[name=_token]').val();
       let slider_form_data = document.getElementById("PromotionStoreForm");
       let form_data = new FormData(slider_form_data);
       form_data.append('image',response);
-      
+
 $("#btnSubmit").prop("disabled", true);
 
 $.ajax({
@@ -254,11 +269,11 @@ $.ajax({
          }
     },
     error : (err)=>{
-        
+
         alertmsg("Something went wrong", "danger");
         $("#btnSubmit").prop("disabled", false);
     }
-});    
+});
 });
 }
 
@@ -286,7 +301,7 @@ function PromotionRemove(id)
 			if(willDelete)
 			{
 				$.get("{{route('PromotionRemove')}}",{id:id},function(data){
-				console.log(data);	
+				console.log(data);
 					if(data['success'] == true)
 					{
 						swal("Proof! promotion Have been Deleted..!",
@@ -297,8 +312,8 @@ function PromotionRemove(id)
 						tables.fnPageChange('first',1);
 					}
 				});
-			} 
-	        else 
+			}
+	        else
 	        {
 	            swal("Your file is safe!");
 	        }
