@@ -308,7 +308,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <button type="button" style="width: 80px" class="btn btn-primary ml-2" onclick="loadData()">Filter</button>
-                                    <button type="button" style="width: 80px" title="Refresh Select Box" class="btn btn-success ml-2" id="resetBtn" onclick="ResetData()">Refresh</button>
+                                    <button type="button" style="width: 80px" title="Refresh Select Box" class="btn btn-secondary ml-2" id="resetBtn" onclick="ResetData()">Reset</button>
                                 </div>
 
 
@@ -377,6 +377,9 @@ function loadData(){
                 ],
                 "responsive": true,
                 buttons: [{
+                        extend: 'colvis',
+                        text: "Show/Hide"
+                    },{
                         extend: 'excelHtml5',
                         text: "Excel"
                     },
@@ -407,7 +410,7 @@ function loadData(){
             },
 
             {
-                data: 'Name',
+                data: 'ebook.ebook_name',
             },
             {
                 data: 'city',

@@ -16,6 +16,6 @@ class feedback extends Model
 
     public function ebook()
     {
-        return $this->belongsTo('App\Models\Ebook\Ebook','book_id','file_id');
+        return $this->belongsTo('App\Models\Ebook\Ebook','file_id','file_id');
     }
 }

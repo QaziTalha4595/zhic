@@ -17,9 +17,7 @@ class FeedbackController extends Controller
     }
     public function FeedbackShow(Request $req)
     {
-        // $Feedback = Feedback::get('user_address');
-        // dd($Feedback);
-        // return false;
+
         if ($req->ajax())
         {
             if ($req->input('from_date') && $req->input('to_date'))
@@ -34,7 +32,6 @@ class FeedbackController extends Controller
 
                 $Feedback = Feedback::with(['ebook'])
                 ->where('user_address', $req->input('user_nationality'))
-                // ->orWhere('created_at', $req->input('from_date'))
                 ->orWhere('age',$req->input('age'))
                 ->orWhere('qualification',$req->input('qualification'))
                 ->orWhere('gender',$req->input('gender'))

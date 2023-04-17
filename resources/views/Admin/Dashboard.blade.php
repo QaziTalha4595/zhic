@@ -7,7 +7,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>{{$ebook_count ?? ''}}</h3>
+                    <h3>{{$ebook_count ?? ''}}404</h3>
 
                     <p>Total E-Books</p>
                 </div>
@@ -22,7 +22,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>{{$audio_count ?? ''}}</h3>
+                    <h3>{{$audio_count ?? ''}}404</h3>
 
                     <p>Total Audio Book</p>
                 </div>

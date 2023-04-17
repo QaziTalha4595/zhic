@@ -308,7 +308,7 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <button type="button" style="width: 80px" class="btn btn-primary ml-2" onclick="loadData()">Filter</button>
-                                    <button type="button" style="width: 80px" title="Refresh Select Box"  class="btn btn-success ml-2" id="resetBtn" onclick="ResetData()">Refresh</button>
+                                    <button type="button" style="width: 80px" title="Refresh Select Box"  class="btn btn-secondary ml-2" id="resetBtn" onclick="ResetData()">Refresh</button>
                                 </div>
 
 
@@ -323,11 +323,8 @@
 </div>
 
 <div class="container-fluid">
-    <div style="border-left: 2px solid #007BFF;" class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold">Feedback List</h6>
+    <div class="card shadow mb-4">
 
-        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table id="DataTable" class="table table-bordered" width="100%" cellspacing="0">
@@ -386,6 +383,9 @@ function loadData()
                 ],
                 "responsive": true,
                 buttons: [{
+                        extend: 'colvis',
+                        text: "Show/Hide"
+                    },{
                         extend: 'excelHtml5',
                         text: "Excel"
                     },

@@ -5,7 +5,7 @@
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12 mb-2">
-                <div class="card shadow" style="border-left: 2px solid #007BFF;">
+                <div class="card shadow">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
@@ -13,7 +13,7 @@
                             </div>
                             <div class="col-auto">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#CategoryStoreModal">Add</button>
+                                    data-target="#CategoryStoreModal" id="AddBtn">Add</button>
 
                                 <div class="modal fade" id="CategoryStoreModal">
                                     <div class="modal-dialog modal-dialog-centered">
@@ -33,8 +33,15 @@
                                                         <input type="text"
                                                             class="form-control form-control-user required "
                                                             name="category_name" id="category_name"
-                                                            placeholder="Enter category">
-                                                        <div id="category_name_error" style="display:none"></div>
+                                                            placeholder="Enter Category">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Category Name in Arabic</label>
+                                                        <input type="text"
+                                                            class="form-control form-control-user required "
+                                                            name="category_name_in_ar" id="category_name_in_ar"
+                                                            placeholder="Enter Category in Arabic">
                                                     </div>
 
                                                 </form>
@@ -60,29 +67,25 @@
     </div>
 
     <div class="container-fluid">
-        <div class="card shadow mb-4" style="border-left: 2px solid #007BFF;">
+        <div class="card shadow mb-4">
 
             <div class="card-body">
-                    <div class="row my-3">
-                        <div class="col-md-4">
-                                <select name="cat_name" id="cat_name" class="form-control">
-                                    <option value="">All Category</option>
-                                    @foreach($Categories as $item)
-                                    <option value="{{ $item->id }}">{{ $item->category_name }}</option>
-                                    @endforeach
-                                </select>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-6"><input type="date" id="date_from" name="date_from" class="form-control"></div>
-                                <div class="col-6"><input type="date" id="date_to" name="date_to" class="form-control"></div>
+                <div class="row my-3 d-flex justify-content-right">
+                    <div class="col-md-4 mt-2">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-6"><input type="date" id="date_from" name="date_from" class="form-control">
+                            </div>
+                            <div class="col-6"><input type="date" id="date_to" name="date_to" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <button type="button" id="Filter_submit" style="width: 100%" onclick="Getdata()"
-                                class="btn btn-primary">Filter</button>
-                        </div>
                     </div>
+                    <div class="col-md-2">
+                        <button type="button" id="Filter_submit" style="width: 100%"  onclick="Getdata()"
+                            class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table id="DataTable" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
@@ -100,7 +103,6 @@
     </div>
 
 
-    <script src="{{ url('public/plugins/jquery/jquery.min.js') }}"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
@@ -109,17 +111,18 @@
 
             Getdata();
 
-
-
-            $("#department_supervised_by").select2({
-                theme: "classic",
-                // width: 'resolve'
-            });
-
-
         });
 
+
+        $("#AddBtn").click(function(){
+        $('#CategoryStoreForm')[0].reset();
+        $('#cat_id').val('');
+        $("#error").removeClass().html('').hide();
+    });
+
         function Getdata() {
+
+            $("#btnSubmit").prop("disabled", false);
             $("#DataTable").DataTable().destroy();
             var DataTable = $("#DataTable").DataTable({
                 "processing": true,
@@ -136,7 +139,7 @@
                     data: {
                         from_date: $('#date_from').val(),
                         to_date: $('#date_to').val(),
-                        category_name : $('#cat_name').val()
+                        category_name: $('#cat_name').val()
                     },
                 },
                 columns: [{
@@ -164,9 +167,10 @@
                 .done((res) => {
                     $("#btnSubmit").prop("disabled", false);
                     if (res.success) {
-                        $("#btnSubmit").prop("disabled", true);
-                        alertmsg(res.message, "success");
-                        window.location.href = "{{ route('Category') }}";
+                    alertmsg(res.message, "success");
+                    Getdata();
+                    $("#CategoryStoreModal").modal('hide');
+                    $('#CategoryStoreForm')[0].reset();
                     } else if (res.validate) {
                         alertmsg(res.message, "warning")
                     } else {
@@ -174,9 +178,8 @@
                     }
                 })
                 .fail((err) => {
-                    alertmsg("Something went wrong", "danger")
+                    alertmsg("Something went wrong", "danger");
                 });
-            $("#LoginBtn").prop("disabled", false);
         }
 
         function CategoryEdit(id) {
@@ -191,7 +194,7 @@
         function CategoryRemove(id) {
             swal({
                     title: "Are You Sure?",
-                    text: "Once Deleted You will not be able to recover this file",
+                    text: "Once Deleted You will not be able to undo this",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -201,18 +204,16 @@
                     if (willDelete) {
                         $.get("{{ route('CategoryRemove') }}", {
                             id: id
-                        }, function(data) {
-                            console.log(data);
-                            if (data['success'] == true) {
-                                swal("Proof! Category Have been Deleted..!", {
-                                    icon: "success",
-                                });
-                                tables = $("#DataTable").dataTable();
-                                tables.fnPageChange('first', 1);
+                        }, function(res) {
+                            if (res['success']) {
+                                swal({
+                                    title: "Successful...",
+                                    text: res.message,
+                                    icon: "success"
+                                })
+                                Getdata();
                             }
                         });
-                    } else {
-                        swal("Your file is safe!");
                     }
                 });
         }

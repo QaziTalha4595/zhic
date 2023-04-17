@@ -21,6 +21,7 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-body">
+
             <div class="table-responsive">
                 <table id="DataTable" class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
@@ -58,6 +59,9 @@ $(function() {
                 ],
                 "responsive": true,
                 buttons: [{
+                        extend: 'colvis',
+                        text: "Show/Hide"
+                    },{
                         extend: 'excelHtml5',
                         text: "Excel"
                     },
@@ -81,13 +85,13 @@ $(function() {
                 'class': 'text-center'
             },
             {
-                data: 'Name',
+                data: 'ebook.ebook_name',
                 'searchable': true,
                 'orderable': false,
                 'class': 'text-center'
             },
             {
-                data: 'TotalView',
+                data: 'ebook.no_view',
                 'searchable': false,
                 'orderable': false,
                 'class': 'text-center'

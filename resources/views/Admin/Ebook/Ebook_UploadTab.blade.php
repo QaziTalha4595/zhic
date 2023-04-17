@@ -128,7 +128,7 @@
                                                                 class="form-control form-control-user border-primary"
                                                                 id="ebook_download_link" name="ebook_download_link"
                                                                 value="{{ $data->ebook_download_link ?? '' }}"
-                                                                placeholder="Enter link here.." accept="audio/*">
+                                                                placeholder="Enter link here.." accept="audio/mp3*;>
                                                         </div>
                                                     </div>
                                                 @endif
@@ -172,31 +172,29 @@
                 data: new_data,
                 processData: false,
                 contentType: false,
-                error: function(jqXHR, textStatus, errorThrown) {
+                success: (res) => {
+
                     $("#btnSubmit").prop("disabled", false);
-                    $("#error").removeClass().html('').show();
-                    $("#error").addClass("alert alert-danger").html(errorThrown);
-                    return false;
-                },
-                success: function(data) {
-                    $("#btnSubmit").prop("disabled", false);
-                    console.log(data);
-                    // return false;
-                    if (data["success"] == true) {
-                        $("#error").show().addClass("alert alert-success").html(data['message']);
+                    if (res.success) {
                         setTimeout(() => {
-                            $("#FileStoreModal").modal('hide');
-                            $("#error").removeClass().html('').hide();
+                            alertmsg(res.message, "success");
+                            $("#btnSubmit").prop("disabled", false);
                             $("#FileStoreForm")[0].reset();
                             DataTable = $("#DataTable").dataTable();
                             DataTable.fnPageChange('first', 1);
                             window.location.href = "{{ route('Ebook') }}";
-                        }, 2000);
+                        }, 1000);
+                    } else if (res.validate) {
+                        alertmsg(res.message, "warning");
                     } else {
-                        $("#error").show().addClass("alert alert-warning").html(data['message']).fadeOut(2000);
-                        return false;
+                        alertmsg(res.message, "danger");
                     }
+                },
+                error: (err) => {
+                    alertmsg("Something went wrong", "danger");
+                    $("#btnSubmit").prop("disabled", false);
                 }
+
             });
         }
     </script>

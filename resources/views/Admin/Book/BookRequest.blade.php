@@ -144,6 +144,9 @@ $(function() {
                 ],
                 "responsive": true,
                 buttons: [{
+                        extend: 'colvis',
+                        text: "Show/Hide"
+                    },{
                         extend: 'excelHtml5',
                         text: "Excel"
                     },

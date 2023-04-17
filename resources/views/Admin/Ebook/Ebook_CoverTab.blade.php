@@ -223,11 +223,11 @@ function GetEbookCoverImage() {
                             <td class="ml-5">
                                 {{-- onclick="SubCategoryEdit(' . $SubCategories->id . ')" --}}
                                 <a onclick="ImgCoverEdit(${e.ebook__cover_id })"
-                                    class="btn btn-primary btn-lg">
+                                    class="btn btn-primary btn-md">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <a onclick="ImgCoverRemove(${e.ebook__cover_id })"
-                                    class="btn btn-danger btn-lg">
+                                    class="btn btn-danger btn-md">
                                     <i class="fa fa-trash"></i>
                                 </a>
 
@@ -258,10 +258,10 @@ function GetEbookCoverImage() {
                     if (res.success) {
                         $('#imageid').css('background-image', '')
                         alertmsg(res.message, "success");
-                        setTimeout(() => {
+
                             $("#FileStoreForm")[0].reset();
                             GetEbookCoverImage();
-                        }, 1000);
+
                     } else if (res.validate) {
                         alertmsg(res.message, "warning")
                     } else {
@@ -276,6 +276,7 @@ function GetEbookCoverImage() {
         }
 
         function ImgCoverRemove(ebook__cover_id) {
+
             swal({
                 title: "Are you sure?",
                 text: "Once deleted, you will not be able to recover this file!",
@@ -286,24 +287,27 @@ function GetEbookCoverImage() {
                 if (willDelete) {
                     $.get("{{ route('EbookCoverImageRemove') }}", {
                         ebook__cover_id: ebook__cover_id
-                    }, function(data) {
-                        console.log(data);
+                    }, function(res) {
+                        console.log(res);
                         // return false;
-                        if (data['success'] == true) {
-                            swal("Poof! Ebook Cover Image has been deleted!", {
-                                icon: "success",
+                        if (res['success'] == true) {
+                            $("#FileStoreForm")[0].reset();
+                            $('#imageid').css('background-image', `url("")`);
+                            $('#btnUpdate').hide();
+                            $('#btnSubmit').show();
+                            swal({
+                                title: "Successful...",
+                                    text: res.message,
+                                    icon: "success"
                             });
                         } else {
                             swal("Oops something went wrong, please check!", {
                                 icon: "error",
                             });
                         }
-                        setTimeout(() => {
-                            GetEbookCoverImage();
-                        }, 700);
+                        GetEbookCoverImage();
+
                     });
-                } else {
-                    swal("Your file is safe!");
                 }
             });
         }

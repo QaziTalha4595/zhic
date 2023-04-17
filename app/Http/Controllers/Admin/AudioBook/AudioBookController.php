@@ -15,13 +15,15 @@ use App\Models\Ebook\Ebook__Audio;
 use App\Models\AudioBook\AudioBook_Cover;
 use Yajra\Datatables\Datatables;
 use App\Models\FetchThirdCategory;
+use Illuminate\Support\Carbon;
 use DB;
 
 class AudioBookController extends Controller
 {
     public function AudioBook()
     {
-        return view('Admin.AudioBook.AudioBook');
+        $Category = Category::all();
+        return view('Admin.AudioBook.AudioBook',compact('Category'));
     }
     public function AudioBookBasicTab()
     {
@@ -30,20 +32,44 @@ class AudioBookController extends Controller
         return view('Admin.AudioBook.AudioBookBasicTab',compact('Category','Languages'));
 
     }
-    public function AudioBookShow()
+    public function AudioBookShow(Request $req)
     {
-        $AudioBook = Ebook::with(['category','subcategory','ebookaudio'])->where('book_type', 1)->OrderBy('file_id','DESC');
+
+        if ($req->ajax()) {
+            if ($req->input('from_date') && $req->input('to_date')) {
+                $AudioBook = Ebook::whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
+                                ->where('book_type', 1)
+                                ->with(['category','subcategory','ebookaudio'])
+                                ->get();
+            }
+            else if($req->input('category_name') && $req->input('sub_category_name'))
+            {
+                $AudioBook = Ebook::where('category_id',$req->input('category_name'))
+                                                ->where('book_type', 1)
+                                                ->where('sub_cat_id',$req->input('sub_category_name'))
+                                                ->with(['category','subcategory','ebookaudio'])
+                                                ->get();
+            }
+            else if ($req->input('category_name') || $req->input('sub_category_name')) {
+                $AudioBook = Ebook::where('category_id',$req->input('category_name'))
+                                                ->where('book_type', 1)
+                                                ->orwhere('sub_cat_id',$req->input('sub_category_name'))
+                                                ->with(['category','subcategory','ebookaudio'])
+                                                ->get();
+            }
+
+            else {
+                $AudioBook = Ebook::with(['category','subcategory','ebookaudio'])->where('book_type', 1)->get();
+            }
+        }
+
+
 
         return Datatables::of($AudioBook)
-            ->addColumn('Category', function ($AudioBook) {
-                return $AudioBook->category->category_name;
-            })
-            ->addColumn('SubCategory', function ($AudioBook) {
-                return $AudioBook->subcategory->sub_category_name;
-            })
-            ->addColumn('Audio File', function ($AudioBook) {
-                return $AudioBook->ebookaudio->audio_file ?? '';
-            })
+        ->editColumn('created_at', function ($ThirdCategory) {
+            $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $ThirdCategory->created_at)->format('d-m-Y');
+            return $formatedDate;
+        })
             ->addColumn('Action', function ($AudioBook) {
                 return $AudioBook->file_id;
             })
@@ -130,7 +156,7 @@ class AudioBookController extends Controller
 
             'audio_book_position' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u',
             'audio_book_bg_color' => 'required',
-            'audio_book_cover' => $req->input('file_id') ? '' : 'required|regex:([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)'
+            'audio_book_cover' => $req->input('file_id') ? 'mimes:jpeg,jpg,png,gif|max:10000' : 'required|mimes:jpeg,jpg,png,gif|max:10000'
             ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
@@ -155,7 +181,7 @@ class AudioBookController extends Controller
         }
         else
             {
-                $imageThumbnail = $row->ebook_cover->ebook_cover;
+                $imageThumbnail = $row->ebook_cover->ebook_cover ?? '';
             }
         try {
 
@@ -272,12 +298,31 @@ class AudioBookController extends Controller
     }
     public function AudioBookRemove(Request $req)
     {
-        $Image = Ebook::where('file_id',$req->input('id'))->first();
+        $findImage = Ebook__Cover::where('file_id',$req->input('id'))->get();
 
-        if(file_exists('public/Files/Audio_Book/' . $Image->ebook_audio) AND !empty($Image->ebook_audio))
-        {
-            unlink('public/Files/Audio_Book/'.$Image->ebook_audio);
+            foreach ($findImage as $row) {
+
+            if(!empty($row->ebook_cover) && file_exists('public/Files/Audio_Book_CoverImg/'.$row->ebook_cover))
+            {
+                unlink('public/Files/Audio_Book_CoverImg/'.$row->ebook_cover);
+            }
+
         }
+
+        $findImage = Ebook__Audio::where('file_id',$req->input('id'))->get();
+
+        foreach ($findImage as $row) {
+
+        if(!empty($row->audio_file) && file_exists('public/Files/Audio_Book/'.$row->audio_file))
+        {
+            unlink('public/Files/Audio_Book/'.$row->audio_file);
+        }
+
+    }
+
+        Ebook__Cover::where('file_id',$req->input('id'))->delete();
+        Ebook__Audio::where('file_id',$req->input('id'))->delete();
+
         $data = Ebook::where('file_id',$req->input('id'))->delete();
         if($data)
         {

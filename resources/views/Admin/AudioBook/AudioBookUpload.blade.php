@@ -53,7 +53,7 @@
                                     <button type="button" class="step-trigger" role="tab" aria-controls="logins-part"
                                         id="logins-part-trigger">
                                         <a class="nav-link active"
-                                            href="{{ url('ControlPanel/AudioBook-'.$file_id.'-CoverImage') }}">
+                                            href="{{ url('ControlPanel/AudioBook-' . $file_id . '-CoverImage') }}">
                                             <span class="bs-stepper-circle">2</span>
                                             <span class="bs-stepper-label">Audio Book Cover</span>
                                         </a>
@@ -64,7 +64,7 @@
                                     <button type="button" class="step-trigger" role="tab"
                                         aria-controls="information-part" id="information-part-trigger">
                                         <a class="nav-link active"
-                                            href="{{ url('ControlPanel/AudioBook-'.$file_id.'-Upload') }}">
+                                            href="{{ url('ControlPanel/AudioBook-' . $file_id . '-Upload') }}">
                                             <span class="bs-stepper-circle">3</span>
                                             <span class="bs-stepper-label">Audio Book Upload</span>
                                         </a>
@@ -87,107 +87,122 @@
                                         <form id="AudioFileStoreForm">
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                            @csrf
-                                            <input type="hidden" name="file_id" value="{{ $file_id }}" />
-                                            <input type="hidden" name="audio_attachment_id" id="audio_attachment_id">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <label class="text-bold">Audio Title</label>
-                                                        <input type="text"
-                                                            class="form-control form-control-user border-primary"
-                                                            id="audio_title" name="audio_title"
-                                                            placeholder="Audio Title">
+                                                    @csrf
+                                                    <input type="hidden" name="file_id" value="{{ $file_id }}" />
+                                                    <input type="hidden" name="audio_attachment_id"
+                                                        id="audio_attachment_id">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <label class="text-bold">Audio Title</label>
+                                                                <input type="text"
+                                                                    class="form-control form-control-user border-primary"
+                                                                    id="audio_title" name="audio_title"
+                                                                    placeholder="Audio Title">
+
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <label class="text-bold">Audio Title in Arabic</label>
+                                                                <input type="text"
+                                                                    class="form-control form-control-user border-primary"
+                                                                    id="audio_title_in_arabic"
+                                                                    name="audio_title_in_arabic"
+                                                                    placeholder="Audio Title">
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <label class="text-bold">Audio</label>
+                                                                <input type="file"
+                                                                    class="form-control form-control-user border-primary"
+                                                                    id="audio_attachment" name="audio_attachment"
+                                                                    placeholder="" accept=".mp3">
+                                                                <span id="imageid"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12 mt-3">
+                                                            <button type="button" id="btnUpdate"
+                                                                style="width: 100%; display: none;"
+                                                                class="btn btn-primary mt-2 mb-4"
+                                                                onclick="Audio_Book_UploadFile()">Update Book</button>
+                                                        </div>
+                                                        <div class="col-lg-12 mt-2">
+                                                            <button type="button" id="btnSubmit" style="width: 100%"
+                                                                class="btn btn-primary mt-2 mb-4"
+                                                                onclick="Audio_Book_UploadFile()">Add Book</button>
+                                                        </div>
+                                                        <div class="error mx-3 text-center">
+                                                            <div id="error"></div>
+                                                        </div>
 
                                                     </div>
-
-                                                    <div class="col-md-4">
-                                                        <label class="text-bold">Audio Title in Arabic</label>
-                                                        <input type="text"
-                                                            class="form-control form-control-user border-primary"
-                                                            id="audio_title_in_arabic" name="audio_title_in_arabic"
-                                                            placeholder="Audio Title">
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <label class="text-bold">Audio</label>
-                                                        <input type="file"
-                                                        class="form-control form-control-user border-primary"
-                                                        id="audio_attachment" name="audio_attachment"
-                                                        placeholder="" accept=".mp3">
-                                                        <span id="imageid"></span>
-                                                      </div>
-                                                    </div>
-
-                                                    <div class="col-lg-12 mt-3">
-                                                        <button type="button" id="btnUpdate" style="width: 100%; display: none;"
-                                                            class="btn btn-primary mt-2 mb-4"
-                                                            onclick="Audio_Book_UploadFile()">Update Book</button>
-                                                    </div>
-                                                    <div class="col-lg-12 mt-2">
-                                                        <button type="button" id="btnSubmit" style="width: 100%"
-                                                            class="btn btn-primary mt-2 mb-4"
-                                                            onclick="Audio_Book_UploadFile()">Add Book</button>
-                                                    </div>
-                                                    <div class="error mx-3 text-center">
-                                                        <div id="error"></div>
-                                                    </div>
-
-                                                </div>
 
 
                                                     <div class="col-md-12 mt-4">
 
-                                                     <table class="table table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Id</th>
-                                                                <th>Audio Name</th>
-                                                                <th>File</th>
-                                                                <th>Audio Link</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="cover_table">
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Id</th>
+                                                                    <th>Audio Name</th>
+                                                                    <th>File</th>
+                                                                    <th style="width:30px">Audio Link</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="cover_table">
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
 
                                                 </div>
                                             </div>
-                                        </div>
                                     </div>
-                                        </form>
-                                    </div>
-
                                 </div>
-                                <div class="error mx-3 text-center">
-                                    <div id="error"></div>
-                                </div>
-
+                                </form>
                             </div>
+
                         </div>
+                        <div class="error mx-3 text-center">
+                            <div id="error"></div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button type="button" id="btnSubmit" onclick="GoToDataTable()"
+                                class="btn btn-primary">Save</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
     </div>
+    </div>
+    </div>
     <!-- Form Wizard -->
 
     <!-- Main Script -->
-<script>
-         $(function () {
+    <script>
+        $(function() {
             GetAudioFile()
         });
 
-function GetAudioFile() {
-    $.get("{{route('GetAudioFile')}}", {file_id: {{$file_id}}},
-    function (data) {
-            var html = ``
-            data["data"].forEach(e => {
-                html+= ` <tr>
+        function GoToDataTable() {
+            DataTable = $("#DataTable").dataTable();
+            DataTable.fnPageChange('first', 1);
+            window.location.href = "{{ route('AudioBook') }}";
+        }
+
+        function GetAudioFile() {
+            $.get("{{ route('GetAudioFile') }}", {
+                    file_id: {{ $file_id }}
+                },
+                function(data) {
+                    var html = ``
+                    data["data"].forEach(e => {
+                        html += ` <tr>
                             <td>${e.audio_id}</td>
                             <td>
                                 ${e.audio_title}
@@ -200,44 +215,45 @@ function GetAudioFile() {
                             </td>
                             <td class="ml-5">
                                 <a onclick="AudioFileEdit(${e.audio_id })"
-                                    class="btn btn-primary btn-lg">
+                                    class="btn btn-primary btn-md">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <a onclick="AudioFileRemove(${e.audio_id })"
-                                    class="btn btn-danger btn-lg">
+                                    class="btn btn-danger btn-md">
                                     <i class="fa fa-trash"></i>
                                 </a>
 
                             </td>
                         </tr>`
 
-            });
+                    });
 
-            $("#cover_table").html(html);
+                    $("#cover_table").html(html);
+                }
+            );
         }
-    );
- }
-function Audio_Book_UploadFile()
-{
 
-    let form_data = document.getElementById("AudioFileStoreForm");
-    let new_data = new FormData(form_data);
-    $("#btnSubmit").prop("disabled", true);
+        function Audio_Book_UploadFile() {
 
-    $.ajax({
-        type: "POST",
-        url: "{{ route('AudioStore') }}",
-        data: new_data,
-        processData: false,
-        contentType: false,
-        success: (res) => {
-            $("#audio_attachment_id").val("");
-            $('#btnSubmit').show();
-            $('#btnUpdate').hide();
-                    $("#btnSubmit").prop("disabled", false);
+            let form_data = document.getElementById("AudioFileStoreForm");
+            let new_data = new FormData(form_data);
+            $("#btnSubmit").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('AudioStore') }}",
+                data: new_data,
+                processData: false,
+                contentType: false,
+
+                success: (res) => {
+                    $("#audio_attachment_id").val("");
+                    $('#btnSubmit').show();
+                    $('#btnUpdate').hide();
                     if (res.success) {
                         $('#imageid').html('')
                         alertmsg(res.message, "success");
+                        $("#btnSubmit").prop("disabled", false);
                         setTimeout(() => {
                             $("#AudioFileStoreForm")[0].reset();
                             GetAudioFile();
@@ -252,81 +268,82 @@ function Audio_Book_UploadFile()
                     alertmsg("Something went wrong", "danger");
                     $("#btnSubmit").prop("disabled", false);
                 }
-    });
+            });
 
- }
- function AudioFileRemove(audio_book_id) {
-    swal({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this file!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    }).then((willDelete) => {
-        if (willDelete) {
-            $.get("{{ route('AudioBookFileRemove') }}", {
-                audio_book_id: audio_book_id
-            }, function(data) {
-                console.log(data);
-                // return false;
-                if (data['success'] == true) {
-                    swal("Poof! Audio File has been deleted!", {
-                        icon: "success",
+        }
+
+        function AudioFileRemove(audio_book_id) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.get("{{ route('AudioBookFileRemove') }}", {
+                        audio_book_id: audio_book_id
+                    }, function(data) {
+                        console.log(data);
+                        // return false;
+                        if (data['success'] == true) {
+                            swal("Poof! Audio File has been deleted!", {
+                                icon: "success",
+                            });
+                        } else {
+                            swal("Oops something went wrong, please check!", {
+                                icon: "error",
+                            });
+                        }
+                        setTimeout(() => {
+                            location.reload();
+                        }, 700);
                     });
                 } else {
-                    swal("Oops something went wrong, please check!", {
-                        icon: "error",
-                    });
+                    swal("Your file is safe!");
                 }
-                setTimeout(() => {
-                    location.reload();
-                }, 700);
             });
-        } else {
-            swal("Your file is safe!");
         }
-    });
-}
-// function ImgCoverRemove(ebook__cover_id) {
-//             swal({
-//                 title: "Are you sure?",
-//                 text: "Once deleted, you will not be able to recover this file!",
-//                 icon: "warning",
-//                 buttons: true,
-//                 dangerMode: true,
-//             }).then((willDelete) => {
-//                 if (willDelete) {
-//                     $.get("{{ route('EbookCoverImageRemove') }}", {
-//                         ebook__cover_id: ebook__cover_id
-//                     }, function(data) {
-//                         console.log(data);
-//                         // return false;
-//                         if (data['success'] == true) {
-//                             swal("Poof! Ebook Cover Image has been deleted!", {
-//                                 icon: "success",
-//                             });
-//                         } else {
-//                             swal("Oops something went wrong, please check!", {
-//                                 icon: "error",
-//                             });
-//                         }
-//                         setTimeout(() => {
-//                             GetEbookCoverImage();
-//                         }, 700);
-//                     });
-//                 } else {
-//                     swal("Your file is safe!");
-//                 }
-//             });
-//         }
+        // function ImgCoverRemove(ebook__cover_id) {
+        //             swal({
+        //                 title: "Are you sure?",
+        //                 text: "Once deleted, you will not be able to recover this file!",
+        //                 icon: "warning",
+        //                 buttons: true,
+        //                 dangerMode: true,
+        //             }).then((willDelete) => {
+        //                 if (willDelete) {
+        //                     $.get("{{ route('EbookCoverImageRemove') }}", {
+        //                         ebook__cover_id: ebook__cover_id
+        //                     }, function(data) {
+        //                         console.log(data);
+        //                         // return false;
+        //                         if (data['success'] == true) {
+        //                             swal("Poof! Ebook Cover Image has been deleted!", {
+        //                                 icon: "success",
+        //                             });
+        //                         } else {
+        //                             swal("Oops something went wrong, please check!", {
+        //                                 icon: "error",
+        //                             });
+        //                         }
+        //                         setTimeout(() => {
+        //                             GetEbookCoverImage();
+        //                         }, 700);
+        //                     });
+        //                 } else {
+        //                     swal("Your file is safe!");
+        //                 }
+        //             });
+        //         }
 
         function AudioFileEdit(audio_id) {
             $('#btnSubmit').hide();
             $('#btnUpdate').show();
 
             $([document.documentElement, document.body]).animate({
-                 scrollTop: $("#scrollup").offset().top
-    }, 500);
+                scrollTop: $("#scrollup").offset().top
+            }, 500);
 
             $.get("{{ route('AudioEdit') }}", {
                 audio_id: audio_id
@@ -336,6 +353,6 @@ function Audio_Book_UploadFile()
                 $("#imageid").html(data.data[0]['audio_file']);
             });
         }
-</script>
-<!-- Main Script -->
+    </script>
+    <!-- Main Script -->
 @endsection

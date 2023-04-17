@@ -31,10 +31,10 @@ Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->n
 
 Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], function()
 {
-    Route::get('/Dashboard', function () {return view('Admin.AdminLayout');})->name('Dashboard');
+    // Route::get('/Dashboard', function () {return view('Admin.AdminLayout');})->name('Dashboard');
     // ---==== Setup ====--- \\
     //Dashboared
-    Route::get('/Admin/Dashboard',function(){
+    Route::get('/Dashboard',function(){
         return view('Admin.Dashboard');
     });
     // category management
@@ -114,6 +114,8 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::get('EbookRemove', [EbookController::class, 'EbookRemove'])->name('EbookRemove');
     Route::post('Ebook-{file_id}-Edit', [EbookController::class, 'EbookCoverStore'])->name('EbookEdit');
     Route::get('EbookEdit',[EbookController::class,'EbookEdit'])->name('EbookEdit');
+    Route::get('AllBookShow',[EbookController::class,'AllBookShow'])->name('AllBookShow');
+
     // Audio Book
     Route::get('AudioBookShow', [AudioBookController::class,'AudioBookShow'])->name('AudioBookShow');
     Route::get('AudioBook', [AudioBookController::class, 'AudioBook'])->name('AudioBook');

@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Promotion;
 use Yajra\Datatables\Datatables;
+use DB;
 
 class PromotionController extends Controller
 {
@@ -20,10 +21,7 @@ class PromotionController extends Controller
         $SubCategories = SubCategory::all();
         return view('Admin.Promotion.Promotion',compact('Categories','SubCategories'));
     }
-    public function PromotionCrop(Request $req)
-    {
 
-    }
     public function FetchSubCategory(Request $req)
     {
         $SubCategories['sub_categories'] = SubCategory::where('category_id',$req->cat_id)->get();
@@ -34,42 +32,33 @@ class PromotionController extends Controller
         $Promotion = new Promotion();
 
         $validator = Validator::make($req->all(), [
-            'category_id' => 'required',
-            'sub_cat_id' => 'required',
-            'promotion_attachment' => $req->input('promo_id') ? 'mimes:jpeg,jpg,png|max:2048' : 'required|image|mimes:jpeg,jpg,png|max:2048'
+            'category_id' => $req->input('promo_id') ? '' : 'required',
+            'sub_cat_id' => $req->input('promo_id') ? '' : 'required',
+            'image' => $req->input('promo_id') ? 'mimes:jpeg,jpg,png|max:2048' : 'required|image|mimes:jpeg,jpg,png|max:2048'
         ]);
 
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
-        if($req->hasFile('promotion_attachment'))
+        if($req->hasFile('image'))
         {
-            $folderPath = public_path('Promotion/');
 
             $image_parts = explode(";base64,", $req->promotion_attachment);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[0];
-
-            $image_base64 = base64_decode($image_parts[0]);
-
-            $imageName = uniqid() . '.png';
-
-            $imageFullPath = $folderPath.$imageName;
-
+            $imageName = uniqid() . '.'.explode("image/", $image_parts[0])[1];
+            file_put_contents(public_path('Promotion/') . "/". $imageName, base64_decode($image_parts[1]));
             if($req->input('promo_id'))
             {
                 $findImage = Promotion::where('id',$req->input('promo_id'))->first();
-
                 if(file_exists('public/Promotion/'.$findImage->promotion_attachment) AND !empty($findImage->promotion_attachment))
                 {
                     unlink('public/Promotion/'.$findImage->promotion_attachment);
                 }
+
             }
         }
-        else
-        {
+        else{
             $data = Promotion::where('id',$req->input('promo_id'))->get();
-            $imageName = $data->promotion_attachment;
+            $imageName = $data[0]->promotion_attachment;
         }
 
         try {
@@ -77,9 +66,9 @@ class PromotionController extends Controller
 
                 ['id' => $req->input('promo_id')],
                 [
+                    'promotion_attachment' => $imageName,
                     'category_id' => $req->input('category_id'),
-                    'sub_cat_id' => $req->input('sub_cat_id'),
-                    'promotion_attachment' => $imageName
+                    'sub_cat_id' => $req->input('sub_cat_id')
                 ]
             );
             return response()->json(["success" => true, "message" => $Promotion->wasRecentlyCreated ? "Promotion Create Successfully" : "Promotion Updated Successfully"]);
@@ -89,14 +78,8 @@ class PromotionController extends Controller
     }
     public function PromotionShow()
     {
-        $Promotion = Promotion::with(['category'],['subcategory'])->OrderBy('id','DESC');
+        $Promotion = Promotion::with(['category','subcategory']);
         return Datatables::of($Promotion)
-        ->addColumn('Category', function ($Promotion) {
-            return $Promotion->category->category_name;
-        })
-        ->addColumn('Sub Category', function($Promotion){
-            return $Promotion->subcategory->sub_category_name ?? '';
-        })
         ->addColumn('action', function ($Promotion) {
             return
             '<button class="btn btn-primary" data-toggle="modal" data-target="#PromotionStoreModal"

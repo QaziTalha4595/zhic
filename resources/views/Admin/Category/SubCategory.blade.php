@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-lg-12 mb-2">
-            <div class="card shadow" style="border-left: 2px solid #007BFF;">
+            <div class="card shadow">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -13,7 +13,7 @@
                         </div>
                         <div class="col-auto">
                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#SubCategoryStoreModal">Add</button>
+                                data-target="#SubCategoryStoreModal" id="AddBtn">Add</button>
 
                             <div class="modal fade" id="SubCategoryStoreModal">
                                 <div class="modal-dialog modal-dialog-centered">
@@ -50,7 +50,7 @@
                                         <div class="modal-footer">
                                             <span id="error" style="display: none;" class="m-auto"></span>
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
+                                                data-dismiss="modal" id="btnClose" >Close</button>
                                             <button type="button" id="btnSubmit" onclick="SubCategoryStore()"
                                                 class="btn btn-primary">Submit</button>
                                         </div>
@@ -66,7 +66,7 @@
 </div>
 
 <div class="container-fluid">
-    <div class="card shadow mb-4" style="border-left: 2px solid #007BFF;">
+    <div class="card shadow mb-4">
         <div class="card-body">
         <form action="" class="mb-3">
                 <div class="row">
@@ -85,7 +85,9 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="Filter_submit" style="width: 100%" onclick=" Getdata()" class="btn btn-primary">Filter</button>
+                        <button type="button" id="Filter_submit" style="width: 70px" onclick=" Getdata()" class="btn btn-primary">Filter</button>
+                        <button type="button" style="width: 70px" title="Refresh Select Box" class="btn btn-secondary ml-2" id="resetBtn" onclick="ResetData()">Reset</button>
+
                     </div>
                 </div>
             </form>
@@ -119,16 +121,22 @@ $(function() {
 
     Getdata();
 
-
-$("#department_supervised_by").select2({
-    theme: "classic",
-    // width: 'resolve'
 });
+    $("#AddBtn").click(function(){
 
-});
+        $('#SubCategoryStoreForm')[0].reset();
+        $('#sub_cat_id').val('');
+        $("#btnSubmit").prop("disabled", false);
+        $("#error").removeClass().html('').hide();
+    });
+    function ResetData()
+        {
+            $('#date_from').val(''),
+            $('#date_to').val(''),
+            $('#cat_name').val('')
+        }
 function Getdata()
 {
-
     $("#DataTable").DataTable().destroy();
     var DataTable = $("#DataTable").DataTable({
     "processing": true,
@@ -152,7 +160,9 @@ function Getdata()
             data: 'id',
         },
         {
-            data: 'Category',
+            data: 'category.category_name',
+            'searchable': true,
+            'orderable': true,
         },
         {
             data: 'sub_category_name',
@@ -183,9 +193,12 @@ $.post("{{route('SubCategoryStore')}}", $('#SubCategoryStoreForm').serialize())
         .done((res)=>{
             $("#btnSubmit").prop("disabled", false);
              if(res.success){
-                $("#btnSubmit").prop("disabled", true);
+                $("#btnSubmit").prop("disabled", false);
                 alertmsg(res.message,"success");
-                window.location.href = "{{route('SubCategory')}}";
+                Getdata();
+                $("#SubCategoryStoreModal").modal('hide');
+                 $('#SubCategoryStoreForm')[0].reset();
+
              }else if(res.validate){
                 alertmsg(res.message, "warning")
              }else{
@@ -201,6 +214,7 @@ $.post("{{route('SubCategoryStore')}}", $('#SubCategoryStoreForm').serialize())
 }
 function SubCategoryEdit(id)
   {
+
     $.get("{{route('SubCategoryEdit')}}", {id:id}, function(data)
     {
       $("#sub_cat_id").val(data.data[0]['id']);
@@ -219,27 +233,22 @@ function SubCategoryEdit(id)
 			dangerMode : true,
 
 		})
-    .then((willDelete) => {
-			if(willDelete)
-			{
-				$.get("{{route('SubCategoryRemove')}}",{id:id},function(data){
-				console.log(data);
-					if(data['success'] == true)
-					{
-						swal("Proof! Sub Category Have been Deleted..!",
-						{
-							icon: "success",
-						});
-						tables = $("#DataTable").dataTable();
-						tables.fnPageChange('first',1);
-					}
-				});
-			}
-	        else
-	        {
-	            swal("Your file is safe!");
-	        }
-		});
+        .then((willDelete) => {
+                    if (willDelete) {
+                        $.get("{{ route('SubCategoryRemove') }}", {
+                            id: id
+                        }, function(res) {
+                            if (res['success']) {
+                                swal({
+                                    title: "Successful...",
+                                    text: res.message,
+                                    icon: "success"
+                                })
+                                Getdata();
+                            }
+                        });
+                    }
+                });
   }
 
 </script>

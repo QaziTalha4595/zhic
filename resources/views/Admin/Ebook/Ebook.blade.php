@@ -45,6 +45,29 @@
     <div class="container-fluid">
         <div class="card shadow mb-4">
             <div class="card-body">
+                <form action="" class="mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <select name="cat_name" id="cat_name" class="form-control">
+                                <option value="">All Category</option>
+                                @foreach($categories as $item)
+                                <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-6"><input type="date" id="date_from" name="date_from" class="form-control"></div>
+                                <div class="col-6"><input type="date" id="date_to" name="date_to" class="form-control"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button"  style="width: 70px" id="Filter_submit" onclick=" GetData()" class="btn btn-primary">Filter</button>
+                            <button type="button" style="width: 70px" title="Refresh Select Box" class="btn btn-secondary ml-2" id="resetBtn" onclick="ResetData()">Reset</button>
+
+                        </div>
+                    </div>
+                </form>
                 <div class="table-responsive" style="    padding: 10px;">
                     <table id="DataTable" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
@@ -57,6 +80,7 @@
                                 <th>Title</th>
                                 <th>Book ISBN</th>
                                 <th>Book Author</th>
+                                <th>Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -68,6 +92,18 @@
     <script>
         $(function() {
 
+            GetData();
+
+        });
+        function ResetData()
+        {
+            $('#date_from').val(''),
+            $('#date_to').val(''),
+            $('#cat_name').val('')
+        }
+        function GetData()
+        {
+            $("#DataTable").DataTable().destroy();
             DataTable = $("#DataTable").DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -87,76 +123,96 @@
                     },
                     {
                         extend: 'print',
-                        text: "Print"
+                        text: "Print",
+
+                        exportOptions: {
+                    columns: [ 0, ':visible' ],
+                    columns: ':visible:not(:contains(Action))'
+                }
                     }, 'pageLength'
                 ],
                 ajax: {
                     url: "{{ route('EbookShow') }}",
+                    data: {
+                    from_date: $('#date_from').val(),
+                    to_date: $('#date_to').val(),
+                    category_name : $('#cat_name').val()
+                },
                 },
                 columns: [{
-                        data: 'file_id',
-                        'searchable': false,
-                        'orderable': false,
-                        'class': 'text-center'
-                    },
-                    {
-                        data: 'Thumbnail',
-                        'searchable': false,
-                        'orderable': false,
-                        render: function(data) {
-                            return `<img src="{{ url('public/Files/E_Book_CoverImg') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="width:100px;height:auto">`;
+                    data: 'file_id',
+                    'searchable': false,
+                    'orderable': true,
+                    'class': 'text-center'
+                },
+                {
+                    data: 'ebookcover.ebook_cover',
+                    'searchable': false,
+                    'orderable': false,
+                    render: function(data, type) {
+
+                        return `<center><img src="{{ url('public/Files/E_Book_CoverImg') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="height: 100px; width:auto; margin-auto"><span style="display:none;  ">{{ url('public/Files/E_Book_CoverImg') }}/${data}</span></center>`;
+
                         }
                     },
                     {
-                        data: 'Category',
+
+                        data: 'category.category_name',
                         'searchable': true,
                         'orderable': true,
                         'class': 'text-center'
+
                     },
                     {
-                        data: 'SubCategory',
-                        'searchable': true,
-                        'orderable': true,
+                        data: 'subcategory.sub_category_name',
+                        'searchable': false,
+                        'orderable': false,
                         'class': 'text-center'
                     },
                     {
-                        data: 'ThirdCategory',
-                        'searchable': true,
-                        'orderable': true,
+                        data: 'thirdcategory.third_category_name',
+                        'searchable': false,
+                        'orderable': false,
                         'class': 'text-center'
                     },
                     {
                         data: 'ebook_name',
-                        'searchable': true,
+                        'searchable': false,
                         'orderable': false,
                         'class': 'text-center'
                     },
                     {
                         data: 'ebook_isbn',
-                        'searchable': true,
+                        'searchable': false,
                         'orderable': false,
                         'class': 'text-center'
                     },
                     {
                         data: 'ebook_author',
-                        'searchable': true,
+                        'searchable': false,
                         'orderable': false,
                         'class': 'text-center'
                     },
+                    {
+                        data: 'created_at'
+                    },
 
                     {
-                        data: 'Action',
+                        data: 'action',
                         'searchable': false,
                         'orderable': false,
+
                         'class': 'text-center',
                         render: (id)=>{
-                            return(`<button class="btn  btn-danger btn-circle mb-1" onclick="EbookRemove(${id})"><i class="fa fa-trash"></i></button>
-                                    <a href="Ebook-${id}-Basic" class="btn btn-primary btn-circle"><i class="fas fa-pencil-alt "></i></a>`)
+                            return(`<a href="Ebook-${id}-Basic" class="btn btn-primary btn-md   "><i class="fas fa-pencil-alt "></i></a>
+                            <button class="btn  btn-danger btn-md    mt-1" onclick="EbookRemove(${id})"><i class="fa fa-trash"></i></button>
+                            `)
                         }
                     }
                 ]
+
             });
-        });
+        }
         function EbookRemove(id) {
             swal({
                     title: "Are You Sure?",
@@ -170,20 +226,18 @@
                     if (willDelete) {
                         $.get("{{ route('EbookRemove') }}", {
                             id: id
-                        }, function(data) {
-                            console.log(data);
-                            if (data['success'] == true) {
-                                swal("Proof! Ebook Have been Deleted..!", {
-                                    icon: "success",
-                                });
-                                tables = $("#DataTable").dataTable();
-                                tables.fnPageChange('first', 1);
+                        }, function(res) {
+                            if (res['success']) {
+                                swal({
+                                    title: "Successful...",
+                                    text: res.message,
+                                    icon: "success"
+                                })
+                                GetData();
                             }
                         });
-                    } else {
-                        swal("Your file is safe!");
                     }
-                });
-        }
+        });
+    }
     </script>
 @endsection

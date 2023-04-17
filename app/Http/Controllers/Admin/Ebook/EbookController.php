@@ -10,9 +10,13 @@ use App\Models\SubCategory;
 use App\Models\ThirdCategory;
 use App\Models\Language;
 use App\Models\Ebook\Ebook;
+use App\Models\Book_Shelf;
 use App\Models\Ebook\Ebook__Cover;
+use App\Models\Ebook\Ebook_location;
 use Yajra\Datatables\Datatables;
 use App\Models\FetchThirdCategory;
+use App\Models\Feedback\feedback;
+use Illuminate\Support\Carbon;
 use DB;
 
 
@@ -20,7 +24,8 @@ class EbookController extends Controller
 {
     public function Ebook()
     {
-        return view('Admin.Ebook.Ebook');
+        $categories = Category::all();
+        return view('Admin.Ebook.Ebook',compact('categories'));
     }
 
     public function EbookUpload()
@@ -91,30 +96,50 @@ class EbookController extends Controller
             return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
         }
     }
-    public function EbookShow(Request $request)
+    public function EbookShow(Request $req)
     {
-        $Ebook = Ebook::with(['category','subcategory','thirdcategory','ebookcover'])->where('book_type',0)->OrderBy('file_id','DESC');
+        if ($req->ajax()) {
+            if ($req->input('from_date') && $req->input('to_date')) {
+                $Ebook = Ebook::whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
+                                ->where('book_type',0)
+                                ->with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
 
+            }
+            else if($req->input('category_name'))
+            {
+                $Ebook = Ebook::where('category_id',$req->input('category_name'))
+                                ->where('book_type',0)
+                                ->with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
+
+            }
+            else if ($req->input('from_date') || $req->input('to_date')) {
+
+                $Ebook = Ebook::whereDate('created_at', [$req->input('from_date')])
+                                ->orwhereDate('created_at', [$req->input('to_date')])
+                                ->where('book_type',0)
+                                ->with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
+
+            } else {
+                $Ebook = Ebook::where('book_type',0)
+                                ->with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
+            }
+        }
         return Datatables::of($Ebook)
-            ->addColumn('Category', function ($e) {
-                return $e->category->category_name;
+            // ->addColumn('file_read', function ($Ebook) {
+            //     return '<a type="button" onclick="FileRead(' . $Ebook->unique_id . ')" class="">' . $Ebook->unique_id . '</a>';
+            // })
+            ->editColumn('created_at', function ($SubCategories) {
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $SubCategories->created_at)->format('d-m-Y');
+                return $formatedDate;
             })
-            ->addColumn('SubCategory', function ($e) {
-                return $e->subcategory->sub_category_name;
+            ->addColumn('action', function ($Ebook) {
+                return $Ebook->file_id;
             })
-            ->addColumn('ThirdCategory', function ($e) {
-                return $e->thirdcategory->third_category_name;
-            })
-            ->addColumn('Thumbnail', function ($e) {
-                return $e->ebookcover->ebook_cover ?? '';
-            })
-            ->addColumn('Action', function ($e) {
-                return $e->file_id ;
-            })
-            ->addColumn('file_read', function ($Ebook) {
-                return '<a type="button" onclick="FileRead(' . $Ebook->unique_id . ')" class="">' . $Ebook->unique_id . '</a>';
-            })
-            ->rawColumns(['Action', 'file_read'])
+            ->rawColumns(['action'])
             ->make(true);
     }
     public function EbookBasicView($file_id)
@@ -216,12 +241,28 @@ class EbookController extends Controller
     {
         $Image = Ebook::where('file_id',$req->input('id'))->first();
 
-        if(file_exists('public/Files/E-Book-Audio/' . $Image->ebook_audio) AND !empty($Image->ebook_audio))
-        {
-            unlink('public/Files/E-Book-Audio/'.$Image->ebook_audio);
-        }
+            if(!empty($Image->ebook_audio) && file_exists('public/Files/E-Book-Audio/'.$Image->ebook_audio))
+            {
+                unlink('public/Files/E-Book-Audio/'.$Image->ebook_audio);
+                unlink('public/Files/E-Book/'.$Image->ebook_attachment);
 
+                $findImage = Ebook__Cover::where('file_id',$req->input('id'))->get();
+
+                foreach ($findImage as $row) {
+
+                if(!empty($row->ebook_cover) && file_exists('public/Files/E_Book_CoverImg/'.$row->ebook_cover))
+                {
+                    unlink('public/Files/E_Book_CoverImg/'.$row->ebook_cover);
+                }
+
+            }
+        }
+        Ebook__Cover::where('file_id',$req->input('id'))->delete();
+        Book_Shelf::where('file_id',$req->input('id'))->delete();
+        Ebook_location::where('file_id',$req->input('id'))->delete();
+        feedback::where('file_id',$req->input('id'))->delete();
         $data = Ebook::where('file_id',$req->input('id'))->delete();
+
         if($data)
         {
             return response()->json(['success' => true, 'message' => 'Ebook Remove Successfully']);
@@ -243,7 +284,7 @@ class EbookController extends Controller
         $data = Ebook__Cover::where('ebook__cover_id',$request->input('ebook__cover_id'))->delete();
         if($data)
         {
-            return response()->json(['success' => true, 'message' => 'SLide Remove Successfully']);
+            return response()->json(['success' => true, 'message' => 'Ebook Cover Remove Successfully']);
         }
         else
         {
@@ -266,7 +307,7 @@ class EbookController extends Controller
 
             'ebook_attachment' => $req->input('file_id') ? 'mimes:doc,pdf,docx' : 'required|mimes:doc,pdf,docx',
             'ebook_link' => $req->input('file_id') ? '' : 'required|mimes:doc,pdf,docx',
-            'ebook_audio' => $req->input('file_id') ? '' : 'required|audio/mpeg'
+            'ebook_audio' => $req->input('file_id') ? 'mimes:audio,mp3' : 'required|audio/mpeg'
             ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
@@ -385,5 +426,47 @@ class EbookController extends Controller
             ->rawColumns(['Action', 'file_read'])
             ->make(true);
     }
+    public function AllBookShow(Request $req)
+    {
+        if ($req->ajax()) {
+            if ($req->input('from_date') && $req->input('to_date')) {
+                $Ebook = Ebook::whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
+                                ->with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
+
+            }
+            else if($req->input('category_name'))
+            {
+                $Ebook = Ebook::where('category_id',$req->input('category_name'))
+                                ->with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
+
+            }
+            else if ($req->input('from_date') || $req->input('to_date')) {
+
+                $Ebook = Ebook::whereDate('created_at', [$req->input('from_date')])
+                                ->orwhereDate('created_at', [$req->input('to_date')])
+                                ->with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
+
+            } else {
+                $Ebook = Ebook::with(['category','subcategory','thirdcategory','ebookcover'])
+                                ->get();
+            }
+        }
+        return Datatables::of($Ebook)
+            // ->addColumn('file_read', function ($Ebook) {
+            //     return '<a type="button" onclick="FileRead(' . $Ebook->unique_id . ')" class="">' . $Ebook->unique_id . '</a>';
+            // })
+            ->editColumn('created_at', function ($SubCategories) {
+                $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $SubCategories->created_at)->format('d-m-Y');
+                return $formatedDate;
+            })
+            ->addColumn('action', function ($ThirdCategory) {
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
 
 }

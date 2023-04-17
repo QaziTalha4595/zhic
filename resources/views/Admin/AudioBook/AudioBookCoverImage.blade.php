@@ -221,11 +221,11 @@ function GetEbookCoverImage() {
                             <td class="ml-5">
                                 {{-- onclick="SubCategoryEdit(' . $SubCategories->id . ')" --}}
                                 <a onclick="ImgCoverEdit(${e.ebook__cover_id })"
-                                    class="btn btn-primary btn-lg">
+                                    class="btn btn-primary btn-md   ">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 <a onclick="ImgCoverRemove(${e.ebook__cover_id })"
-                                    class="btn btn-danger btn-lg">
+                                    class="btn btn-danger btn-md    ">
                                     <i class="fa fa-trash"></i>
                                 </a>
 
@@ -240,6 +240,8 @@ function GetEbookCoverImage() {
  }
 function AudioBookCoverImageStore() {
 
+    $('#btnUpdate').hide();
+    $('#btnSubmit').show();
     let form_data = document.getElementById("AudioBookFileStoreForm");
     let new_data = new FormData(form_data);
     $("#btnSubmit").prop("disabled", true);
@@ -253,12 +255,11 @@ function AudioBookCoverImageStore() {
         success: (res) => {
             $("#btnSubmit").prop("disabled", false);
             if (res.success) {
-                $("#btnSubmit").prop("disabled", true);
+
+                $('#imageid').css('background-image', '')
                 alertmsg(res.message, "success");
-                setTimeout(() => {
-                    $("#AudioBookFileStoreForm")[0].reset();
-                    location.reload();
-                }, 1000);
+                $("#AudioBookFileStoreForm")[0].reset();
+                GetEbookCoverImage();
             } else if (res.validate) {
                 alertmsg(res.message, "warning")
             } else {
@@ -282,24 +283,26 @@ function ImgCoverRemove(audio_book_cover_id) {
         if (willDelete) {
             $.get("{{ route('AudioBookCoverImageRemove') }}", {
                 audio_book_cover_id: audio_book_cover_id
-            }, function(data) {
-                console.log(data);
+            }, function(res) {
+                console.log(res);
                 // return false;
-                if (data['success'] == true) {
-                    swal("Poof! Audio Book Cover Image has been deleted!", {
-                        icon: "success",
-                    });
-                } else {
-                    swal("Oops something went wrong, please check!", {
-                        icon: "error",
-                    });
-                }
-                setTimeout(() => {
-                    location.reload();
-                }, 700);
+                if (res['success'] == true) {
+                            $("#AudioBookFileStoreForm")[0].reset();
+                            $('#imageid').css('background-image', `url("")`);
+                            $('#btnUpdate').hide();
+                            $('#btnSubmit').show();
+                            swal({
+                                title: "Successful...",
+                                    text: res.message,
+                                    icon: "success"
+                            });
+                        } else {
+                            swal("Oops something went wrong, please check!", {
+                                icon: "error",
+                            });
+                        }
+                        GetEbookCoverImage();
             });
-        } else {
-            swal("Your file is safe!");
         }
     });
 }

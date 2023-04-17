@@ -28,7 +28,7 @@ class BookShelfController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
-        
+
         try {
             $BookShelf = Book_Shelf::updateOrCreate(
                 ['book_shelf_id'   => $req->input('book_shelf_id')],
@@ -37,7 +37,7 @@ class BookShelfController extends Controller
                 ]
 
             );
-            
+
             return response()->json(["success" => true, "message" => $BookShelf->wasRecentlyCreated ? "BookShelf Detail Create Successfully" : "BookShelf Detail Updated Successfully"]);
         } catch (\Throwable $th) {
             return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
@@ -46,14 +46,9 @@ class BookShelfController extends Controller
 
     public function BookShelfShow()
     {
-        $BookShelf = Book_Shelf::with(['ebook','ebook__cover'])->OrderBy('book_shelf_id', 'DESC');
+        $BookShelf = Book_Shelf::with(['ebook','ebook__cover'])->get();
         return Datatables::of($BookShelf)
-            ->addColumn('ebook', function ($BookShelf) {
-                return $BookShelf->ebook->ebook_name;
-            })
-            ->addColumn('ebook__cover', function ($BookShelf) {
-                return $BookShelf->ebook__cover->ebook_cover;
-            })
+
             ->addColumn('Action', function ($BookShelf) {
                  return $BookShelf->book_shelf_id ;
             })

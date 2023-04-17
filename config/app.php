@@ -14,8 +14,6 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-    'locale' => 'en',
-    'locale' => 'ar',
 
     /*
     |--------------------------------------------------------------------------
@@ -163,6 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+
 
         /*
          * Package Service Providers...

@@ -13,7 +13,6 @@ class Promotion extends Model
 
     protected $fillable = [
         'category_id',
-        'sub_cat_id',
         'promotion_attachment'
     ];
     public function category()

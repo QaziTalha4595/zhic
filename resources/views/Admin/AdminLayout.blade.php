@@ -118,9 +118,9 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="{{url('Admin/Dashboard')}}" class="brand-link">
-                <img src="{{url('public/main-logo.svg')}}" class="brand-image"
-                    style="opacity: .8">
+            <a href="{{url('Admin/Dashboard')}}" class="">
+                <img src="{{url('public/main-logo.svg')}}" class="brand-image d-flex justfy-content-center"
+                    style="width:100px; margin:auto">
                 {{-- <span class="brand-text font-weight-light">Admin Panel</span> --}}
             </a>
 
@@ -300,8 +300,7 @@
             <div class="float-right d-none d-sm-inline">
                 Anything you want
             </div>
-            <!-- Default to the left -->
-            <strong>Copyright &copy; <?=date("Y")?></strong> All rights reserved. Developed By <a
+            <!-- Default to the left -->All rights reserved. Developed By <a
                 href="https://dualsysco.com">Dualsysco</a>
         </footer>
     </div>
