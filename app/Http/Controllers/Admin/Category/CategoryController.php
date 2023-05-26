@@ -26,26 +26,30 @@ class CategoryController extends Controller
 
     public function CategoryShow(Request $req)
     {
-        if ($req->ajax()) 
+
+        if ($req->ajax())
         {
-            if ($req->input('from_date')) 
+            if ($req->input('from_date'))
             {
-                $Category = Category::where('created_at', [$req->input('from_date')])
-                                    //   ->orwhere('created_at',[$req->input('to_date')])                                          
+                $Category = Category::where('created_at', $req->input('from_date'))
+                                    //   ->orwhere('created_at',[$req->input('to_date')])
                                       ->get();
-            } 
+            }
             if ($req->input('from_date') && $req->input('to_date'))
             {
                 $Category = Category::whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
                     ->get();
-            } 
-            else if ($req->input('from_date') || $req->input('to_date')) 
+            }
+            else if ($req->input('from_date') || $req->input('to_date'))
             {
-                $Category = Category::where('created_at', [$req->input('from_date')])
-                                    //   ->orwhere('created_at',[$req->input('to_date')])                                          
+                $Category = Category::whereDate('created_at', [$req->input('from_date')])
+                                      ->orWhereDate('created_at', [$req->input('to_date')])
                                       ->get();
-                                      dd($Category);
-                                      return false;
+            }
+            else if($req->input('category_name'))
+            {
+                $Category = Category::where('id',$req->input('category_name'))->get();
+
             } else {
                 $Category = Category::OrderBy('id', 'DESC');
             }
@@ -81,11 +85,17 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
+        $cat_slug = str_replace(" ","_",$req->input('category_name'));
+
         try {
             $category = Category::updateOrCreate(
                 ['id'   => $req->input('cat_id')],
-                ['category_name' => $req->get('category_name')]
+                ['category_name' => $req->input('category_name'),
+                 'category_slug' => $cat_slug
+                ]
+
             );
+
             return response()->json(["success" => true, "message" => $category->wasRecentlyCreated ? "Category Detail Create Successfully" : "Category Detail Updated Successfully"]);
         } catch (\Throwable $th) {
             return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
@@ -115,31 +125,31 @@ class CategoryController extends Controller
     }
     public function SubCategoryShow(Request $req)
     {
-
         if ($req->ajax()) {
             if ($req->input('from_date') && $req->input('to_date')) {
                 $SubCategories = SubCategory::
                                 whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
-                                // ->orwhere('category_id',$req->input('cat_name'))
+                                ->with('category')
                                 ->get();
-                    
+
             }
             else if($req->input('category_name'))
             {
-                $SubCategories = SubCategory::where('category_id',$req->input('category_name'))->get();
-                
+                $SubCategories = SubCategory::with('category')->where('category_id',$req->input('category_name'))->get();
+
             }
             else if ($req->input('from_date') || $req->input('to_date')) {
-                return response()->json(["success" => false, "message" => "Provide both dates"]);
+                $SubCategories = SubCategory::whereDate('created_at', [$req->input('from_date')])
+                ->orwhereDate('created_at', [$req->input('to_date')])
+                ->with('category')
+                ->get();
             } else {
-                $SubCategories = SubCategory::with(['Category'])->OrderBy('id', 'DESC');
+                $SubCategories = SubCategory::with('category')->get();
+                // $SubCategories = SubCategory::with(['Category'])->OrderBy('id', 'DESC'); this not working while orderning data in datatables
             }
         }
 
         return Datatables::of($SubCategories)
-            ->addColumn('Category', function ($SubCategories) {
-                return $SubCategories->Category->category_name;
-            })
             ->editColumn('created_at', function ($SubCategories) {
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $SubCategories->created_at)->format('d-m-Y');
                 return $formatedDate;
@@ -171,12 +181,14 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
+        $sub_cat_slug = str_replace(" ","_",$req->input('sub_category_name'));
         try {
             $SubCategory = SubCategory::updateOrCreate(
                 ['id'   => $req->input('sub_cat_id')],
                 [
                     'category_id' => $req->input('category_id'),
-                    'sub_category_name' => $req->input('sub_category_name')
+                    'sub_category_name' => $req->input('sub_category_name'),
+                    'sub_category_slug' => $sub_cat_slug
                 ]
             );
             return response()->json(["success" => true, "message" => $SubCategory->wasRecentlyCreated ? "Sub Category Create Successfully" : "Sub Category Updated Successfully"]);
@@ -215,12 +227,12 @@ class CategoryController extends Controller
         $validator = Validator::make($req->all(), [
             'category_id' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u',
             'sub_category_id' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u',
-            'third_category_name' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u',
-            'slug' => 'required'
+            'third_category_name' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u'
         ]);
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
+        $third_cat_slug = str_replace(" ","_",$req->input('third_category_name'));
         try {
             $ThirdCategory = ThirdCategory::updateOrCreate(
                 ['id'   => $req->input('third_cat_id')],
@@ -228,7 +240,7 @@ class CategoryController extends Controller
                     'category_id' => $req->input('category_id'),
                     'sub_category_id' => $req->input('sub_category_id'),
                     'third_category_name' => $req->input('third_category_name'),
-                    'slug' => $req->input('slug')
+                    'third_category_slug' => $third_cat_slug
 
                 ]
             );
@@ -243,36 +255,38 @@ class CategoryController extends Controller
             if ($req->input('from_date') && $req->input('to_date')) {
                 $ThirdCategory = ThirdCategory::
                                 whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
-                                ->get();                
+                                ->with(['category','subcategory'])
+                                ->get();
             }
             else if($req->input('category_name') && $req->input('sub_category_name'))
             {
                 $ThirdCategory = ThirdCategory::where('category_id',$req->input('category_name'))
                                                 ->where('sub_category_id',$req->input('sub_category_name'))
+                                                ->with(['category','subcategory'])
                                                 ->get();
             }
             else if ($req->input('category_name') || $req->input('sub_category_name')) {
                 $ThirdCategory = ThirdCategory::where('category_id',$req->input('category_name'))
                                                 ->orwhere('sub_category_id',$req->input('sub_category_name'))
+                                                ->with(['category','subcategory'])
                                                 ->get();
             }
-            else if ($req->input('from_date') || $req->input('to_date')) {
-                return response()->json(["success" => false, "message" => "Provide both dates"]);
-            } else {
-                $ThirdCategory = ThirdCategory::with(['category'], ['subcategory'])->OrderBy('id', 'DESC');            }
+            else if ($req->input('from_date') || $req->input('to_date'))
+            {
+                $ThirdCategory = ThirdCategory::whereDate('created_at', [$req->input('from_date')])
+                ->orwhereDate('created_at', [$req->input('to_date')])
+                ->with(['category','subcategory'])
+                ->get();
+            }
+            else {
+                $ThirdCategory = ThirdCategory::with(['category','subcategory'])->get();            }
         }
         return Datatables::of($ThirdCategory)
         ->editColumn('created_at', function ($ThirdCategory) {
             $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $ThirdCategory->created_at)->format('d-m-Y');
             return $formatedDate;
         })
-            ->addColumn('Category', function ($ThirdCategory) {
-                return $ThirdCategory->category->category_name;
-            })
-            ->addColumn('Sub Category', function ($ThirdCategory) {
-                return $ThirdCategory->subcategory->sub_category_name;
-            })
-            ->addColumn('action', function ($ThirdCategory) {
+        ->addColumn('action', function ($ThirdCategory) {
                 return
                     '<button class="btn btn-primary" data-toggle="modal" data-target="#ThirdCategoryStoreModal"
             onclick="ThirdCategoryEdit(' . $ThirdCategory->id . ')">
@@ -307,48 +321,78 @@ class CategoryController extends Controller
     public function LanguageStore(Request $req)
     {
         $Language = new Language();
-        if ($req->input('lang_id')) {
-            $Language = Language::find($req->input('lang_id'));
 
-            $validator = Validator::make($req->all(), [
+        // $Language = Language::find($req->input('lang_id'));
 
-                'language' => 'required|regex:/^[a-zA-Z]+$/u'
+        $validator = Validator::make($req->all(), [
 
-            ]);
+            'language' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u'
 
-            if ($validator->fails()) {
-                return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
-            }
-
-            $Language->language = $req->input('language');
-
-            if ($Language->save()) {
-                return response()->json(["success" => true, "message" => "Language Updated Successfully"]);
-            } else {
-                return response()->json(["success" => false, "message" => "Language Updated failed..!"]);
-            }
-            return false;
-        } else {
-
-            $validator = Validator::make($req->all(), [
-
-                'language' => 'required|regex:/^[a-zA-Z]+$/u'
-
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
-            }
-
-            $Language->language = $req->input('language');
-
-            if ($Language->save()) {
-                return response()->json(["success" => true, "message" => "Language Stored Successfully"]);
-            } else {
-                return response()->json(["success" => false, "message" => "Language Store failed..!"]);
-            }
+        ]);
+        if ($validator->fails()) {
+            return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
+
+
+
+        try {
+            $Language = Language::updateOrCreate(
+                ['id'   => $req->input('lang_id')],
+                ['language' => $req->input('language')]
+
+            );
+
+            return response()->json(["success" => true, "message" => $Language->wasRecentlyCreated ? "Language Created Successfully" : "Language Updated Successfully"]);
+        } catch (\Throwable $th) {
+            return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
+        }
+
     }
+    // public function LanguageStore(Request $req)
+    // {
+    //     $Language = new Language();
+    //     if ($req->input('lang_id')) {
+    //         $Language = Language::find($req->input('lang_id'));
+
+    //         $validator = Validator::make($req->all(), [
+
+    //             'language' => 'required|regex:/^[a-zA-Z]+$/u'
+
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
+    //         }
+
+    //         $Language->language = $req->input('language');
+
+    //         if ($Language->save()) {
+    //             return response()->json(["success" => true, "message" => "Language Updated Successfully"]);
+    //         } else {
+    //             return response()->json(["success" => false, "message" => "Language Updated failed..!"]);
+    //         }
+    //         return false;
+    //     } else {
+
+    //         $validator = Validator::make($req->all(), [
+
+    //             'language' => 'required|regex:/^[a-zA-Z]+$/u'
+
+    //         ]);
+
+    //         if ($validator->fails()) {
+    //             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
+    //         }
+
+    //         $Language->language = $req->input('language');
+
+    //         if ($Language->save()) {
+    //             return response()->json(["success" => true, "message" => "Language Stored Successfully"]);
+    //         } else {
+    //             return response()->json(["success" => false, "message" => "Language Store failed..!"]);
+    //         }
+    //     }
+    // }
     public function LanguageShow()
     {
         $Language = Language::OrderBy('id', 'DESC');

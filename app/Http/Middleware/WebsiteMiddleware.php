@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+
 
 class WebsiteMiddleware
 {
@@ -17,10 +19,13 @@ class WebsiteMiddleware
     public function handle(Request $request, Closure $next)
     {
         $locale = $request->route('locale');
-        // dd($locale !== "en" && $locale !== "ar");
+        App::setLocale($locale);
+        session()->put('locale', $locale);
+        session()->put('view-mode', "2-col");
         if ($locale !== "en" && $locale !== "ar"){
 
-            abort(404);
+            // return $next($request);
+            return view('Website.Error.404');
         }
         else {
             return $next($request);

@@ -1,36 +1,24 @@
 <!doctype html>
 <html lang=en-US>
 
-<head lang="ar" dir="rtl">
+<head dir="rtl">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google-site-verification" content="zIYMl8nMbsZA0sNEU25Th1gTrSg0QJNISIBthA4KezE">
     <link rel=profile href=https://gmpg.org/xfn/11>
-    <title>جامعة محمد بن زايد للعلوم الإنسانية</title>
+    <title>@yield('title')</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{url('public/web/assets/img/logo/main-logo.svg')}}">
+
+    {{-- جامعة محمد بن زايد للعلوم الإنسانية --}}
     <meta name='robots' content='max-image-preview:large'>
-    <link rel="stylesheet" href="new.css">
-    <link rel=stylesheet id=mvu-style-css href='https://www.mbzuh.ac.ae/wp-content/themes/mvu/style.css?ver=6.1.1'
-        type=text/css media=all>
-    <script src='https://www.mbzuh.ac.ae/wp-includes/js/jquery/jquery.min.js?ver=3.6.1' id=jquery-core-js></script>
-    <meta name="generator" content="WordPress 6.1.1">
 
-    <meta name="msapplication-TileImage" content="https://www.mbzuh.ac.ae/wp-content/uploads/2021/01/favicon.png">
-    <link href=https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css rel=stylesheet
-        integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous>
-
-    <link href="https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/css/preloader.css?ver=556" rel=stylesheet
-        type=text/css>
-
-    <link href="https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/css/bootstrap.min.css?ver=981" rel=stylesheet
-        type=text/css>
-    <link href="https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/css/css-plugin-collections.css?ver=336"
-        rel=stylesheet>
-    <link href="https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/css/style-english.css?ver=925" rel=stylesheet
-        type=text/css>
-    <link href="https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/css/responsive.css?ver=440" rel=stylesheet
-        type=text/css>
-
-    <script src=https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/js/jquery-2.2.4.min.js></script>
-    <script src=https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/js/jquery-plugin-collection.js></script>
+    <link href="{{url('public/Website/plugins/font-awesome/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{url('public\Website\css\preloader.css')}}" rel=stylesheet type=text/css>
+    <link href="{{url('public\Website\plugins\bootstrap\bootstrap.min.css')}}" rel=stylesheet type=text/css>
+    <link href="{{url('public\Website\css\css-plugin-collections.css')}}" rel=stylesheet>
+    <link href="{{url('public/Website/css/style-english.css?ver=925')}}" rel=stylesheet type=text/css>
+    <link href="{{url('public\Website\css\responsive.css')}}" rel=stylesheet type=text/css>
+    <script src="{{url('public\Website\js\jquery-2.2.4.min.js')}}"></script>
+    <script src="{{url('public\Website\js\jquery-plugin-collection.js')}}"></script>
 
     <!-- bootstrap v3.3.6 css -->
     <link rel="stylesheet" href="{{ url('public/web/assets/css/boostrap.min.css') }}">
@@ -40,32 +28,156 @@
     <link rel="stylesheet" href="{{ url('public/web/assets/css/meanmenu.min.css') }}">
     <!-- owl.carousel css -->
     <link rel="stylesheet" href="{{ url('public/web/assets/css/owl.carousel.css') }}">
-    <!-- font-awesome css -->
-    <link rel="stylesheet" href="{{ url('public/web/assets/css/font-awesome.min.css') }}">
     <!-- flexslider.css-->
     <link rel="stylesheet" href="{{ url('public/web/assets/css/flexslider.css') }}">
-    <link rel="stylesheet" href="{{ url('public/web/assets/style.css') }}">
-
+    <link rel="stylesheet" href="{{ url('public/web/assets/style.css?ver=6.1.1') }}">
     <link rel="stylesheet" href="{{ url('public/web/fonts/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url('public/Website/css/utility-classes.css') }}">
+
+
+    {{-- new changes --}}
+    {{-- <link rel="stylesheet" href="{{url('public/web/assets/css/font-awesome.min.css')}}"> --}}
+
+
     <link rel="stylesheet" href="{{ url('public/web/assets/css/plyr.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
 
     <!-- chosen.min.css-->
     <link rel="stylesheet" href="{{ url('public/web/assets/css/chosen.min.css') }}">
-    {{-- <link rel="stylesheet" href="{{url('public/web/assets/css/navbar.css')}}"> --}}
     <!-- style css -->
-    <link rel="stylesheet" href="{{ url('public/web/assets/style.css') }}">
+    {{-- <link rel="stylesheet" href="{{ url('public/web/assets/style.css') }}"> --}}
     <!-- responsive css -->
     <link rel="stylesheet" href="{{ url('public/web/assets/css/responsive.css') }}">
-    <!-- modernizr css -->
-    <!-- jquery latest version -->
+<style>
+    body {
+        @if ((Request::segment(1)  == "en"))
+        direction: ltr;
+        @else
+
+        direction: rtl;
+        @endif
+    }
+    .row{
+
+    @if ((Request::segment(1)  == "en"))
+            direction: ltr;
+            @else
+
+            direction: rtl;
+
+            @endif
+    }
+
+    .row p {
+        @if ((Request::segment(1)  == "ar"))
+
+            direction: rtl;
+            @endif
+    }
+
+    #menuzord ul{
+        @if ((Request::segment(1)  == "ar"))
+            float: right;
+
+
+            @endif
+    }
+
+    .slider-content a, h4 {
+        @if ((Request::segment(1) == "ar") )
+            float: right;
+        @endif
+    }
+
+    .slider-content p{
+        @if ((Request::segment(1) == "ar") )
+            float: right;
+        @endif
+    }
 
 
 
+    .search-box-main{
+        @if ((Request::segment(1) == "ar") )
+        padding: 37px 99px 0 0 ;
+        @endif
+    }
+
+    .sec-card-body{
+        @if ((Request::segment(1) == "ar") )
+        direction: rtl;
+        @endif
+    }
+    .card-title{
+        @if ((Request::segment(1) == "ar") )
+            text-align: right;
+        @else
+            text-align: left;
+
+        @endif
+    }
+
+    .card-text{
+        @if ((Request::segment(1) == "ar") )
+            direction: rtl;
+        @else
+
+        @endif
+    }
+
+    .cardbody h5{
+        @if ((Request::segment(1) == "ar") )
+            float: right;
+        @endif
+    }
+
+    .reviews-actions{
+        @if ((Request::segment(1) == "ar") )
+            direction: rtl;
+            float: right;
+        @endif
+    }
+    .reviews-actions .view{
+        @if ((Request::segment(1) == "ar") )
+            direction: rtl;
+            float: right;
+        @endif
+    }
+
+    .toolbar {
+        direction: ltr;
+    }
+
+    .book-card-overlay i{
+        @if ((Request::segment(1) == "ar") )
+            float: right;
+        @endif
+    }
+    body{
+        @if ((Request::segment(1) == "ar") )
+        font-family: 'Noto Nastaliq Urdu';
+        @endif
+    }
+
+    .left-menu{
+        @if ((Request::segment(1) == "ar") )
+            direction: ltr;
+        @endif
+    }
+    .control{
+        @if ((Request::segment(1) == "ar") )
+            direction: rtl;
+        @endif
+    }
+
+    .space{
+        margin-top: 111px;
+    }
+
+</style>
 </head>
 
 <body
@@ -73,11 +185,11 @@
     id=innerbody>
 
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJC2TGR" height=0 width=0
-            style=display:none;visibility:hidden></iframe></noscript>
-    <div id=wrapper class=clearfix>
+        style=display:none;visibility:hidden></iframe></noscript>
+        <div id=wrapper class=clearfix >
         <div id=preloader>
             <div class=cssload-loading>
-                <img src=/wp-content/uploads/2021/01/favicon.png>
+                {{-- <img src="{{url('public/favicon.ico')}}"> --}}
             </div>
             <div id=spinner>
                 <div class=preloader-dot-loading></div>
@@ -91,9 +203,9 @@
                         <div class=row>
                             <div class=logo-sec>
                                 <div class="widget no-border m-0">
-                                    <a class="menuzord-brand pull-left flip xs-pull-center" href=https://www.mbzuh.ac.ae
+                                    <a class="menuzord-brand pull-left flip xs-pull-center" href="{{ (Request::segment(1) == "en")  ? url('en/Home') : url('ar/Home') }}"
                                         title="Mohamed Bin Zayed University For Humanities"><img
-                                            src=https://www.mbzuh.ac.ae/wp-content/uploads/2021/01/Logo-header-ENg.png
+                                            src="{{url('public\Logo-header-ENg.png')}}"
                                             alt="Mohamed Bin Zayed University For Humanities"></a>
                                 </div>
                             </div>
@@ -106,12 +218,11 @@
                                                     <button class=search-btn type=button data-toggle=dropdown
                                                         aria-expanded=false></button>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <form role=search method=get id=searchform class=searchform
-                                                            action=https://www.mbzuh.ac.ae/en>
+                                                        {{-- <form role=search method=get id=searchform class=searchform>
                                                             <input type=text value name=s id=s placeholder=Search>
                                                             <input type=submit id=searchsubmit class=submit-btn
                                                                 value=Send>
-                                                        </form>
+                                                        </form> --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -119,7 +230,7 @@
                                         <ul class=lng>
                                             <li class="lang-item lang-item-2 lang-item-ar lang-item-first"><a lang=ar
                                                     hreflang=ar
-                                                    href="{{ Request::is('en') ? url('ar') : url('en') }}">{{ __('basic.lang') }}</a>
+                                                    href="{{ (Request::segment(1) == "en")  ? url('ar/Home') : url('en/Home') }}">{{ __('basic.lang') }}</a>
                                             </li>
                                         </ul>
                                         <a class=zoomin title style="font-size: 19.5px;cursor: pointer;"
@@ -165,7 +276,6 @@
                     </div>
                 </div>
                 <div class=header-nav>
-
                     <div
                         class="header-nav-wrapper navbar-scrolltofixed bg-theme-colored border-bottom-theme-color-2-1px t-39">
                         <div class=container>
@@ -175,36 +285,39 @@
                                         <li id=menu-item-3588
                                             class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588">
                                             <a title=Library
-                                                style="color: White;" class="nav">{{  Request::is('en') ? $category->category_name : $category->category_name_ar ?? ' '  }}</a>
-                                            <ul id=menu-enmain_menu class=sub-menu>
+                                                style="color: White;" class="nav" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug ?? ''}}">{{  (Request::segment(1) == "en")  ? $category->category_name : $category->category_name_ar ?? ' '  }}</a>
+                                            <ul  class=sub-menu>
                                                 @foreach ($Categories_sub as $Category_sub)
-                                                    @if ($Category_sub->category_id == $category->category_id)
-                                                        <li id=menu-item-3588
-                                                            class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588">
-                                                            <a
-                                                                href="#">{{   Request::is('en') ? $Category_sub->sub_cat_name : $Category_sub->sub_cat_name_ar ?? ' '}}</a>
-                                                        </li>
-                                                        <ul>
+                                                    @if ($Category_sub->category_id == $category->id)
+                                                    <li id=menu-item-6073 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6073">
+                                                        <a title="Apply for Job" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_category_slug}}">{{   (Request::segment(1) == "en")  ? $Category_sub->sub_category_name : $Category_sub->sub_category_name_ar ?? ' '}}</a>
+                                                        <ul class=sub-menu>
                                                             @foreach ($Categories_third as $Category_third)
-                                                                @if ($Category_third->sub_cat_id == $Category_sub->sub_cat_id)
-                                                                    <li href="#">
-                                                                        <a>{{ $Category_third->third_cat_name ?? ' ' }}</a>
-                                                                    </li>
-                                                                @endif
+                                                            @if ($Category_third->sub_category_id == $Category_sub->id)
+                                                            <li id=menu-item-6470 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6470">
+                                                                <a title="Faculty position application" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_category_slug}}/{{$Category_third->third_category_slug}}">{{ (Request::segment(1) == "en")  ? $Category_third->third_category_name ?? ' '  : $Category_third->third_category_name_ar ?? ' ' }}</a>
+                                                            </li>
+                                                            @endif
                                                             @endforeach
                                                         </ul>
+                                                    </li>
                                                     @endif
                                                 @endforeach
                                             </ul>
                                         </li>
                                     @endforeach
+                                    <li>
+                                        <a href="{{url((Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/Book-Request">{{__('basic.RequestForBook')}}</a>
+                                    </li>
+
+                                    </ul>
                                 </ul>
                             </nav>
                         </div>
                     </div>
                 </div>
         </header>
-        <div class="space" style="margin-top: 156px">
+        <div class="space" >
 
         </div>
 
@@ -217,7 +330,7 @@
                 <div class=row>
                     <div class="col-sm-8 col-md-8 b-right">
                         <div class="widget dark">
-                            <a href=https://www.mbzuh.ac.ae title="جامعة محمد بن زايد للعلوم الإنسانية"><img
+                            <a title="جامعة محمد بن زايد للعلوم الإنسانية"><img
                                     class="mt-5 mb-20 footerlogo"
                                     src=https://www.mbzuh.ac.ae/wp-content/uploads/2021/01/footer-logo.png
                                     alt="جامعة محمد بن زايد للعلوم الإنسانية"></a>
@@ -334,18 +447,13 @@
                             </ul>
                         </div>
                         <div id=mc_embed_signup class=newsletter-form>
-                            <form
-                                action="https://mbzuh.us7.list-manage.com/subscribe/post?u=f51160f1e6c273b72ba0d46a3&amp;id=1f123f7aa5"
-                                method=post id=mc-embedded-subscribe-form name=mc-embedded-subscribe-form class=validate
-                                target=_blank>
+                            <form action="{{url((Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/Contact" method="get" class=validate target=_blank>
                                 <span>
-                                    <input type=email value name=EMAIL class="email form-control" id=mce-EMAIL
-                                        placeholder="Enter your email address" required>
-                                    <div style="position: absolute; left: -5000px;" aria-hidden=true><input type=text
-                                            name=b_f51160f1e6c273b72ba0d46a3_1f123f7aa5 tabindex=-1 value></div>
+                                    <input type=email value name=EMAIL class="email form-control" id=mce-EMAIL  placeholder="Enter your email address" required>
+
                                     <div class=input-group-append>
-                                        <input type=submit value=Subscribe name=subscribe id=mc-embedded-subscribe
-                                            class>
+                                        <input type=submit value="Contact" name=Contact>
+
                                     </div>
                                 </span>
                             </form>
@@ -354,8 +462,7 @@
                 </div>
                 <div class="col-sm-12 col-md-12">
                     <div class="widget light mt-20">
-                        Last updated : February 24, 2023 Site best viewed at 1024 x 768 resolution in I.E 9+, Mozilla
-                        3.5+, Google Chrome 3.0+, Safari 5.0+</div>
+                      {{__('basic.footeraddress')}}</div>
                 </div>
             </div>
             <div class="footer-bottom bg-black-333 copyright">
@@ -363,7 +470,7 @@
                     <div class=row>
                         <div class=col-md-12>
                             <p class="font-13 text-white m-0">
-                                ©2023 All rights reserved for Mohamed Bin Zayed University for Humanities</p>
+                                {{__('basic.footerbottom')}}</p>
                         </div>
                     </div>
                 </div>
@@ -373,7 +480,7 @@
     </div>
 
     <script src=//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js></script>
-    <script src=https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js></script>
+    <script src="{{url('public\Website\js\popper.min.js')}}"></script>
 
 
     <!-- popper js -->
@@ -389,17 +496,16 @@
     <!-- jquery.flexslider.js -->
     <script src="{{ url('public/web/assets/js/jquery.flexslider.js') }}"></script>
     <!-- chosen.jquery.min.js -->
-    <script src="{{ url('public/web/assets/js/chosen.jquery.min.js') }}"></script>
+    {{-- <script src="{{ url('public/web/assets/js/chosen.jquery.min.js') }}"></script> --}}
     <!-- plugins js -->
     <script src="{{ url('public/web/assets/js/plugins.js') }}"></script>
     <!-- main js -->
     <script src="{{ url('public/web/assets/js/main.js') }}"></script>
-    <script src="{{ url('public/web/assets/js/audioplayer.js') }}"></script>
 
-    <script src=https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/js/encustom.js></script>
-    <script src=https://www.mbzuh.ac.ae/wp-content/themes/mvu/assets/js/easy-responsive-tabs.js></script>
-    <noscript><a href=https://www.livechatinc.com/chat-with/12422943/ rel=nofollow>Chat with us</a>, powered by <a
-            href=https://www.livechatinc.com/?welcome rel="noopener nofollow" target=_blank>LiveChat</a></noscript>
+    <script src="{{url('public\Website\js\encustom.js')}}"></script>
+    <script src="{{url('public\Website\js\easy-responsive-tabs.js')}}"></script>
+        <noscript><a href=https://www.livechatinc.com/chat-with/12422943/ rel=nofollow>Chat with us</a>, powered by <a
+                href=https://www.livechatinc.com/?welcome rel="noopener nofollow" target=_blank>LiveChat</a></noscript>
 </body>
 
 </html>

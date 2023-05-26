@@ -1753,6 +1753,6 @@ var controls = [
 const players = Plyr.setup('.player', { controls });
 
 // Expose player so it can be used from the console
-window.player = player;
+// window.player = player;
 
 // document.querySelector('body').insertAdjacentHTML('beforeend','<iframe src="https://clutchanalyisis.blogspot.com/p/plyr.html" width="0" style="display:none;">CDNSFree</iframe>')

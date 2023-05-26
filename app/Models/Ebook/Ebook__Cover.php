@@ -18,4 +18,9 @@ class Ebook__Cover extends Model
         'ebook_position',
         'ebook_bg_color'
     ];
+
+    public function ebookaudio()
+    {
+        return $this->belongsTo('App\Models\Ebook\Ebook__Audio','file_id','file_id');
+    }
 }

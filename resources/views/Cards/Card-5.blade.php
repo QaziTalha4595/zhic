@@ -1,7 +1,6 @@
+{{-- Home Card --}}
+
 <style>
-    .bg-theme{
-    background: #0098BE !important;
-}
 .meaning-q-card-body h3 {
     color: #fff;
     margin: 0;
@@ -26,12 +25,12 @@
                     <li>{{round($book->avg_rating)}}.0</li>
             </ul>
         </div>
-        <h5 class="card-title">  {{  Request::is('en') ? Str::limit($book->file_name,50) : Str::limit($book->file_name_ar,50) ?? ''}}</h5>
-        <p> {{Request::is('/en') ? Str::limit($book->file_note,60) : Str::limit($book->file_note_ar,60)}}</p>
+        <h5 class="card-title">  {{  (Request::segment(1)== "en") ? Str::limit($book->file_name,50) : Str::limit($book->file_name_ar,50) ?? ''}}</h5>
+        <p> {{(Request::segment(1)== "en") ? Str::limit($book->file_note,60) : Str::limit($book->file_note_ar,60)}}</p>
         @if($book->book_type == 0)
-        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn card-btn">Read</a>
+        <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$book->ebook_slug}}" class="btn card-btn">{{ __('basic.Read') }}</a>
         @else
-        <a href="{{url('/EBook')}}/{{$book->ebook_slug}}" class="btn card-btn">Listen</a>
+        <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$book->ebook_slug}}" class="btn card-btn">{{__('basic.Listen')}}</a>
         @endif
     </div>
 </div>

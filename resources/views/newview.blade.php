@@ -1,1 +1,1 @@
-{{$categorytest}}
+{{$locale}}

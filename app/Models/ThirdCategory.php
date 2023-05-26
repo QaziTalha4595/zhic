@@ -14,7 +14,7 @@ class ThirdCategory extends Model
         'category_id',
         'sub_category_id',
         'third_category_name',
-        'slug'
+        'third_category_slug'
     ];
     public function category()
     {

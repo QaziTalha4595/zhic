@@ -514,6 +514,14 @@ pre code {
 @media (min-width: 1200px) {
   .container {
     max-width: 1140px;
+}
+
+.container-card1{
+    max-width: 2091px;
+
+  }
+.container-card1 .active{
+    margin-right: -70px !important;
   }
 }
 .container-fluid {
@@ -2398,13 +2406,13 @@ fieldset:disabled a.btn {
 }
 .btn-info {
   color: #fff;
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  background-color: #082649;
+  border-color: #082649;
 }
 .btn-info:hover {
   color: #fff;
-  background-color: #138496;
-  border-color: #117a8b;
+  background-color: #082649;
+  border-color: #082649;
 }
 .btn-info.focus,
 .btn-info:focus {
@@ -2413,20 +2421,20 @@ fieldset:disabled a.btn {
 .btn-info.disabled,
 .btn-info:disabled {
   color: #fff;
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  background-color: #082649;
+  border-color: #082649;
 }
 .btn-info:not(:disabled):not(.disabled).active,
 .btn-info:not(:disabled):not(.disabled):active,
 .show > .btn-info.dropdown-toggle {
   color: #fff;
-  background-color: #117a8b;
-  border-color: #10707f;
+  background-color: #082649;
+  border-color: #082649;
 }
 .btn-info:not(:disabled):not(.disabled).active:focus,
 .btn-info:not(:disabled):not(.disabled):active:focus,
 .show > .btn-info.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(58, 176, 195, 0.5);
+  box-shadow: 0 0 0 0.2rem #082649;
 }
 .btn-warning {
   color: #212529;
@@ -5341,8 +5349,8 @@ a.close.disabled {
   top: 0;
   left: 0;
   z-index: 1040;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: #000;
 }
 .modal-backdrop.fade {

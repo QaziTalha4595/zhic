@@ -109,7 +109,7 @@
         .done((res)=>{
              if(res.success){
                 alertmsg(res.message,"success");
-                window.location.href = "{{route('Dashboard')}}";
+                window.location.href = "{{url('ControlPanel/Dashboard')}}";
              }else if(res.validation){
                 alertmsg(res.message[0], "warning")
              }else{

@@ -17,46 +17,44 @@ class SliderController extends Controller
     public function SliderStore(Request $req)
     {
         $Slider = new Slider();
-        
+
             $validator = Validator::make($req->all(), [
                 'slider_heading' => 'required',
                 'slider_caption' => 'required',
-                'slider_link' => 'required|regex:/^[a-z A-Z]+$/u',              
-                'slider_bg_color' => 'required',
-                'slider_image' => $req->input('slider_id') ? '' : 'required|image|mimes:jpeg,jpg,png|max:2048'
+                'slider_bg_color' => 'required'
+                // 'slider_image' => $req->input('slider_id') ? 'mimes:jpeg,jpg,png|max:2048' : 'required|image|mimes:jpeg,jpg,png|max:2048'
             ]);
 
             if ($validator->fails()) {
                 return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
             }
-            $imageNameWithExt = $imageName = $extention = $imageNameToStore = $image = '';
 
-            if($req->hasFile('slider_image'))
+            if($req->hasFile('image'))
             {
-                $imageNameWithExt = $req->file('slider_image')->getClientOriginalName();
-                $imageName = pathinfo($imageNameWithExt, PATHINFO_FILENAME);
-                $extention = $req->file('slider_image')->getClientOriginalExtension();
-                $imageNameToStore = $imageName.'_'.time().'.'.$extention;
-                $image = $req->file('slider_image')->move(public_path('Slider'),$imageNameToStore);
-                                        
+
+                $image_parts = explode(";base64,", $req->promotion_attachment);
+                $imageName = uniqid() . '.'.explode("image/", $image_parts[0])[1];
+                $path = public_path('Slider/') . "/". $imageName;
+
+                file_put_contents(public_path('Slider/') . "/". $imageName, base64_decode($image_parts[1]));
+
                 if($req->input('slider_id'))
                 {
-
                     $findImage = Slider::where('id',$req->input('slider_id'))->first();
-                    
                     if(file_exists('public/Slider/'.$findImage->slider_image) AND !empty($findImage->slider_image))
                     {
                         unlink('public/Slider/'.$findImage->slider_image);
                     }
-                }
 
+                }
             }
             else
             {
                 $data = Slider::where('id',$req->input('slider_id'))->get();
-                $imageNameToStore = $data[0]->slider_image;
+                $imageName = $data[0]->slider_image;
+                $path = $data[0]->slider_link;
             }
-    
+
             try {
                 $Slider = Slider::updateOrCreate(
 
@@ -64,14 +62,15 @@ class SliderController extends Controller
                     [
                         'slider_heading' => $req->input('slider_heading'),
                         'slider_caption' => $req->input('slider_caption'),
-                        'slider_link' => $req->input('slider_link'),
                         'slider_bg_color' => $req->input('slider_bg_color'),
-                        'slider_position' => $req->input('slider_link'),
-                        'slider_image' => $imageNameToStore
+                        'slider_position' => $req->input('slider_position'),
+                        'slider_link' => $path,
+                        'slider_image' => $imageName
                     ]
                 );
                 return response()->json(["success" => true, "message" => $Slider->wasRecentlyCreated ? "Slider Create Successfully" : "Slider Updated Successfully"]);
             } catch (\Throwable $th) {
+                return $th;
                 return response()->json(["success" => false, "message" => "Opps an Error Occured", "err"=>$th]);
             }
     }
@@ -88,7 +87,7 @@ class SliderController extends Controller
         })
         ->rawColumns(['Action'])
         ->make(true);
-    } 
+    }
     public function SliderEdit(Request $req)
     {
         $slider_id = $req->input('id');
@@ -105,7 +104,7 @@ class SliderController extends Controller
         $data = Slider::where('id',$req->input('id'))->delete();
         if($data)
         {
-            return response()->json(['success' => true, 'message' => 'SLide Remove Successfully']);
+            return response()->json(['success' => true, 'message' => 'Slider Detail Remove Successfully']);
         }
         else
         {
