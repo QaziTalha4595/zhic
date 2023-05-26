@@ -85,12 +85,12 @@ Route::post('/ControlPanel/LoginUser', [AdminController::class, 'LoginUser'])->n
 
 Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], function()
 {
-    Route::get('/Dashboard', function () {return view('Admin.AdminLayout');})->name('Dashboard');
+    // Route::get('/Dashboard', function () {return view('Admin.AdminLayout');})->name('Dashboard');
     // ---==== Setup ====--- \\
     //Dashboared
-    // Route::get('/Dashboard',function(){
-    //     return view('Admin.Dashboard');
-    // });
+    Route::get('/Dashboard',function(){
+        return view('Admin.Dashboard');
+    });
     // category management
     Route::get('/Category', [CategoryController::class, 'Category'])->name('Category');
     Route::post('/CategoryStore', [CategoryController::class, 'CategoryStore'])->name('CategoryStore');
@@ -201,4 +201,3 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::get('/Feedback', [FeedbackController::class, 'Feedback'])->name('Feedback');
     Route::get('/FeedbackShow', [FeedbackController::class, 'FeedbackShow'])->name('FeedbackShow');
 });
-
