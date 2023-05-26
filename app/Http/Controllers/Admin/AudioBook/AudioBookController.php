@@ -170,12 +170,12 @@ class AudioBookController extends Controller
                 $new_name = strtolower($imageName);
                 $extension = $req->file('audio_book_cover')->extension();
                 $imageThumbnail = mt_rand(100, 99999) . '_' . $imageNameWithExt;
-                $Image = $req->file('audio_book_cover')->move('public/Files/Audio_Book_CoverImg/', $imageThumbnail);
+                $Image = $req->file('audio_book_cover')->move('public/Files/Audio-Book-Cover/', $imageThumbnail);
 
                 $findImage = Ebook__Cover::where('ebook__cover_id',$req->input('audio_book_cover_id'))->first();
-                if(!empty($findImage->ebook_cover) && file_exists('public/Files/Audio_Book_CoverImg/'.$findImage->ebook_cover))
+                if(!empty($findImage->ebook_cover) && file_exists('public/Files/Audio-Book-Cover/'.$findImage->ebook_cover))
                 {
-                    unlink('public/Files/Audio_Book_CoverImg/'.$findImage->ebook_cover);
+                    unlink('public/Files/Audio-Book-Cover/'.$findImage->ebook_cover);
                 }
 
         }
@@ -302,9 +302,9 @@ class AudioBookController extends Controller
 
             foreach ($findImage as $row) {
 
-            if(!empty($row->ebook_cover) && file_exists('public/Files/Audio_Book_CoverImg/'.$row->ebook_cover))
+            if(!empty($row->ebook_cover) && file_exists('public/Files/Audio-Book-Cover/'.$row->ebook_cover))
             {
-                unlink('public/Files/Audio_Book_CoverImg/'.$row->ebook_cover);
+                unlink('public/Files/Audio-Book-Cover/'.$row->ebook_cover);
             }
 
         }
@@ -336,9 +336,9 @@ class AudioBookController extends Controller
     public function AudioBookCoverImageRemove(Request $request)
     {
         $Image = Ebook__Cover::where('ebook__cover_id',$request->input('audio_book_cover_id'))->first();
-        if(file_exists('public/Files/Audio_Book_CoverImg/' . $Image->ebook_cover) AND !empty($Image->ebook_cover))
+        if(file_exists('public/Files/Audio-Book-Cover/' . $Image->ebook_cover) AND !empty($Image->ebook_cover))
         {
-            unlink('public/Files/Audio_Book_CoverImg/'.$Image->ebook_cover);
+            unlink('public/Files/Audio-Book-Cover/'.$Image->ebook_cover);
         }
 
         $data = Ebook__Cover::where('ebook__cover_id',$request->input('audio_book_cover_id'))->delete();

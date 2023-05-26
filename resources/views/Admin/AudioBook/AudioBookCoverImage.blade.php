@@ -323,7 +323,7 @@ function ImgCoverEdit(ebook_cover_id) {
                 $("#audio_book_bg_color").val(data.data[0]['ebook_bg_color']);
 
                 $("#imageid").css("background-image", `url('{{url('public/Files/Audio_Book_CoverImg')}}/${data.data[0]['ebook_cover']}`);
-                // $("#imageid").css("background-image", "url('{{asset('public/Files/E_Book_CoverImg')}}')/"+data.data[0]['ebook_cover']);
+
             });
         }
         $('#audio_book_cover').on('change', (e) => {

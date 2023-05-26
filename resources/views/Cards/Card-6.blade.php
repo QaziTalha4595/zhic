@@ -2,10 +2,10 @@
 
 <div class="card book-card-1 my-3 bg-round" style="min-height: 0; padding-bottom: 0;">
     <div class="img-bg" style="background-color: {{$book->ebook_bg_color}};"> <br>
-        <img src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}"
+        <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
                                 onerror="this.onerror=null;this.src='https://www.shutterstock.com/image-illustration/jpeg-blank-notebook-isolated-on-600w-74102503.jpg';"
                            ><br><br>
-        {{-- <img class="" src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}"
+        {{-- <img class="" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
             alt="{{$book->file_name}}"> --}}
     </div>
     <div class="sec-card-body bg-theme bg-bottom-round text-white d-flex justify-content-between">

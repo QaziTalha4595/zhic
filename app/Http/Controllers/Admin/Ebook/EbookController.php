@@ -189,12 +189,12 @@ class EbookController extends Controller
                 $new_name = strtolower($imageName);
                 $extension = $req->file('ebook_cover')->extension();
                 $imageThumbnail = mt_rand(100, 99999) . '_' . $imageNameWithExt;
-                $Image = $req->file('ebook_cover')->move('public/Files/E_Book_CoverImg/', $imageThumbnail);
+                $Image = $req->file('ebook_cover')->move('public/Files/E-Book-Cover/', $imageThumbnail);
 
                 $findImage = Ebook__Cover::where('ebook__cover_id',$req->input('ebook_attachment_id'))->first();
-                if(!empty($findImage->ebook_cover) && file_exists('public/Files/E_Book_CoverImg/'.$findImage->ebook_cover))
+                if(!empty($findImage->ebook_cover) && file_exists('public/Files/E-Book-Cover/'.$findImage->ebook_cover))
                 {
-                    unlink('public/Files/E_Book_CoverImg/'.$findImage->ebook_cover);
+                    unlink('public/Files/E-Book-Cover/'.$findImage->ebook_cover);
                 }
 
         }
@@ -250,9 +250,9 @@ class EbookController extends Controller
 
                 foreach ($findImage as $row) {
 
-                if(!empty($row->ebook_cover) && file_exists('public/Files/E_Book_CoverImg/'.$row->ebook_cover))
+                if(!empty($row->ebook_cover) && file_exists('public/Files/E-Book-Cover/'.$row->ebook_cover))
                 {
-                    unlink('public/Files/E_Book_CoverImg/'.$row->ebook_cover);
+                    unlink('public/Files/E-Book-Cover/'.$row->ebook_cover);
                 }
 
             }
@@ -276,9 +276,9 @@ class EbookController extends Controller
     {
 
         $Image = Ebook__Cover::where('ebook__cover_id',$request->input('ebook__cover_id'))->first();
-        if(file_exists('public/Files/E_Book_CoverImg/' . $Image->ebook_cover) AND !empty($Image->ebook_cover))
+        if(file_exists('public/Files/E-Book-Cover/' . $Image->ebook_cover) AND !empty($Image->ebook_cover))
         {
-            unlink('public/Files/E_Book_CoverImg/'.$Image->ebook_cover);
+            unlink('public/Files/E-Book-Cover/'.$Image->ebook_cover);
         }
 
         $data = Ebook__Cover::where('ebook__cover_id',$request->input('ebook__cover_id'))->delete();

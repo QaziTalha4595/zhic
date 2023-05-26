@@ -294,7 +294,7 @@
                             data: 'slider_image',
 
                             render: function(data) {
-                                return '<center><img src="{{ url('public/Slider') }}/' + data +
+                                return '<center><img src="{{ url('public/Files/Main-Slider') }}/' + data +
                                     '" style="height: 100px; width:auto; margin-auto"></center>';
                             }
                         },

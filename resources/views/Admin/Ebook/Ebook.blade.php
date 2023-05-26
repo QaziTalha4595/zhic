@@ -151,7 +151,7 @@
                     'orderable': false,
                     render: function(data, type) {
 
-                        return `<center><img src="{{ url('public/Files/E_Book_CoverImg') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="height: 100px; width:auto; margin-auto"><span style="display:none;  ">{{ url('public/Files/E_Book_CoverImg') }}/${data}</span></center>`;
+                        return `<center><img src="{{ url('public/Files/E-Book-Cover') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="height: 100px; width:auto; margin-auto"><span style="display:none;  ">{{ url('public/Files/E-Book-Cover') }}/${data}</span></center>`;
 
                         }
                     },

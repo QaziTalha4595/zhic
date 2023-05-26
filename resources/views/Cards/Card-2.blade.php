@@ -2,10 +2,10 @@
 
 <div class="sec-card bg-round" style="direction: ltr;">
     <div class="sec-card-header" style="background-color: {{$book->ebook_bg_color}};border-radius: 10px;"><br>
-        <img src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}"
+        <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
         onerror="this.onerror=null;this.src='https://www.shutterstock.com/image-illustration/jpeg-blank-notebook-isolated-on-600w-74102503.jpg';"
    ><br>
-        {{-- <img class="border-r-10" src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}" alt="{{$book->file_name}}"> --}}
+        {{-- <img class="border-r-10" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}" alt="{{$book->file_name}}"> --}}
     </div>
     <div class="sec-card-body bg-theme d-flex justify-content-between ">
         <h4 class="m-0 line-height-0"> {{  (Request::segment(1)== "en") ? Str::limit($book->file_name,14) : Str::limit($book->file_name_ar,14) ?? ''}}</h4>

@@ -211,7 +211,7 @@ function GetEbookCoverImage() {
                 html+= ` <tr>
                             <td>${e.ebook__cover_id}</td>
                             <td>
-                                <div style="height: 100px; width:100px; background-repeat: no-repeat;background-size: contain;background-position: center;background-image: url('{{ asset('public/Files/E_Book_CoverImg/' ) }}/${e.ebook_cover}');"
+                                <div style="height: 100px; width:100px; background-repeat: no-repeat;background-size: contain;background-position: center;background-image: url('{{ asset('public/Files/E-Book-Cover/' ) }}/${e.ebook_cover}');"
                                 ></div>
                             </td>
                             <td>${e.ebook_position }</td>
@@ -327,8 +327,8 @@ function GetEbookCoverImage() {
                 $("#ebook_position").val(data.data[0]['ebook_position']);
                 $("#ebook_bg_color").val(data.data[0]['ebook_bg_color']);
 
-                $("#imageid").css("background-image", `url('{{url('public/Files/E_Book_CoverImg')}}/${data.data[0]['ebook_cover']}`);
-                // $("#imageid").css("background-image", "url('{{asset('public/Files/E_Book_CoverImg')}}')/"+data.data[0]['ebook_cover']);
+                $("#imageid").css("background-image", `url('{{url('public/Files/E-Book-Cover')}}/${data.data[0]['ebook_cover']}`);
+                // $("#imageid").css("background-image", "url('{{asset('public/Files/E-Book-Cover')}}')/"+data.data[0]['ebook_cover']);
             });
         }
         $('#ebook_cover').on('change', (e) => {

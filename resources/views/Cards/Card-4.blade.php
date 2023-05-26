@@ -4,10 +4,10 @@
     <div class="meaning-q-card bg-round">
         <div class="meaning-q-card-img" style="background: {{$book->ebook_bg_color}};">
             <br>
-            <img src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}"
+            <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
                                 onerror="this.onerror=null;this.src='https://www.shutterstock.com/image-illustration/jpeg-blank-notebook-isolated-on-600w-74102503.jpg';"
                            ><br><br>
-            {{-- <img src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}"
+            {{-- <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
                 alt="{{$book->file_name}}"> --}}
         </div>
         <div class="meaning-q-card-body d-flex justify-content-between bg-theme">

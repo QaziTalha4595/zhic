@@ -2,10 +2,10 @@
 
 <div class="sec-card text-center bg-top-round" style="margin:8px 0;">
     <div class="sec-card-header bg-top-round" style="background-color: {{$book->ebook_bg_color}};"><br>
-        {{-- <img src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}"
+        {{-- <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
                                 onerror="this.onerror=null;this.src='https://www.shutterstock.com/image-illustration/jpeg-blank-notebook-isolated-on-600w-74102503.jpg';"> --}}
 
-        <img class="bg-top-round" src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}"
+        <img class="bg-top-round" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
             alt="{{$book->file_name}}"><br>
     </div>
     <span class="text-dark text-center">  {{  (Request::segment(1)== "en") ? Str::limit($book->file_name,20) : Str::limit($book->file_name_ar,20) ?? ''}}</span>

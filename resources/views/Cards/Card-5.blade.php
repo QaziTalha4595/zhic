@@ -11,7 +11,7 @@
 
 <div class="card book-card-1 my-2 bg-round" style="padding-bottom:0;">
     <div class="img-bg" style="background-color: {{$book->ebook_bg_color}};">
-        <img class="img-w-70" src="{{url('/public/Files/E-Book-CoverImg')}}/{{$book->ebook__cover}}" alt="{{$book->file_name}}">
+        <img class="img-w-70" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}" alt="{{$book->file_name}}">
     </div>
     <div class="card-body bg-theme-grey">
         <div class="product-rating text-left mb-2">

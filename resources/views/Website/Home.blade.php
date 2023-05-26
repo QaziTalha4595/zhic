@@ -28,9 +28,9 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 order-0 order-lg-1 slider-animated-1">
-                            <img src="{{url('public/Slider/')}}/{{$slider->slider_image ?? ''}}"
+                            <img src="{{url('public/Files/Main-Slider')}}/{{$slider->slider_image ?? ''}}"
                                 alt="" class="slider-auto_img mx-auto wow" data-wow-delay="1s">
-                            {{--     <img class="slider-auto_img mx-auto wow" src="{{url('public\Files\E-Book-CoverImg\Dummy.png')}}"onerror="this.onerror=null;this.src="{{url('public\Files\E-Book-CoverImg\Dummy.png')}}; > --}}
+                            {{--     <img class="slider-auto_img mx-auto wow" src="{{url('public\Files\E-Book-Cover\Dummy.png')}}"onerror="this.onerror=null;this.src="{{url('public\Files\E-Book-Cover\Dummy.png')}}; > --}}
                         </div>
                     </div>
                 </div>
@@ -46,10 +46,13 @@
     <div class="container">
         <div class="bookshelf mb-3">
             <div class="covers d-flex mx-auto">
-                @for($i = 0; $i < 1 ; $i++)
+                @for($i = 0; $i < 5 ; $i++)
+                @if (count($bookshelf) <= $i)
+                   @continue
+                @endif
                 <div class="thumb book-1">
-                    <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$bookshelf[$i]->ebook_slug}}">
-                        <img src="{{url('public/Files/E-Book-CoverImg')}}/{{$bookshelf[$i]->ebook__cover ?? ''}}"
+                    <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$bookshelf[$i]->ebook_slug ?? ""}}">
+                        <img src="{{url('public/Files/E-Book-Cover')}}/{{$bookshelf[$i]->ebook_cover ?? ''}}"
                             class="img-w-120">
 
                     </a>
@@ -62,9 +65,13 @@
 
     <div class="bookshelf">
         <div class="covers d-flex mx-auto">
-            @for($i = 5; $i < 1 ; $i++) <div class="thumb book-1">
-                <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$bookshelf[$i]->ebook_slug}}">
-                    <img src="{{url('public/Files/E-Book-CoverImg')}}/{{$bookshelf[$i]->ebook__cover ?? ''}}"
+            @for($i = 5; $i < 10 ; $i++)
+            @if (count($bookshelf) <= $i)
+               @continue
+            @endif
+            <div class="thumb book-1">
+                <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$bookshelf[$i]->ebook_slug ?? ""}}">
+                    <img src="{{url('public/Files/E-Book-Cover')}}/{{$bookshelf[$i]->ebook_cover ?? ''}}"
                         class="img-w-120">
 
                 </a>
@@ -219,7 +226,7 @@
         </div>
         <div class="arbic-banner">
             <img src="{{url('public/web/assets/img/banner-1.png')}}" alt="">
-            {{-- <img class="" src="{{url('public\Files\E-Book-CoverImg\download.jpg')}}"
+            {{-- <img class="" src="{{url('public\Files\E-Book-Cover\download.jpg')}}"
             alt="-----"> --}}
         </div>
         <div class="new-book-area">
