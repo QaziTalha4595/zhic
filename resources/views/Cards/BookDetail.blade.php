@@ -150,7 +150,7 @@
         <div class="card">
           <div class="card-body cardbody">
               @if ($BookDetail->book_type != 1)
-              <h5 class="card-title" style="text-align: left; font-size: 36px;">{{( Request::segment(1)== "en") ? $BookDetail->file_name ?? '' : $BookDetail->file_name_ar ?? ''}}</h5>
+              <h5 class="card-title" style="text-align: left; font-size: 36px;">{{( Request::segment(1)== "en") ? $BookDetail->ebook_name ?? '' : $BookDetail->ebook_name_ar ?? ''}}</h5>
               @endif
 
               {{-- Audio Details  --}}
@@ -158,7 +158,7 @@
               <div class="audio-book-area mt-20">
                   <div class="card-header bg-none">
                       <div class="d-flex justify-content-between">
-                          <p class="m-0"><b> {{(Request::segment(1)== "en") ? $BookDetail->file_name ?? '' : $BookDetail->file_name_ar ?? ''}}</b></p>
+                          <p class="m-0"><b> {{(Request::segment(1)== "en") ? $BookDetail->ebook_name ?? '' : $BookDetail->ebook_name_ar ?? ''}}</b></p>
                           <p class="m-0"><b>Total : {{count($audios)}} </b></p>
                       </div>
                   </div>
@@ -166,7 +166,7 @@
                       <?php $i = 1;?>
                       @if($BookDetail->book_type == 1)
                       @foreach($audios as $audio)
-                      <p class="mb-0 ml-2 ">{{$i}}# -{{(Request::segment(1)== "en") ? $audio->audio_title ?? '' : $BookDetail->file_name_ar ?? ''}}</p>
+                      <p class="mb-0 ml-2 ">{{$i}}# -{{(Request::segment(1)== "en") ? $audio->audio_title ?? '' : $BookDetail->ebook_name_ar ?? ''}}</p>
                       <audio controls class="player" >
                           <source
                               src="{{url('/')}}/public/Files/E-Book-Audio/{{$audio->audio_file ?? ''}}"
