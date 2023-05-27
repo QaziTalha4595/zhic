@@ -23,7 +23,7 @@
                         <div class="col-lg-8 col-md-6 order-1 order-lg-0">
                             <div class="slider-content slider-animated-1 mt-70" style="color: white;">
                                 <h4 style="color: white;">{{( Request::segment(1)== "en") ? $slider->slider_heading ?? '' : $slider->slider_heading_ar ?? ' '  ?? ''}}</h4>
-                                <p>{{  ( Request::segment(1)== "en") ? Str::limit($slider->slider_caption,278) : Str::limit($slider->slider_caption_ar,278) ?? ' '   ?? ''}}</p>
+                                <p>{{  ( Request::segment(1)== "en") ? Str::limit($slider->slider_caption,278) : Str::limit($slider->slider_heading_ar,278) ?? ' '   ?? ''}}</p>
                                 <a href="{{$slider->link ?? ''}}">{{ __('basic.ViewMore') }}</a>
                             </div>
                         </div>
@@ -242,7 +242,7 @@
             </div>
             <!-- </div> -->
             <div class="text-right">
-                <a href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$Categories     [2]->category_slug}}" class="btn-2">{{ __('basic.ViewMore') }}</a>
+                <a href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$Categories[2]->category_slug}}" class="btn-2">{{ __('basic.ViewMore') }}</a>
             </div>
         </div>
     </div>
@@ -256,7 +256,7 @@
             <br>
             <br>
             <div class="section-title text-center pt-50 mb-30 section-title-res">
-                <a href="{{url('/')}}/EBook-{{$Categories   [4]->category_slug}}">
+                <a href="{{url('/')}}/EBook-{{$Categories[4]->category_slug}}">
                     <h2>{{__('basic.ARABIC')}}</h2>
                 </a>
                 <p style="text-align: center; margin-top:20px;">{{__('basic.featured')}} <br />
@@ -273,7 +273,7 @@
             @endforeach
         </div>
         <div class="text-right">
-            <a href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$Categories   [4]->category_slug}}" class="btn-2">{{ __('basic.ViewMore') }}</a>
+            <a href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$Categories[4]->category_slug}}" class="btn-2">{{ __('basic.ViewMore') }}</a>
         </div>
     </div>
 </div>
@@ -287,7 +287,7 @@
                 <br>
                 <br>
                 <div class="section-title text-center pt-50 mb-30 section-title-res">
-                    <a href="{{url('/')}}/EBook-{{$Categories   [3]->category_slug}}">
+                    <a href="{{url('/')}}/EBook-{{$Categories[3]->category_slug}}">
                         <h2>{{__('basic.CHILDREN')}}</h2>
                     </a>
                     <p style="text-align: center; margin-top:20px;">{{__('basic.featured')}}<br />

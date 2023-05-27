@@ -2,12 +2,12 @@
     <div class="img-bg" style="background-color: {{$book->ebook_bg_color}};"> <br>
         <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"  onerror="this.onerror=null;this.src='https://www.shutterstock.com/image-illustration/jpeg-blank-notebook-isolated-on-600w-74102503.jpg';">
         {{-- <img class="" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
-            alt="{{$book->file_name}}"> --}}
+            alt="{{$book->ebook_name}}"> --}}
     </div>
     <hr>
     <div class="card-body custom-card-body" >
 
-        <h5 class="card-title" > {{  (Request::segment(1) == "en") ? $book->file_name : $book->file_name_ar ?? ''}}</h5>
+        <h5 class="card-title" > {{  (Request::segment(1) == "en") ? $book->ebook_name : $book->ebook_name_ar ?? ''}}</h5>
 
         <p class="card-text">{{  (Request::segment(1) == "en") ? $book->file_note : $book->file_note_ar ?? ''}}</p>
         <div class="text-right">
