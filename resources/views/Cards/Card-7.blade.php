@@ -9,7 +9,7 @@
 
         <h5 class="card-title" > {{  (Request::segment(1) == "en") ? $book->ebook_name : $book->ebook_name_ar ?? ''}}</h5>
 
-        <p class="card-text">{{  (Request::segment(1) == "en") ? $book->file_note : $book->file_note_ar ?? ''}}</p>
+        <p class="card-text">{{  (Request::segment(1) == "en") ? $book->ebook_note : $book->ebook_note_ar ?? ''}}</p>
         <div class="text-right">
             @if($book->book_type == 0)
             <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$book->ebook_slug}}">{{ __('basic.Read') }}  <i
@@ -21,8 +21,8 @@
 
     </div>
     <div class="book-card-overlay">
-        {{-- {{  Request::is('en') ? Str::limit($book->file_note, 80, $end='...') : Str::limit($book->file_note_ar, 80, $end='...')}}  --}}
-        <p > {{  (Request::segment(1) == "en") ? Str::limit($book->file_note, 90, $end='...') : Str::limit($book->file_note_ar, 90, $end='...')}}</p>
+        {{-- {{  Request::is('en') ? Str::limit($book->ebook_note, 80, $end='...') : Str::limit($book->ebook_note_ar, 80, $end='...')}}  --}}
+        <p > {{  (Request::segment(1) == "en") ? Str::limit($book->ebook_note, 90, $end='...') : Str::limit($book->ebook_note_ar, 90, $end='...')}}</p>
 
         @if($book->book_type == 0)
         <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$book->ebook_slug}}">{{ __('basic.Read') }}  <i

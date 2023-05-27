@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ebook__Audio extends Model
 {
     use HasFactory;
-    protected $table = 'ebook__audio';
+    protected $table = 'ebook__audios';
 
     protected $primaryKey = 'audio_id';
 

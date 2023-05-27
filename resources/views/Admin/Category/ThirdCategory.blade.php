@@ -240,7 +240,7 @@ function Getdata(){
                 },
     },
     columns: [{
-            data: 'id',
+            data: 'third_cat_id',
         },
         {
             data: 'category.category_name',
@@ -298,7 +298,7 @@ function ThirdCategoryEdit(id)
     $("#sub_category_id").prop("disabled", true);
       $.get("{{route('ThirdCategoryEdit')}}", {id:id}, function(data)
       {
-          $("#third_cat_id").val(data.data[0]['id']);
+          $("#third_cat_id").val(data.data[0]['third_cat_id']);
           $("#category_id").val(data.data[0]['category_id']);
           $("#sub_category_id").val(data.data[0]['sub_category_id']);
           $("#third_category_name").val(data.data[0]['third_category_name']);

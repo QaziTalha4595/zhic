@@ -32,7 +32,7 @@
                                                     <select class="form-control select2" name="category_id"
                                                         id="category_id" style="width:100%;">
                                                        @foreach($categories as $category)
-                                                       <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                                       <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
                                                        @endforeach
                                                     </select>
                                                 </div>
@@ -71,10 +71,10 @@
         <form action="" class="mb-3">
                 <div class="row">
                     <div class="col-md-4">
-                        <select name="cat_name" id="cat_name" class="form-control">
+                        <select name="cat_id" id="cat_id" class="form-control">
                             <option value="">All Category</option>
                             @foreach($categories as $item)
-                            <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                            <option value="{{ $item->category_id }}">{{ $item->category_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -133,7 +133,7 @@ $(function() {
         {
             $('#date_from').val(''),
             $('#date_to').val(''),
-            $('#cat_name').val('')
+            $('#cat_id').val('')
         }
 function Getdata()
 {
@@ -153,16 +153,15 @@ function Getdata()
         data: {
                     from_date: $('#date_from').val(),
                     to_date: $('#date_to').val(),
-                    category_name : $('#cat_name').val()
+                    category_id : $('#cat_id').val()
                 },
     },
     columns: [{
-            data: 'id',
+            data: 'sub_cat_id',
         },
         {
-            data: 'category.category_name',
-            'searchable': true,
-            'orderable': true,
+            data: 'category_name',
+
         },
         {
             data: 'sub_category_name',
@@ -180,7 +179,7 @@ function Getdata()
 // $("input[type=date]").val("")
 // var $dates = $('#date_from, #date_to').datepicker();
 // $dates.datepicker('setDate', null);
-// $("#cat_name").val("")
+// $("#cat_id").val("")
 
 
 }
@@ -217,7 +216,7 @@ function SubCategoryEdit(id)
 
     $.get("{{route('SubCategoryEdit')}}", {id:id}, function(data)
     {
-      $("#sub_cat_id").val(data.data[0]['id']);
+      $("#sub_cat_id").val(data.data[0]['sub_cat_id']);
       $("#category_id").val(data.data[0]['category_id']);
       $("#sub_category_name").val(data.data[0]['sub_category_name']);
     });

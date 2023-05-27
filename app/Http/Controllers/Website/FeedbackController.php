@@ -52,7 +52,7 @@ class FeedbackController extends Controller
         Session::save();
         $created = DB::table("feedback")
             ->insert([
-                'book_id' => Session::get('book_id'),
+                'ebook_id' => Session::get('book_id'),
                 'user_name' => Session::get('user_name'),
                 'user_email' => Session::get('user_email'),
                 'user_address' => Session::get('user_address'),

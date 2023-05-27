@@ -27,7 +27,7 @@
                                             <div class="modal-body">
                                                 <form id="CategoryStoreForm">
                                                     @csrf
-                                                    <input type="hidden" id="cat_id" name="cat_id">
+                                                    <input type="hidden" id="category_id" name="category_id">
                                                     <div class="form-group">
                                                         <label>Category Name</label>
                                                         <input type="text"
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="Filter_submit" style="width: 100%"  onclick="Getdata()"
+                        <button type="button" id="Filter_submit" style="width: 100%" onclick="Getdata()"
                             class="btn btn-primary">Filter</button>
                     </div>
                 </div>
@@ -90,8 +90,8 @@
                     <table id="DataTable" class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>UID</th>
-                                <th>Name</th>
+                                <th>Category Id</th>
+                                <th>Category Name</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
@@ -114,11 +114,11 @@
         });
 
 
-        $("#AddBtn").click(function(){
-        $('#CategoryStoreForm')[0].reset();
-        $('#cat_id').val('');
-        $("#error").removeClass().html('').hide();
-    });
+        $("#AddBtn").click(function() {
+            $('#CategoryStoreForm')[0].reset();
+            $('#category_id').val('');
+            $("#error").removeClass().html('').hide();
+        });
 
         function Getdata() {
 
@@ -143,7 +143,7 @@
                     },
                 },
                 columns: [{
-                        data: 'id',
+                        data: 'category_id',
                     },
                     {
                         data: 'category_name',
@@ -167,10 +167,10 @@
                 .done((res) => {
                     $("#btnSubmit").prop("disabled", false);
                     if (res.success) {
-                    alertmsg(res.message, "success");
-                    Getdata();
-                    $("#CategoryStoreModal").modal('hide');
-                    $('#CategoryStoreForm')[0].reset();
+                        alertmsg(res.message, "success");
+                        Getdata();
+                        $("#CategoryStoreModal").modal('hide');
+                        $('#CategoryStoreForm')[0].reset();
                     } else if (res.validate) {
                         alertmsg(res.message, "warning")
                     } else {
@@ -186,7 +186,7 @@
             $.get("{{ route('CategoryEdit') }}", {
                 id: id
             }, function(data) {
-                $("#cat_id").val(data.data[0]['id']);
+                $("#category_id").val(data.data[0]['id']);
                 $("#category_name").val(data.data[0]['category_name']);
             });
         }

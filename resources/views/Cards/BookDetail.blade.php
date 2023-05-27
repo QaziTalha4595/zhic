@@ -76,7 +76,7 @@
 
             {{-- <img class="" src="{{url('/public/Files/E-Book-CoverImg/download.jpg')}}"
             alt="------"> --}}
-            <img src="{{config('global.main_url')}}/public/Files/E-Book-CoverImg/{{$cover->ebook__cover ?? ''}}" alt="woman" />
+            <img src="{{url('public/Files/E-Book-Cover/'.($cover->ebook_cover ?? ''))}}" alt="woman" />
 
             <br><br>
             <div class="product-addto-links ">
@@ -183,25 +183,25 @@
               @if($BookDetail->book_type != 1)
               <div class="product-info-stock-sku">
                   <div class="product-addto-links-text">
-                      <p> {{(Request::segment(1)== "en") ? $BookDetail->file_note ?? '' : $BookDetail->file_note_ar ?? ''}}</p>
+                      <p> {{(Request::segment(1)== "en") ? $BookDetail->ebook_note ?? '' : $BookDetail->ebook_note_ar ?? ''}}</p>
                   </div>
               </div>
               @endif
 
-              @if($BookDetail->file_isbn != null)
+              @if($BookDetail->ebook_isbn != null)
               <div class="product-reviews-summary">
                   <div class="reviews-actions">
                       <a href="#"><b> ISBN</b></a>
-                      <a href="#" class="view">{{$BookDetail->file_isbn ?? ''}}</a>
+                      <a href="#" class="view">{{$BookDetail->ebook_isbn ?? ''}}</a>
                   </div>
               </div>
               @endif
 
-              @if($BookDetail->file_author != null)
+              @if($BookDetail->ebook_author != null)
               <div class="product-reviews-summary">
                   <div class="reviews-actions">
                       <a href="#"><b> Author</b></a>
-                      <a href="#" class="view"> {{(Request::segment(1)== "en") ? $BookDetail->file_author ?? '' : $BookDetail->file_author_ar ?? ''}}</a>
+                      <a href="#" class="view"> {{(Request::segment(1)== "en") ? $BookDetail->ebook_author ?? '' : $BookDetail->ebook_author_ar ?? ''}}</a>
                   </div>
               </div>
               @endif

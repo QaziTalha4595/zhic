@@ -26,32 +26,13 @@ class CategoryController extends Controller
 
     public function CategoryShow(Request $req)
     {
-
-        if ($req->ajax())
-        {
-            if ($req->input('from_date'))
-            {
-                $Category = Category::where('created_at', $req->input('from_date'))
-                                    //   ->orwhere('created_at',[$req->input('to_date')])
-                                      ->get();
-            }
-            if ($req->input('from_date') && $req->input('to_date'))
-            {
-                $Category = Category::whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
-                    ->get();
-            }
-            else if ($req->input('from_date') || $req->input('to_date'))
-            {
-                $Category = Category::whereDate('created_at', [$req->input('from_date')])
-                                      ->orWhereDate('created_at', [$req->input('to_date')])
-                                      ->get();
-            }
-            else if($req->input('category_name'))
-            {
-                $Category = Category::where('id',$req->input('category_name'))->get();
-
-            } else {
-                $Category = Category::OrderBy('id', 'DESC');
+        if ($req->ajax()){
+            if ($req->input('from_date') || $req->input('to_date')){
+                $to = $req->input('to_date') ?: (new \DateTime($req->input('from_date')))->modify('+1 day')->format('Y-m-d');
+                $from = $req->input('from_date') ?: (new \DateTime($req->input('to_date')))->modify('-1 day')->format('Y-m-d');
+                $Category = Category::whereBetween('created_at', [$from, $to])->get();
+            }else{
+                $Category = Category::OrderBy('category_id', 'DESC');
             }
         }
 
@@ -59,24 +40,18 @@ class CategoryController extends Controller
             ->editColumn('created_at', function ($Category) {
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $Category->created_at)->format('d-m-Y');
                 return $formatedDate;
-            })
-            ->addColumn('action', function ($Category) {
-                return
-                    '<button class="btn btn-primary" data-toggle="modal" data-target="#CategoryStoreModal"
-            onclick="CategoryEdit(' . $Category->id . ')">
-            <i class="fa fa-edit"></i></button>
-            <button class="btn btn-danger" onclick="CategoryRemove(' . $Category->id . ')"><i class="fa fa-trash"></i>
-            </button>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+            })->addColumn('action', function ($Category) {
+                return '<button class="btn btn-primary" data-toggle="modal" data-target="#CategoryStoreModal" onclick="CategoryEdit(' . $Category->category_id . ')"><i class="fa fa-edit"></i></button><button class="btn btn-danger" onclick="CategoryRemove('.$Category->category_id.')"><i class="fa fa-trash"></i></button>';
+            })->rawColumns(['action'])->make(true);
     }
+
     public function CategoryEdit(Request $request)
     {
-        $cat_id = $request->input('id');
-        $category = Category::where('id', $cat_id)->get();
+        $category_id = $request->input('category_id');
+        $category = Category::where('category_id', $category_id)->get();
         return response()->json(["data" => $category]);
     }
+
     public function CategoryStore(Request $req)
     {
         $validator = Validator::make($req->all(), [
@@ -85,17 +60,13 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
-        $cat_slug = str_replace(" ","_",$req->input('category_name'));
+        $category_slug = strtolower(str_replace(" ","_",$req->input('category_name')));
 
         try {
             $category = Category::updateOrCreate(
-                ['id'   => $req->input('cat_id')],
-                ['category_name' => $req->input('category_name'),
-                 'category_slug' => $cat_slug
-                ]
-
+                ['category_id'   => $req->input('category_id')],
+                ['category_name' => $req->input('category_name'), 'category_slug' => $category_slug]
             );
-
             return response()->json(["success" => true, "message" => $category->wasRecentlyCreated ? "Category Detail Create Successfully" : "Category Detail Updated Successfully"]);
         } catch (\Throwable $th) {
             return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
@@ -105,48 +76,36 @@ class CategoryController extends Controller
 
     public function CategoryDestroy(Request $req)
     {
-        $category = Category::where('id', $req->input('id'))->delete();
-
-        if ($category) {
+        if (Category::where('category_id', $req->input('category_id'))->delete()) {
             return response()->json(["success" => true, "message" => "Category Deleted Succesfully"]);
         } else {
             return response()->json(["success" => false, "message" => "Category Remove Failed...!"]);
         }
     }
+
     //For Sub Category
     public function SubCategory()
     {
-        // $SubCategory = new SubCategory();
-        // $SubCategory = SubCategory::with(['Category']);
-        // return view('Admin.Category.SubCategory',compact('SubCategory'));
         $SubCategories = SubCategory::all();
         $categories = Category::all();
         return view('Admin.Category.SubCategory', compact('categories','SubCategories'));
     }
+
     public function SubCategoryShow(Request $req)
     {
         if ($req->ajax()) {
-            if ($req->input('from_date') && $req->input('to_date')) {
-                $SubCategories = SubCategory::
-                                whereBetween('created_at', [$req->input('from_date'), $req->input('to_date')])
-                                ->with('category')
-                                ->get();
+            $query = SubCategory::join('category', 'category__sub.category_id', '=', 'category.category_id');
 
+            if ($req->input('from_date') || $req->input('to_date')) {
+                $to = $req->input('to_date') ?: (new \DateTime($req->input('from_date')))->modify('+1 day')->format('Y-m-d');
+                $from = $req->input('from_date') ?: (new \DateTime($req->input('to_date')))->modify('-1 day')->format('Y-m-d');
+                $query->whereBetween('category__sub.created_at', [$from, $to]);
             }
-            else if($req->input('category_name'))
-            {
-                $SubCategories = SubCategory::with('category')->where('category_id',$req->input('category_name'))->get();
+            if ($req->input('category_id')) {
+                $query->where('category.category_id', $req->input('category_id'));
+            }
 
-            }
-            else if ($req->input('from_date') || $req->input('to_date')) {
-                $SubCategories = SubCategory::whereDate('created_at', [$req->input('from_date')])
-                ->orwhereDate('created_at', [$req->input('to_date')])
-                ->with('category')
-                ->get();
-            } else {
-                $SubCategories = SubCategory::with('category')->get();
-                // $SubCategories = SubCategory::with(['Category'])->OrderBy('id', 'DESC'); this not working while orderning data in datatables
-            }
+            $SubCategories = $query->get();
         }
 
         return Datatables::of($SubCategories)
@@ -168,8 +127,8 @@ class CategoryController extends Controller
     public function SubCategoryEdit(Request $request)
     {
 
-        $sub_cat_id = $request->input('id');
-        $SubCategories = SubCategory::where('id', $sub_cat_id)->get();
+        $sub_category_id = $request->input('id');
+        $SubCategories = SubCategory::where('id', $sub_category_id)->get();
         return response()->json(["data" => $SubCategories]);
     }
     public function SubCategoryStore(Request $req)
@@ -181,10 +140,10 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
-        $sub_cat_slug = str_replace(" ","_",$req->input('sub_category_name'));
+        $sub_cat_slug = strtolower(str_replace(" ","_",$req->input('sub_category_name')));
         try {
             $SubCategory = SubCategory::updateOrCreate(
-                ['id'   => $req->input('sub_cat_id')],
+                ['id'   => $req->input('sub_category_id')],
                 [
                     'category_id' => $req->input('category_id'),
                     'sub_category_name' => $req->input('sub_category_name'),
@@ -209,7 +168,7 @@ class CategoryController extends Controller
     //Third Category
     public function FetchSubCategory(Request $req)
     {
-        $SubCategories['sub_categories'] = SubCategory::where('category_id', $req->cat_id)->get();
+        $SubCategories['sub_categories'] = SubCategory::where('category_id', $req->category_id)->get();
         return response()->json(["data" => $SubCategories]);
     }
     public function ThirdCategory()
@@ -232,10 +191,10 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
-        $third_cat_slug = str_replace(" ","_",$req->input('third_category_name'));
+        $third_cat_slug = strtolower(str_replace(" ","_",$req->input('third_category_name')));
         try {
             $ThirdCategory = ThirdCategory::updateOrCreate(
-                ['id'   => $req->input('third_cat_id')],
+                ['third_cat_id'   => $req->input('third_cat_id')],
                 [
                     'category_id' => $req->input('category_id'),
                     'sub_category_id' => $req->input('sub_category_id'),
@@ -289,9 +248,9 @@ class CategoryController extends Controller
         ->addColumn('action', function ($ThirdCategory) {
                 return
                     '<button class="btn btn-primary" data-toggle="modal" data-target="#ThirdCategoryStoreModal"
-            onclick="ThirdCategoryEdit(' . $ThirdCategory->id . ')">
+            onclick="ThirdCategoryEdit(' . $ThirdCategory->third_cat_id . ')">
             <i class="fa fa-edit"></i></button>
-            <button class="btn btn-danger" onclick="ThirdCategoryRemove(' . $ThirdCategory->id . ')"><i class="fa fa-trash"></i>
+            <button class="btn btn-danger" onclick="ThirdCategoryRemove(' . $ThirdCategory->third_cat_id . ')"><i class="fa fa-trash"></i>
             </button>';
             })
             ->rawColumns(['action'])
@@ -299,13 +258,13 @@ class CategoryController extends Controller
     }
     public function ThirdCategoryEdit(Request $request)
     {
-        $third_cat_id = $request->input('id');
-        $ThirdCategories = ThirdCategory::where('id', $third_cat_id)->get();
+        $third_category_id = $request->input('third_cat_id');
+        $ThirdCategories = ThirdCategory::where('third_cat_id', $third_category_id)->get();
         return response()->json(["data" => $ThirdCategories]);
     }
     public function ThirdCategoryDestroy(Request $req)
     {
-        $ThirdCategory = ThirdCategory::where('id', $req->input('id'))->delete();
+        $ThirdCategory = ThirdCategory::where('third_cat_id', $req->input('id'))->delete();
 
         if ($ThirdCategory) {
             return response()->json(['success' => true, 'message' => 'Third Category Deleted Successfully']);

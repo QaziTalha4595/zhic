@@ -73,7 +73,7 @@ class WebsiteEbookController extends Controller
             ->get();
 
         $Article = DB::table('category__third')
-            ->leftjoin('category__sub', 'category__sub.id', '=', 'category__third.sub_category_id')
+            ->leftjoin('category__sub', 'category__sub.sub_cat_id', '=', 'category__third.sub_category_id')
             ->where('category__third.category_id', 6)
             ->groupBy('third_category_name')
             ->limit(6)
@@ -170,9 +170,9 @@ class WebsiteEbookController extends Controller
 
         $BookDetail = DB::table('ebook')
             ->select('ebook.*', 'category__sub.*', 'ebook__cover.*', 'category.*')
-            ->rightjoin('category', 'category.id', '=', 'ebook.category_id')
-            ->rightjoin('category__sub', 'category__sub.id', '=', 'ebook.sub_cat_id')
-            ->rightjoin('category__third', 'category__third.id', '=', 'ebook.third_cat_id')
+            ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
+            ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
+            ->rightjoin('category__third', 'category__third.third_cat_id', '=', 'ebook.third_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
             ->where(function ($query) use ($t_slug, $p_slug, $s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
@@ -203,8 +203,8 @@ class WebsiteEbookController extends Controller
 
         $langGroup = DB::table('ebook')
             ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
-            ->rightjoin('category', 'category.id', '=', 'ebook.category_id')
-            ->rightjoin('category__sub', 'category__sub.id', '=', 'ebook.sub_cat_id')
+            ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
+            ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
@@ -221,11 +221,11 @@ class WebsiteEbookController extends Controller
             ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->groupBy('ebook.language_id')
             ->get();
-            return $langGroup;
+
             $authorGroup = DB::table('ebook')
             ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
-            ->rightjoin('category', 'category.id', '=', 'ebook.category_id')
-            ->rightjoin('category__sub', 'category__sub.id', '=', 'ebook.sub_cat_id')
+            ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
+            ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 if ($s_slug != null) {
