@@ -41,7 +41,7 @@
                                 @foreach($langGroup as $lang)
                                 <li>
                                     <a href="javascript:void(0)"
-                                        onclick="language({{$lang->language_id}})">{{$lang->languages ?? ''}}
+                                        onclick="language({{$lang->language_id}})">{{$lang->language ?? ''}}
                                         <span>
                                             <input class="language" name="filter_radio" type="radio"
                                                 value="{{$lang->language_id ?? ''}}"
