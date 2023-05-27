@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', $BookDetail[0]->category_name. '-'.$BookDetail[0]->sub_cat_name)
+@section('title', $BookDetail[0]->category_name. '-'.$BookDetail[0]->sub_category_name)
 @section('content')
 
 <!-- breadcrumbs-area-start -->
@@ -60,14 +60,14 @@
                         <div class="left-menu card-body">
                             <ul>
                                 @foreach($authorGroup as $autor)
-                                @if($autor->file_author != "")
+                                @if($autor->ebook_author != "")
                                 <li>
-                                    <a href="javascript:void(0)" onclick="Author('{{$autor->file_author}}')">
-                                        {{ (Request::segment(1) == "en") ? Str::limit($autor->file_author,20) : Str::limit($autor->file_author_ar,20) ?? '' }}
+                                    <a href="javascript:void(0)" onclick="Author('{{$autor->ebook_author}}')">
+                                        {{ (Request::segment(1) == "en") ? Str::limit($autor->ebook_author,20) : Str::limit($autor->ebook_author_ar,20) ?? '' }}
                                         <span>
                                             <input class="language" name="filter_radio" type="radio"
-                                                value="{{$autor->file_author ?? ''}}"
-                                                <?php if ($autor->file_author == $author) {echo "checked";}?>>
+                                                value="{{$autor->ebook_author ?? ''}}"
+                                                <?php if ($autor->ebook_author == $author) {echo "checked";}?>>
                                         </span>
                                     </a>
                                 </li>

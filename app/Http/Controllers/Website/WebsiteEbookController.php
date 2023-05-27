@@ -175,7 +175,7 @@ class WebsiteEbookController extends Controller
             ->rightjoin('category__third', 'category__third.id', '=', 'ebook.third_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
             ->where(function ($query) use ($t_slug, $p_slug, $s_slug,$author,$language) {
-                // $query->where('category.category_slug', $p_slug);
+                $query->where('category.category_slug', $p_slug);
                 if ($s_slug != null) {
                     $query->where('category__sub.sub_category_slug', $s_slug);
                 }
@@ -191,7 +191,6 @@ class WebsiteEbookController extends Controller
             })
             ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->paginate(20);
-            return $BookDetail;
             $totalpage = $BookDetail->lastPage();
 
 
@@ -206,7 +205,6 @@ class WebsiteEbookController extends Controller
             ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
             ->rightjoin('category', 'category.id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.id', '=', 'ebook.sub_cat_id')
-
             ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
@@ -223,7 +221,7 @@ class WebsiteEbookController extends Controller
             ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->groupBy('ebook.language_id')
             ->get();
-
+            return $langGroup;
             $authorGroup = DB::table('ebook')
             ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
             ->rightjoin('category', 'category.id', '=', 'ebook.category_id')
@@ -245,10 +243,11 @@ class WebsiteEbookController extends Controller
             ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->get();
 
-     /*    if (count($BookDetail) == 0) {
+        if (count($BookDetail) == 0) {
             return view('Website.Error.404', [
             ]);
-        } else { */
+        } else {
+
             return view('Cards.BookList', [
                 'BookDetail' => $BookDetail,
                 'authorGroup' => $authorGroup,
@@ -265,7 +264,7 @@ class WebsiteEbookController extends Controller
                 'Categories_sub'=>$Categories_sub,
                 'Categories_third'=>$Categories_third,
             ]);
-
+        }
     }
 
     public function Contact() {

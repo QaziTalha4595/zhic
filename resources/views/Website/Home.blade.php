@@ -10,8 +10,20 @@
                 /* margin-top: -50px; */
             }
     }
-</style>
 
+</style>
+@if (Request::segment(1)== "ar")
+    <style>
+        .slider-content h4{
+width: 100%;
+text-align: justify;
+        }
+        .slider-content p{
+width: 100%;
+text-align: justify;
+        }
+    </style>
+@endif
 <!-- shop-main-area-start -->
   <div class="shop-main-area" style="overflow:hidden; direction:ltr">
     <div class="slider-area">
@@ -22,7 +34,7 @@
                     <div class="row">
                         <div class="col-lg-8 col-md-6 order-1 order-lg-0">
                             <div class="slider-content slider-animated-1 mt-70" style="color: white;">
-                                <h4 style="color: white;">{{( Request::segment(1)== "en") ? $slider->slider_heading ?? '' : $slider->slider_heading_ar ?? ' '  ?? ''}}</h4>
+                                <h4 style="color: white;">{{( Request::segment(1)== "en") ? $slider->slider_heading ?? '' : $slider->slider_heading_ar ?? $slider->slider_heading}}</h4>
                                 <p>{{  ( Request::segment(1)== "en") ? Str::limit($slider->slider_caption,278) : Str::limit($slider->slider_heading_ar,278) ?? ' '   ?? ''}}</p>
                                 <a href="{{$slider->link ?? ''}}">{{ __('basic.ViewMore') }}</a>
                             </div>
