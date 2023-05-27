@@ -202,10 +202,11 @@ class WebsiteEbookController extends Controller
             }
 
         $langGroup = DB::table('ebook')
-            ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
+            ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*', 'languages.*')
             ->rightjoin('category', 'category.id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.id', '=', 'ebook.sub_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('languages','languages.id', '=', 'ebook.language_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
                 if ($s_slug != null) {
@@ -221,12 +222,13 @@ class WebsiteEbookController extends Controller
             ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->groupBy('ebook.language_id')
             ->get();
-            return $langGroup;
-            $authorGroup = DB::table('ebook')
-            ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
+            // return $langGroup;
+        $authorGroup = DB::table('ebook')
+            ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*', 'languages.*')
             ->rightjoin('category', 'category.id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.id', '=', 'ebook.sub_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('languages','languages.id', '=', 'ebook.language_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 if ($s_slug != null) {
                     $query->where('category__sub.sub_category_slug', $s_slug);
