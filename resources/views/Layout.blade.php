@@ -281,18 +281,18 @@
                         <div class=container>
                             <nav id=menuzord class="menuzord bg-theme-colored pull-left flip menuzord-responsive">
                                 <ul id=menu-enmain_menu class=menuzord-menu>
-                                    @foreach ($Categories as $category)
+                                    @foreach ($categories as $category)
                                         <li id=menu-item-3588
                                             class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3588">
                                             <a title=Library
                                                 style="color: White;" class="nav" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug ?? ''}}">{{  (Request::segment(1) == "en")  ? $category->category_name : $category->category_name_ar ?? ' '  }}</a>
                                             <ul  class=sub-menu>
-                                                @foreach ($Categories_sub as $Category_sub)
+                                                @foreach ($sub_categories as $Category_sub)
                                                     @if ($Category_sub->category_id == $category->id)
                                                     <li id=menu-item-6073 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6073">
                                                         <a title="Apply for Job" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_category_slug}}">{{   (Request::segment(1) == "en")  ? $Category_sub->sub_category_name : $Category_sub->sub_category_name_ar ?? ' '}}</a>
                                                         <ul class=sub-menu>
-                                                            @foreach ($Categories_third as $Category_third)
+                                                            @foreach ($third_categories as $Category_third)
                                                             @if ($Category_third->sub_category_id == $Category_sub->id)
                                                             <li id=menu-item-6470 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6470">
                                                                 <a title="Faculty position application" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_category_slug}}/{{$Category_third->third_category_slug}}">{{ (Request::segment(1) == "en")  ? $Category_third->third_category_name ?? ' '  : $Category_third->third_category_name_ar ?? ' ' }}</a>

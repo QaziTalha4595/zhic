@@ -40,7 +40,7 @@ use App\Http\Controllers\Admin\Book\BookRequestController;
         $view->with([
             'categories' => $category,
             'sub_categories' => $sub_category,
-            'third_category' => $third_category,
+            'third_categories' => $third_category,
         ]);
     });
 

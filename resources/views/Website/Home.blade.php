@@ -178,7 +178,7 @@
             <br>
             <br>
             <div class="section-title text-center pt-50 mb-10 section-title-res">
-                <a href="{{url('/')}}/EBook-{{$Categories    [1]->category_slug}}">
+                <a href="{{url('/')}}/EBook-{{$Categories[1]->category_slug}}">
                     <h2>{{__('basic.meaning')}}</h2>
                 </a>
                 <p style="text-align: center; margin-top:20px;">{{__('basic.featured')}} <br />
@@ -202,7 +202,7 @@
             @endforeach
         </div>
         <div class="text-right">
-            <a href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$Categories    [1]->category_slug}}" class="btn-2">{{ __('basic.ViewMore') }}</a>
+            <a href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$Categories[1]->category_slug}}" class="btn-2">{{ __('basic.ViewMore') }}</a>
         </div>
     </div>
 </div>
@@ -216,7 +216,7 @@
                 <br>
                 <br>
                 <div class="section-title text-center pt-50 mb-10 section-title-res">
-                    <a href="{{url('/')}}/EBook-{{$Categories    [2]->category_slug}}">
+                    <a href="{{url('/')}}/EBook-{{$Categories[2]->category_slug}}">
                         <h2>{{__('basic.CULTURAL')}}</h2>
                     </a>
                     <p style="text-align: center; margin-top:20px;">{{__('basic.featured')}}<br />

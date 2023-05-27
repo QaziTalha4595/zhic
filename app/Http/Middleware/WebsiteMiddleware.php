@@ -18,11 +18,13 @@ class WebsiteMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $locale = $request->route('locale');
-        App::setLocale($locale);
+        return $next($request);
+        // $locale = $request->route('locale');
+
+        // App::setLocale($locale);
         session()->put('locale', $locale);
         session()->put('view-mode', "2-col");
-        if ($locale !== "en" && $locale !== "ar"){
+        if ($locale !== "en" || $locale !== "ar"){
 
             // return $next($request);
             return view('Website.Error.404');
