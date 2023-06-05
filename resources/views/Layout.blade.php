@@ -290,12 +290,12 @@
                                                 @foreach ($sub_categories as $Category_sub)
                                                     @if ($Category_sub->category_id == $category->category_id)
                                                     <li id=menu-item-6073 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-6073">
-                                                        <a title="Apply for Job" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_category_slug}}">{{   (Request::segment(1) == "en")  ? $Category_sub->sub_category_name : $Category_sub->sub_category_name_ar ?? ' '}}</a>
+                                                        <a title="Apply for Job" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_cat_slug}}">{{   (Request::segment(1) == "en")  ? $Category_sub->sub_cat_name : $Category_sub->sub_cat_name_ar ?? ' '}}</a>
                                                         <ul class=sub-menu>
                                                             @foreach ($third_categories as $Category_third)
-                                                            @if ($Category_third->sub_category_id == $Category_sub->sub_cat_id)
+                                                            @if ($Category_third->sub_cat_id == $Category_sub->sub_cat_id)
                                                             <li id=menu-item-6470 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6470">
-                                                                <a title="Faculty position application" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_category_slug}}/{{$Category_third->third_category_slug}}">{{ (Request::segment(1) == "en")  ? $Category_third->third_category_name ?? ' '  : $Category_third->third_category_name_ar ?? ' ' }}</a>
+                                                                <a title="Faculty position application" href="{{url( (Request::segment(1) == 'ar') ? 'ar' : 'en' )}}/EBook-{{$category->category_slug}}/{{$Category_sub->sub_cat_slug}}/{{$Category_third->third_cat_slug}}">{{ (Request::segment(1) == "en")  ? $Category_third->third_category_name ?? ' '  : $Category_third->third_category_name_ar ?? ' ' }}</a>
                                                             </li>
                                                             @endif
                                                             @endforeach

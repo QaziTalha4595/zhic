@@ -9,12 +9,13 @@ class ThirdCategory extends Model
 {
     use HasFactory;
     protected $table = 'category__third';
-
+    protected $primaryKey = 'third_cat_id';
     protected $fillable = [
         'category_id',
-        'sub_category_id',
-        'third_category_name',
-        'third_category_slug'
+        'sub_cat_id',
+        'third_cat_name',
+        'third_cat_name_ar',
+        'third_cat_slug'
     ];
     public function category()
     {
@@ -22,6 +23,6 @@ class ThirdCategory extends Model
     }
     public function subcategory()
     {
-        return $this->belongsTo('App\Models\SubCategory','sub_category_id','sub_cat_id');
+        return $this->belongsTo('App\Models\SubCategory','sub_cat_id','sub_cat_id');
     }
 }

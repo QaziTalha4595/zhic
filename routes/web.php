@@ -34,7 +34,7 @@ use App\Http\Controllers\Admin\Book\BookRequestController;
         $category = DB::table('category')->get();
         $sub_category = DB::table('category__sub')->get();
         $third_category = DB::table('category__third')
-        ->orderBy('third_category_name','ASC')
+        ->orderBy('third_cat_name','ASC')
         ->get();
 
         $view->with([
@@ -131,7 +131,7 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
 
      // Promotion management
     Route::get('/Promotion', [PromotionController::class, 'Promotion'])->name('Promotion');
-    Route::get('/FetchSubCategory', [PromotionController::class, 'FetchSubCategory'])->name('FetchSubCategory');
+    // Route::get('/FetchSubCategory', [PromotionController::class, 'FetchSubCategory'])->name('FetchSubCategory');
     Route::post('/PromotionStore', [PromotionController::class, 'PromotionStore'])->name('PromotionStore');
     Route::get('/PromotionShow', [PromotionController::class, 'PromotionShow'])->name('PromotionShow');
     Route::get('/PromotionEdit', [PromotionController::class, 'PromotionEdit'])->name('PromotionEdit');
@@ -166,7 +166,7 @@ Route::group(['prefix'=> 'ControlPanel', 'middleware'=> 'AuthMiddleware'], funct
     Route::post('EbookUploadStore', [EbookController::class, 'EbookUploadStore'])->name('EbookUploadStore');
     Route::get('EbookShow', [EbookController::class, 'EbookShow'])->name('EbookShow');
     Route::get('EbookRemove', [EbookController::class, 'EbookRemove'])->name('EbookRemove');
-    Route::post('Ebook-{file_id}-Edit', [EbookController::class, 'EbookCoverStore'])->name('EbookEdit');
+    Route::post('Ebook-{file_id}-Edit', [EbookController::class, 'EbookCoverStore'])->name('EbookFileEdit');
     Route::get('EbookEdit',[EbookController::class,'EbookEdit'])->name('EbookEdit');
     Route::get('AllBookShow',[EbookController::class,'AllBookShow'])->name('AllBookShow');
 

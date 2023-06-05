@@ -306,10 +306,31 @@
     </div>
     <!-- ./wrapper -->
     <script>
+                var dID = (id) => document.getElementById(id);
+
+    function filledit(d) {
+        let k = Object.keys(d)
+        for (let i = 0; i < k.length; i++) dID(k[i])?dID(k[i]).value = d[k[i]]:""
+    }
     function alertmsg(msg, type) {
     $("#error").removeClass().html('').show();
     $("#error").addClass(`alert alert-${type} text-center`).html(msg);
     $("#error").fadeOut(3000);
+    }
+    function confirmdlt(func){
+        swal({
+			title : "Are You Sure?",
+			text : "Once Deleted You will not be able to go back",
+			icon : "warning",
+			buttons : true,
+			dangerMode : true,
+
+		})
+        .then((willDelete) => {
+                    if (willDelete) {
+                       func()
+                    }
+                });
     }
     </script>
     <!-- datatable -->

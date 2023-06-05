@@ -97,23 +97,16 @@
 
             $("#DataTable").DataTable().destroy();
             var DataTable = $("#DataTable").DataTable({
-                "processing": true,
-                "serverSide": true,
+                processing: true, serverSide: true, responsive: true,
                 dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    ['10 rows', '25 rows', '50 rows', 'Show all']
-                ],
-                "responsive": true,
+                order: [[0, 'desc']],
+                lengthMenu: [[10, 25, 50, -1], ['10 rows', '25 rows', '50 rows', 'Show all']],
                 buttons: ['pageLength'],
                 ajax: {
                     url: "{{ route('LanguageShow') }}",
-                    // data: {
-                    //   client_id: ""
-                    // }
                 },
                 columns: [{
-                        data: 'id',
+                        data: 'language_id',
                     },
                     {
                         data: 'language',
@@ -132,9 +125,7 @@
         });
 
         function LanguageStore() {
-
             $("#btnSubmit").prop("disabled", true);
-
             $.post("{{ route('LanguageStore') }}", $('#LanguageStoreForm').serialize())
                 .done((res) => {
                     $("#btnSubmit").prop("disabled", false);
@@ -156,10 +147,9 @@
             $("#LoginBtn").prop("disabled", false);
         }
 
-        function LanguageEdit(id) {
-            $.get("{{ route('LanguageEdit') }}", {
-                id: id
-            }, function(data) {
+        function LanguageEdit(language_id) {
+            $('#LanguageStoreModal').modal('show');
+            $.get("{{ route('LanguageEdit') }}", {language_id: language_id}, (data)=>{
                 $("#lang_id").val(data.data[0]['id']);
                 $("#language").val(data.data[0]['language']);
             });

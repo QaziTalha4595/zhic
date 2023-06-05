@@ -34,23 +34,22 @@ class SliderController extends Controller
 
                 $image_parts = explode(";base64,", $req->promotion_attachment);
                 $imageName = uniqid() . '.'.explode("image/", $image_parts[0])[1];
-                $path = public_path('Slider/') . "/". $imageName;
 
-                file_put_contents(public_path('Slider/') . "/". $imageName, base64_decode($image_parts[1]));
+                file_put_contents(url('public/Files/Main-Slider/').$imageName, base64_decode($image_parts[1]));
 
                 if($req->input('slider_id'))
                 {
-                    $findImage = Slider::where('id',$req->input('slider_id'))->first();
-                    if(file_exists('public/Slider/'.$findImage->slider_image) AND !empty($findImage->slider_image))
+                    $findImage = Slider::where('slider_id',$req->input('slider_id'))->first();
+                    if(file_exists('public/Files/Main-Slider/'.$findImage->slider_image) AND !empty($findImage->slider_image))
                     {
-                        unlink('public/Slider/'.$findImage->slider_image);
+                        unlink('public/Files/Main-Slider/'.$findImage->slider_image);
                     }
 
                 }
             }
             else
             {
-                $data = Slider::where('id',$req->input('slider_id'))->get();
+                $data = Slider::where('slider_id',$req->input('slider_id'))->get();
                 $imageName = $data[0]->slider_image;
                 $path = $data[0]->slider_link;
             }
@@ -58,7 +57,7 @@ class SliderController extends Controller
             try {
                 $Slider = Slider::updateOrCreate(
 
-                    ['id' => $req->input('slider_id')],
+                    ['slider_id' => $req->input('slider_id')],
                     [
                         'slider_heading' => $req->input('slider_heading'),
                         'slider_caption' => $req->input('slider_caption'),
@@ -76,7 +75,7 @@ class SliderController extends Controller
     }
     public function SliderShow()
     {
-        $Slider = Slider::OrderBy('id','DESC');
+        $Slider = Slider::OrderBy('slider_id','DESC');
         return Datatables::of($Slider)
         ->addColumn('Action', function ($Slider) {
             return
@@ -90,18 +89,18 @@ class SliderController extends Controller
     }
     public function SliderEdit(Request $req)
     {
-        $slider_id = $req->input('id');
-        $Slider = Slider::where('id',$slider_id)->get();
+        $slider_id = $req->input('slider_id');
+        $Slider = Slider::where('slider_id',$slider_id)->get();
         return response()->json(["data" => $Slider]);
     }
     public function SliderDestroy(Request $req)
     {
-        $Slider = Slider::where('id',$req->input('id'))->first();
+        $Slider = Slider::where('slider_id',$req->input('slider_id'))->first();
         if(file_exists('public/Slider/'.$Slider->slider_image) AND !empty($Slider->slider_image))
         {
             unlink('public/Slider/'.$Slider->slider_image);
         }
-        $data = Slider::where('id',$req->input('id'))->delete();
+        $data = Slider::where('slider_id',$req->input('slider_id'))->delete();
         if($data)
         {
             return response()->json(['success' => true, 'message' => 'Slider Detail Remove Successfully']);

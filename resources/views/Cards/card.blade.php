@@ -4,7 +4,7 @@
 
     <div class="book-card card my-3" style="direction: ltr;">
         <div class="img-bg" style="background-color: {{$book->ebook_bg_color}};"> <br>
-            <img class="" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}" alt="{{$book->ebook_cover}}" onerror="this.onerror=null;this.src='https://thumbs.dreamstime.com/b/blank-book-cover-over-white-background-shadow-65220894.jpg';">
+            <img class="" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook__cover}}" alt="{{$book->ebook__cover}}" onerror="this.onerror=null;this.src='https://thumbs.dreamstime.com/b/blank-book-cover-over-white-background-shadow-65220894.jpg';">
         </div>
 
         <div class="card-body custom-card-body">
@@ -37,7 +37,7 @@
 {{-- <div class="book-card card my-3" style="direction: ltr;">
     <div class="sec-card-header" style="background-color: {{$book->ebook_bg_color}};border-radius: 10px;"><br>
         <div class="img-bg" style="background-color: {{$book->ebook_bg_color}};"> <br>
-            <img class="" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}" alt="{{$book->ebook_cover}}" onerror="this.onerror=null;this.src='https://thumbs.dreamstime.com/b/blank-book-cover-over-white-background-shadow-65220894.jpg';">
+            <img class="" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook__cover}}" alt="{{$book->ebook__cover}}" onerror="this.onerror=null;this.src='https://thumbs.dreamstime.com/b/blank-book-cover-over-white-background-shadow-65220894.jpg';">
         </div>
     </div>
 

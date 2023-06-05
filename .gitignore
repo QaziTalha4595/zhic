@@ -24,3 +24,5 @@ Homestead.json
 *.mp3
 *.pdf
 *.jpg
+composer.json
+composer.lock

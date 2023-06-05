@@ -64,7 +64,7 @@ text-align: justify;
                 @endif
                 <div class="thumb book-1">
                     <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$bookshelf[$i]->ebook_slug ?? ""}}">
-                        <img src="{{url('public/Files/E-Book-Cover')}}/{{$bookshelf[$i]->ebook_cover ?? ''}}"
+                        <img src="{{url('public/Files/E-Book-Cover')}}/{{$bookshelf[$i]->ebook__cover ?? ''}}"
                             class="img-w-120">
 
                     </a>
@@ -83,7 +83,7 @@ text-align: justify;
             @endif
             <div class="thumb book-1">
                 <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$bookshelf[$i]->ebook_slug ?? ""}}">
-                    <img src="{{url('public/Files/E-Book-Cover')}}/{{$bookshelf[$i]->ebook_cover ?? ''}}"
+                    <img src="{{url('public/Files/E-Book-Cover')}}/{{$bookshelf[$i]->ebook__cover ?? ''}}"
                         class="img-w-120">
 
                 </a>

@@ -40,7 +40,14 @@
                                                     <label class="text-bold">Sub Category Name</label>
                                                     <input type="text"
                                                         class="form-control form-control-user border-primary required"
-                                                        id="sub_category_name" name="sub_category_name"
+                                                        id="sub_cat_name" name="sub_cat_name"
+                                                        autocomplete=" off">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="text-bold">Sub Category Name In Arabic</label>
+                                                    <input type="text"
+                                                        class="form-control form-control-user border-primary required"
+                                                        id="sub_cat_name_ar" name="sub_cat_name_ar"
                                                         autocomplete=" off">
                                                 </div>
 
@@ -139,115 +146,56 @@ function Getdata()
 {
     $("#DataTable").DataTable().destroy();
     var DataTable = $("#DataTable").DataTable({
-    "processing": true,
-    "serverSide": true,
-    dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    ['10 rows', '25 rows', '50 rows', 'Show all']
-                ],
-                "responsive": true,
-                buttons: ['pageLength'],
-    ajax: {
-        url: "{{route('SubCategoryShow')}}",
-        data: {
-                    from_date: $('#date_from').val(),
-                    to_date: $('#date_to').val(),
-                    category_id : $('#cat_id').val()
-                },
-    },
-    columns: [{
-            data: 'sub_cat_id',
+        processing: true, serverSide: true, responsive: true,
+        dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
+        order: [[0, 'desc']],
+        lengthMenu: [[10, 25, 50, -1], ['10 rows', '25 rows', '50 rows', 'Show all']],
+        buttons: ['pageLength'],
+        ajax: {
+            url: "{{route('SubCategoryShow')}}",
+            data: {from_date: $('#date_from').val(), to_date: $('#date_to').val(), category_id : $('#cat_id').val()},
         },
-        {
-            data: 'category_name',
-
-        },
-        {
-            data: 'sub_category_name',
-        },
-        {
-            data: 'created_at',
-        },
-        {
-            data: 'action',
-        }
-    ]
-
-});
-
-// $("input[type=date]").val("")
-// var $dates = $('#date_from, #date_to').datepicker();
-// $dates.datepicker('setDate', null);
-// $("#cat_id").val("")
-
+        columns: [{data: 'sub_cat_id'}, {data: 'category_name'}, {data: 'sub_cat_name'}, {data: 'created_at'}, {data: 'action'}]
+    });
 
 }
 
 function SubCategoryStore() {
-
 $("#btnSubmit").prop("disabled", true);
-
-$.post("{{route('SubCategoryStore')}}", $('#SubCategoryStoreForm').serialize())
-        .done((res)=>{
-            $("#btnSubmit").prop("disabled", false);
+$.post("{{route('SubCategoryStore')}}", $('#SubCategoryStoreForm').serialize(), (res)=>{
+    $("#btnSubmit").prop("disabled", false);
              if(res.success){
-                $("#btnSubmit").prop("disabled", false);
                 alertmsg(res.message,"success");
                 Getdata();
                 $("#SubCategoryStoreModal").modal('hide');
-                 $('#SubCategoryStoreForm')[0].reset();
+                $('#SubCategoryStoreForm')[0].reset();
 
              }else if(res.validate){
                 alertmsg(res.message, "warning")
              }else{
                 alertmsg(res.message, "danger")
              }
-            })
-        .fail((err)=>{
-
-            alertmsg("Something went wrong", "danger");
-            $("#btnSubmit").prop("disabled", false);
-        });
-        $("#LoginBtn").prop("disabled", false);
+})
 }
-function SubCategoryEdit(id)
+function SubCategoryEdit(sub_cat_id)
   {
-
-    $.get("{{route('SubCategoryEdit')}}", {id:id}, function(data)
-    {
-      $("#sub_cat_id").val(data.data[0]['sub_cat_id']);
-      $("#category_id").val(data.data[0]['category_id']);
-      $("#sub_category_name").val(data.data[0]['sub_category_name']);
+    $('#SubCategoryStoreModal').modal('show')
+    $.get("{{route('SubCategoryEdit')}}", {sub_cat_id:sub_cat_id}, (data)=>{
+        filledit(data.data[0])
     });
   }
 
-  function SubCategoryRemove(id)
+  function SubCategoryRemove(sub_cat_id)
   {
-    swal({
-			title : "Are You Sure?",
-			text : "Once Deleted You will not be able to recover this file",
-			icon : "warning",
-			buttons : true,
-			dangerMode : true,
-
-		})
-        .then((willDelete) => {
-                    if (willDelete) {
-                        $.get("{{ route('SubCategoryRemove') }}", {
-                            id: id
-                        }, function(res) {
-                            if (res['success']) {
-                                swal({
-                                    title: "Successful...",
-                                    text: res.message,
-                                    icon: "success"
-                                })
-                                Getdata();
-                            }
-                        });
-                    }
-                });
+   confirmdlt(()=>{ 
+    $.get("{{ route('SubCategoryRemove') }}", {sub_cat_id: sub_cat_id}, 
+        (res)=>{
+            if (res['success']) {
+                swal({title: "Successful..",text: res.message,icon: "success"})
+                Getdata();
+            }
+        });
+    })
   }
 
 </script>

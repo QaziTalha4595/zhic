@@ -34,24 +34,24 @@
                     @csrf
                     <input type="hidden" id="third_cat_id" name="third_cat_id" val="">
                     <div class="form-group">
+                  
                         <label>Category</label>
                         <select class="form-control select2" name="category_id"
-                            id="category_id" style="width:100%;">
+                            id="category_id" style="width:100%;" onchange = "GetCategory(this)" >
                             <option selected disabled>Select</option>
+                           
                             @foreach($Category as $item)
-                            <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                            <option value="{{ $item->category_id }}">{{ $item->category_name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group" onclick="SelectErr()">
                         <label>Sub Category</label>
 
-                        <select class="form-control select2" name="sub_category_id"
-                            id="sub_category_id"  style="width:100%;" disabled>
+                        <select class="form-control select2" name="sub_cat_id"
+                            id="sub_cat_id"  style="width:100%;" disabled>
                             <option selected disabled>Select</option>
-                            @foreach($SubCategory as $item)
-                            <option value="{{ $item->id }}">{{ $item->sub_category_name }}</option>
-                            @endforeach
+                       
                         </select>
 
 
@@ -60,7 +60,13 @@
                         <lable class="text-bold">Third Category Name</lable>
                         <input type="text"
                             class="form-control form-control-user border-primary required "
-                            id="third_category_name" name="third_category_name">
+                            id="third_cat_name" name="third_cat_name">
+                    </div>
+                    <div class="form-group">
+                        <lable class="text-bold">Third Category Name in Arabic</lable>
+                        <input type="text"
+                            class="form-control form-control-user border-primary required "
+                            id="third_cat_name_ar" name="third_cat_name_ar">
                     </div>
 
                 </form>
@@ -86,29 +92,32 @@
     <div class="card shadow mb-4">
         <div class="card-body">
         <form action="" class="mb-3">
-                <div class="row ml-5">
-                    <div class="col-md-2">
+                <div class="row">
+                    <div class="col-md-2 col-6 mt-2">
                         <input type="date" id="date_from" name="date_from" class="form-control">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-6 mt-2">
                         <input type="date" id="date_to" name="date_to" class="form-control">
                     </div>
-                    <div class="col-md-3">
-                        <select name="category_id_filter" id="category_id_filter" class="form-control">
+                    <div class="col-md-3 col-6 mt-2">
+                        <select name="category_id_filter" id="category_id_filter" onchange = "GetCategory(this, '_filter')" class="form-control">
                             <option value="">All Category</option>
                             @foreach($Category as $item)
-                            <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                            <option  value="{{ $item->category_id }}">{{ $item->category_name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <select name="sub_category_id_filter" id="sub_category_id_filter" disabled class="form-control">
+                    <div class="col-md-3 col-6 mt-2">
+                        <select name="sub_cat_id_filter" id="sub_cat_id_filter" disabled class="form-control">
                             <option value="">Sub Category</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <button type="button" id="Filter_submit" onclick=" Getdata()" class="btn btn-primary">Filter</button>
-                        <button type="button" style="width: 70px" title="Refresh Select Box" class="btn btn-secondary ml-2" id="resetBtn" onclick="ResetData()">Reset</button>
+                    <div class="col-md-2 col-12 mt-2">
+                        <div class="row" style="display: inline;">
+
+                            <button type="button"  onclick=" Getdata()" class="btn btn-primary mx-1 mb-2" style="width: 48%;">Filter</button>
+                            <button type="button" title="Refresh Select Box" class="btn btn-secondary mx-1 mb-2" style="width: 48%;" id="resetBtn" onclick="ResetData()">Reset</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -138,143 +147,86 @@
 <script>
 
 $(function() {
-
-Getdata();
-
-//Data Table Ends HEre
-//For Modal
-        $("#category_id").change(function(event){
-
-
-
-        var idCategory = this.value;
-        $("#sub_category_id").html(' <option value="" selected>Select SubCategory</option> ');
-        $("#sub_category_id").attr("disabled", false);
-
-        $.ajax({
-
-        type : "GET",
-        url : "{{route('FetchSubCategory')}}",
-        dataType : 'json',
-        data : {cat_id: idCategory},
-        success : function(response)
-        {
-            $.each(response.data.sub_categories,function(index, val){
-                console.log(val);
-            $("#sub_category_id").append('<option value="'+val.id+'">'+val.sub_category_name+'</option>')
-            });
-        }
-
-        });
-
-        });
-//for Filters
-        $("#category_id_filter").change(function(event){
-
-
-
-        var idCategory = this.value;
-        $("#sub_category_id_filter").html(' <option value="" selected>Select SubCategory</option> ');
-        $("#sub_category_id_filter").attr("disabled", false)
-
-        $.ajax({
-
-        type : "GET",
-        url : "{{route('FetchSubCategory')}}",
-        dataType : 'json',
-        data : {cat_id: idCategory},
-        success : function(response)
-        {
-            $.each(response.data.sub_categories,function(index, val){
-                console.log(val);
-            $("#sub_category_id_filter").append('<option value="'+val.id+'">'+val.sub_category_name+'</option>')
-            });
-        }
-
-        });
-
-        });
+    Getdata();
 });
-function SelectErr()
-{
-   if($("#sub_category_id").prop("disabled")){
-    alertmsg("Please Select the Category first", "danger")
-   }
+
+
+function GetCategory (e, id="") {
+return new Promise((resolve, reject) => {
+    var select = $(`#sub_cat_id`+id);
+    select.html(' <option value="" selected>Select SubCategory</option>');
+    select.attr("disabled", false);
+    $.get('{{route("FetchSubCategory")}}', {category_id: e.value}, function(res){
+        $.each(res.data,function(i, val){
+            select.append('<option value="'+val.sub_cat_id+'">'+val.sub_cat_name+'</option>')
+        });
+        resolve();
+    })
+})
+    
 }
-function ResetData()
-        {
-            $('#date_from').val(''),
-             $('#date_to').val(''),
-             $('#category_id_filter').val(''),
-             $('#sub_category_id_filter').val('').prop('disabled',true);
-        }
-$("#AddBtn").click(function(){
 
-$('#ThirdCategoryStoreForm')[0].reset();
-$('#third_cat_id').val('');
-$("#btnSubmit").prop("disabled", false);
-$("#error").removeClass().html('').hide();
 
-$("#sub_category_id").attr("disabled", true)
+function SelectErr(){
+    if($("#sub_cat_id").prop("disabled")){
+        alertmsg("Please Select the Category first", "danger")
+    }
+}
+
+function ResetData(){
+    $('#date_from').val(''),
+    $('#date_to').val(''),
+    $('#category_id_filter').val(''),
+    $('#sub_cat_id_filter').val('').prop('disabled',true);
+}
+
+$("#AddBtn").click(()=>{
+    $('#ThirdCategoryStoreForm')[0].reset();
+    $('#third_cat_id').val('');
+    $("#btnSubmit").prop("disabled", false);
+    $("#error").removeClass().html('').hide();
+    $("#sub_cat_id").attr("disabled", true)
 });
+
 function Getdata(){
     $("#DataTable").DataTable().destroy();
     var DataTable = $("#DataTable").DataTable({
-
     "processing": true,
     "serverSide": true,
+    order: [[0, 'desc']],
     dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    ['10 rows', '25 rows', '50 rows', 'Show all']
-                ],
-                "responsive": true,
-                buttons: ['pageLength'],
+    lengthMenu: [
+        [10, 25, 50, -1],
+        ['10 rows', '25 rows', '50 rows', 'Show all']
+    ],
+    "responsive": true,
+    buttons: ['pageLength'],
     ajax: {
         url: "{{route('ThirdCategoryShow')}}",
         data: {
-                    from_date: $('#date_from').val(),
-                    to_date: $('#date_to').val(),
-                    category_name : $('#category_id_filter').val(),
-                    sub_category_name : $('#sub_category_id_filter').val()
-                },
+                from_date: $('#date_from').val(),
+                to_date: $('#date_to').val(),
+                category_id : $('#category_id_filter').val(),
+                sub_cat_id : $('#sub_cat_id_filter').val()
+        },
     },
-    columns: [{
-            data: 'third_cat_id',
-        },
-        {
-            data: 'category.category_name',
-        },
-        {
-            data: 'subcategory.sub_category_name',
-        },
-        {
-            data: 'third_category_name',
-        },
-        {
-            data: 'created_at',
-        },
-        {
-            data: 'action',
-        }
+    columns: [
+        {data: 'third_cat_id',},
+        {data: 'category_name',},
+        {data: 'sub_cat_name',},
+        {data: 'third_cat_name',},
+        {data: 'created_at',},
+        {data: 'action',}
     ]
 });
-// $("input[type=date]").val("")
-// $('#category_id_filter').prop('selectedIndex',0);
-// $('#sub_category_id_filter').prop('selectedIndex',0);
+
 }
 
 function ThirdCategoryStore() {
-
-
-    $("#sub_category_id").prop("disabled", false);
+    $("#sub_cat_id").prop("disabled", false);
     $("#btnSubmit").prop("disabled", true);
-
-
-    $.post("{{route('ThirdCategoryStore')}}", $('#ThirdCategoryStoreForm').serialize())
-        .done((res)=>{
-            $("#btnSubmit").prop("disabled", false);
-             if(res.success){
+    $.post("{{route('ThirdCategoryStore')}}", $('#ThirdCategoryStoreForm').serialize(), (res)=>{
+        if(res.success){
                  $("#btnSubmit").prop("disabled", false);
                 alertmsg(res.message,"success");
                 Getdata();
@@ -285,23 +237,23 @@ function ThirdCategoryStore() {
              }else{
                  alertmsg(res.message, "danger")
                 }
-            })
-            .fail((err)=>{
-
-            alertmsg("Something went wrong", "danger");
-            $("#btnSubmit").prop("disabled", false);
-        });
+    })
 
 }
-function ThirdCategoryEdit(id)
+function ThirdCategoryEdit(third_cat_id)
   {
-    $("#sub_category_id").prop("disabled", true);
-      $.get("{{route('ThirdCategoryEdit')}}", {id:id}, function(data)
+    $('#ThirdCategoryStoreModal').modal('show')
+    $("#sub_cat_id").prop("disabled", true);
+      $.get("{{route('ThirdCategoryEdit')}}", {third_cat_id:third_cat_id}, function(data)
       {
-          $("#third_cat_id").val(data.data[0]['third_cat_id']);
-          $("#category_id").val(data.data[0]['category_id']);
-          $("#sub_category_id").val(data.data[0]['sub_category_id']);
-          $("#third_category_name").val(data.data[0]['third_category_name']);
+        var d = data.data[0];
+          $("#third_cat_id").val(d['third_cat_id']);
+          $("#category_id").val(d['category_id']);
+          GetCategory ({value: d['category_id']}).then(()=>{
+            $("#sub_cat_id").val(d['sub_cat_id']);
+          })
+          $("#third_cat_name").val(d['third_cat_name']);
+          $("#third_cat_name_ar").val(d['third_cat_name_ar']);
     });
   }
 

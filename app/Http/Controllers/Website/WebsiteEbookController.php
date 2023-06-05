@@ -28,17 +28,17 @@ class WebsiteEbookController extends Controller
         $Categories_third = DB::table('category__third')->get();
 
         $books = DB::table('ebook')->get();
-        $sliders = DB::table('sliders')->get();
+        $sliders = DB::table('main_slider')->get();
 
         $bookshelf = DB::table('book_shelf')
             ->select('ebook.*', 'ebook__cover.*', 'book_shelf.*')
-            ->leftjoin('ebook', 'ebook.file_id', 'book_shelf.file_id')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', 'ebook.file_id')
+            ->leftjoin('ebook', 'ebook.ebook_id', 'book_shelf.ebook_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', 'ebook.ebook_id')
             ->orderby('book_shelf_id', 'ASC')
             ->get();
 
         $HolyQuraan = DB::table('ebook')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->where('ebook.category_id', 1)
             ->where('ebook.featured', 1)
             ->limit(7)
@@ -46,36 +46,36 @@ class WebsiteEbookController extends Controller
 
 
         $MeaningofQuraan = DB::table('ebook')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->where('ebook.category_id', 2)
             ->where('ebook.featured', 1)
             ->limit(5)
             ->get();
 
         $IslammicCultBook = DB::table('ebook')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->where('ebook.category_id', 3)
             ->where('ebook.featured', 1)
             ->limit(4)
             ->get();
         $ArbicLearningBook = DB::table('ebook')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->where('ebook.category_id', 4)
             ->where('ebook.featured', 1)
             ->limit(5)
             ->get();
 
         $ChildrenBook = DB::table('ebook')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->where('ebook.category_id', 5)
             ->where('ebook.featured', 1)
             ->limit(6)
             ->get();
 
         $Article = DB::table('category__third')
-            ->leftjoin('category__sub', 'category__sub.sub_cat_id', '=', 'category__third.sub_category_id')
+            ->leftjoin('category__sub', 'category__sub.sub_cat_id', '=', 'category__third.sub_cat_id')
             ->where('category__third.category_id', 6)
-            ->groupBy('third_category_name')
+            ->groupBy('third_cat_name')
             ->limit(6)
             ->get();
 
@@ -114,15 +114,15 @@ class WebsiteEbookController extends Controller
             ->where('ebook_slug', $slug)
             ->first();
 
-            $BookDetail->covers = DB::table('ebook__cover')->where('file_id', $BookDetail->file_id)->get();
+            $BookDetail->covers = DB::table('ebook__cover')->where('ebook_id', $BookDetail->ebook_id)->get();
             $audios = DB::table('ebook__audios')
-            ->where('file_id', $BookDetail->file_id)
+            ->where('ebook_id', $BookDetail->ebook_id)
             ->get();
             $BookDetails = DB::table('ebook')->get();
             $Audios = DB::table('ebook__audios')->get();
 
             $ArbicLearningBook = DB::table('ebook')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->where('ebook.category_id', 4)
             ->where('ebook.featured', 1)
             ->limit(5)
@@ -130,8 +130,8 @@ class WebsiteEbookController extends Controller
 
             $bookshelf = DB::table('book_shelf')
             ->select('ebook.*', 'ebook__cover.*', 'book_shelf.*')
-            ->leftjoin('ebook', 'ebook.file_id', 'book_shelf.file_id')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', 'ebook.file_id')
+            ->leftjoin('ebook', 'ebook.ebook_id', 'book_shelf.ebook_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', 'ebook.ebook_id')
             ->orderby('book_shelf_id', 'ASC')
             ->get();
 
@@ -173,7 +173,7 @@ class WebsiteEbookController extends Controller
             ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
             ->rightjoin('category__third', 'category__third.third_cat_id', '=', 'ebook.third_cat_id')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->where(function ($query) use ($t_slug, $p_slug, $s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
                 if ($s_slug != null) {
@@ -189,7 +189,7 @@ class WebsiteEbookController extends Controller
                     $query->where('ebook.ebook_author', $author);
                 }
             })
-            ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
+            ->orderBy('ebook.ebook_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->paginate(20);
             $totalpage = $BookDetail->lastPage();
 
@@ -205,7 +205,7 @@ class WebsiteEbookController extends Controller
             ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
             ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->leftjoin('languages','languages.id', '=', 'ebook.language_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
@@ -219,7 +219,7 @@ class WebsiteEbookController extends Controller
                     $query->where('ebook.ebook_author', $author);
                 }
             })
-            ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
+            ->orderBy('ebook.ebook_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->groupBy('ebook.language_id')
             ->get();
 
@@ -227,7 +227,7 @@ class WebsiteEbookController extends Controller
             ->select('ebook.*','ebook.ebook_author as author', 'category__sub.*', 'ebook__cover.*')
             ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
-            ->leftjoin('ebook__cover', 'ebook__cover.file_id', '=', 'ebook.file_id')
+            ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
             ->leftjoin('languages','languages.id', '=', 'ebook.language_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 if ($s_slug != null) {
@@ -242,7 +242,7 @@ class WebsiteEbookController extends Controller
                 }
             })
             ->groupBy('ebook_author')
-            ->orderBy('ebook.file_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
+            ->orderBy('ebook.ebook_id', $request->input('orderBy') == "" ? 'DESC' : $request->input('orderBy'))
             ->get();
 
         if (count($BookDetail) == 0) {

@@ -40,7 +40,7 @@
                                                         <label>Category Name in Arabic</label>
                                                         <input type="text"
                                                             class="form-control form-control-user required "
-                                                            name="category_name_in_ar" id="category_name_in_ar"
+                                                            name="category_name_ar" id="category_name_ar"
                                                             placeholder="Enter Category in Arabic">
                                                     </div>
 
@@ -68,7 +68,6 @@
 
     <div class="container-fluid">
         <div class="card shadow mb-4">
-
             <div class="card-body">
                 <div class="row my-3 d-flex justify-content-right">
                     <div class="col-md-4 mt-2">
@@ -82,8 +81,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" id="Filter_submit" style="width: 100%" onclick="Getdata()"
-                            class="btn btn-primary">Filter</button>
+                        <button type="button" id="Filter_submit" style="width: 100%" onclick="Getdata()" class="btn btn-primary">Filter</button>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -102,17 +100,11 @@
         </div>
     </div>
 
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <script>
-        $(function() {
-
-            Getdata();
-
-        });
-
+        $(function() {Getdata();});
 
         $("#AddBtn").click(function() {
             $('#CategoryStoreForm')[0].reset();
@@ -121,48 +113,24 @@
         });
 
         function Getdata() {
-
             $("#btnSubmit").prop("disabled", false);
             $("#DataTable").DataTable().destroy();
             var DataTable = $("#DataTable").DataTable({
-                "processing": true,
-                "serverSide": true,
+                processing: true, serverSide: true, responsive: true,
                 dom: '<"top"<"left-col"B><"right-col"f>>r<"table table-striped"t>ip',
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    ['10 rows', '25 rows', '50 rows', 'Show all']
-                ],
-                "responsive": true,
+                order: [[0, 'desc']],
+                lengthMenu: [[10, 25, 50, -1], ['10 rows', '25 rows', '50 rows', 'Show all']],
                 buttons: ['pageLength'],
                 ajax: {
                     url: "{{ route('CategoryShow') }}",
-                    data: {
-                        from_date: $('#date_from').val(),
-                        to_date: $('#date_to').val(),
-                        category_name: $('#cat_name').val()
-                    },
+                    data: {from_date: $('#date_from').val(), to_date: $('#date_to').val(), category_name: $('#cat_name').val()},
                 },
-                columns: [{
-                        data: 'category_id',
-                    },
-                    {
-                        data: 'category_name',
-                    },
-                    {
-                        data: 'created_at',
-                    },
-                    {
-                        data: 'action',
-                    },
-
-                ]
+                columns: [{data: 'category_id'},{data: 'category_name'},{data: 'created_at'},{data: 'action'},]
             });
         }
 
         function CategoryStore() {
-
             $("#btnSubmit").prop("disabled", true);
-
             $.post("{{ route('CategoryStore') }}", $('#CategoryStoreForm').serialize())
                 .done((res) => {
                     $("#btnSubmit").prop("disabled", false);
@@ -182,40 +150,22 @@
                 });
         }
 
-        function CategoryEdit(id) {
-            $.get("{{ route('CategoryEdit') }}", {
-                id: id
-            }, function(data) {
-                $("#category_id").val(data.data[0]['id']);
-                $("#category_name").val(data.data[0]['category_name']);
+        function CategoryEdit(category_id) {
+            $('#CategoryStoreModal').modal('show');
+            $.get("{{ route('CategoryEdit') }}", {category_id: category_id}, function(data) {
+                filledit(data.data[0])
             });
         }
 
-        function CategoryRemove(id) {
-            swal({
-                    title: "Are You Sure?",
-                    text: "Once Deleted You will not be able to undo this",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        $.get("{{ route('CategoryRemove') }}", {
-                            id: id
-                        }, function(res) {
+        function CategoryRemove(category_id) {
+            confirmdlt(()=>{$.get("{{ route('CategoryRemove') }}", {category_id: category_id}, 
+                        (res)=>{
                             if (res['success']) {
-                                swal({
-                                    title: "Successful...",
-                                    text: res.message,
-                                    icon: "success"
-                                })
+                                swal({title: "Successful...", text: res.message, icon: "success"})
                                 Getdata();
                             }
                         });
-                    }
-                });
+                    })
         }
     </script>
 @endsection
