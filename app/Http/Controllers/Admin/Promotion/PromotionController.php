@@ -45,26 +45,26 @@ class PromotionController extends Controller
 
             $image_parts = explode(";base64,", $req->promotion_attachment);
             $imageName = uniqid() . '.'.explode("image/", $image_parts[0])[1];
-            file_put_contents(public_path('Promotion/') . "/". $imageName, base64_decode($image_parts[1]));
+            file_put_contents(public_path('Files/Promotion/') . "/". $imageName, base64_decode($image_parts[1]));
             if($req->input('promo_id'))
             {
-                $findImage = Promotion::where('id',$req->input('promo_id'))->first();
-                if(file_exists('public/Promotion/'.$findImage->promotion_attachment) AND !empty($findImage->promotion_attachment))
+                $findImage = Promotion::where('promotion_id',$req->input('promo_id'))->first();
+                if(file_exists('public/Files/Promotion/'.$findImage->promotion_attachment) AND !empty($findImage->promotion_attachment))
                 {
-                    unlink('public/Promotion/'.$findImage->promotion_attachment);
+                    unlink('public/Files/Promotion/'.$findImage->promotion_attachment);
                 }
 
             }
         }
         else{
-            $data = Promotion::where('id',$req->input('promo_id'))->get();
+            $data = Promotion::where('promotion_id',$req->input('promo_id'))->get();
             $imageName = $data[0]->promotion_attachment;
         }
 
         try {
             $Promotion = Promotion::updateOrCreate(
 
-                ['id' => $req->input('promo_id')],
+                ['promotion_id' => $req->input('promo_id')],
                 [
                     'promotion_attachment' => $imageName,
                     'category_id' => $req->input('category_id'),
@@ -82,10 +82,9 @@ class PromotionController extends Controller
         return Datatables::of($Promotion)
         ->addColumn('action', function ($Promotion) {
             return
-            '<button class="btn btn-primary" data-toggle="modal" data-target="#PromotionStoreModal"
-            onclick="PromotionEdit('.$Promotion->id.')">
+            '<button class="btn btn-primary" onclick="PromotionEdit('.$Promotion->promotion_id.')">
             <i class="fa fa-edit"></i></button>
-            <button class="btn btn-danger" onclick="PromotionRemove('.$Promotion->id.')"><i class="fa fa-trash"></i>
+            <button class="btn btn-danger" onclick="PromotionRemove('.$Promotion->promotion_id.')"><i class="fa fa-trash"></i>
             </button>';
         })
         ->rawColumns(['action'])
@@ -94,18 +93,18 @@ class PromotionController extends Controller
     public function PromotionEdit(Request $req)
     {
         $promo_id = $req->input('id');
-        $Promotion = Promotion::where('id',$promo_id)->get();
+        $Promotion = Promotion::where('promotion_id',$promo_id)->get();
         return response()->json(["data" => $Promotion]);
     }
     public function PromotionDestroy(Request $req)
     {
-        $Promotion = Promotion::where('id',$req->input('id'))->first();
+        $Promotion = Promotion::where('promotion_id',$req->input('id'))->first();
 
-        if(file_exists('public/Promotion/'.$Promotion->promotion_attachment))
+        if(file_exists('public/Files/Promotion/'.$Promotion->promotion_attachment))
         {
-            unlink('public/Promotion/'.$Promotion->promotion_attachment);
+            unlink('public/Files/Promotion/'.$Promotion->promotion_attachment);
         }
-        $data = Promotion::where('id',$req->input('id'))->delete();
+        $data = Promotion::where('promotion_id',$req->input('id'))->delete();
 
         if($data)
         {

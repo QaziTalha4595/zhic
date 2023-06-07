@@ -34,7 +34,7 @@
                                                             style="width:100%;">
                                                             <option selected disabled>select book </option>
                                                             @foreach ($Ebook as $item)
-                                                                <option value="{{ $item->file_id ?? '' }}">
+                                                                <option value="{{ $item->ebook_id ?? '' }}">
                                                                     {{ $item->ebook_name ?? '' }}</option>
                                                             @endforeach
                                                         </select>
@@ -135,15 +135,15 @@
                         'class': 'text-center'
                     },
                     {
-                        data: 'ebook__cover.ebook_cover',
-
-                        render: function(data) {
-                             return `<center><img src="{{ url('public/Files/E_Book_CoverImg') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="height: 100px; width:auto; margin-auto"></center>`;
+                        data: 'ebook__cover',
+                        render: function(data, e, f) {
+                            console.log(f);
+                            return `<center><img src="{{ url('public/Files/E-Book-Cover') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="height: 100px; width:auto; margin-auto"></center>`;
 
                         }
                     },
                     {
-                        data: 'ebook.ebook_name',
+                        data: 'ebook_name',
                         'searchable': true,
                         'orderable': true,
                         'class': 'text-center'
@@ -156,8 +156,7 @@
                         'class': 'text-center',
                         render: function(id) {
 
-                            return (`<button class="btn btn-primary" data-toggle="modal" data-target="#BookshelfStoreModal"
-            onclick="BookShelfEdit('${id}')">
+                            return (`<button class="btn btn-primary" onclick="BookShelfEdit('${id}')">
             <i class="fa fa-edit"></i></button>
             <button class="btn btn-danger" onclick="BookShelfRemove('${id}')"><i class="fa fa-trash"></i>
             </button>`)
@@ -194,13 +193,13 @@
         }
 
         function BookShelfEdit(id) {
+            $("#BookshelfStoreModal").modal('show');
             $.get("{{ route('BookShelfEdit') }}", {
                 id: id
             }, function(data) {
-
                 $("#book_shelf_id").val(data.data[0]['book_shelf_id']);
-                $("#book_name").val(data.data[0]['file_id']);
-                $("#book_position").val(data.data[0]['book_position']);
+                $("#book_name").val(data.data[0]['ebook_id']);
+                $("#book_position").val(data.data[0]['ebook_position']);
             });
         }
 

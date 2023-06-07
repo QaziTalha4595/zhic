@@ -10,7 +10,7 @@
                 </div>
                 <div class="card-body p-0" id="scrollup">
                     <div class="bs-stepper">
-                        @if (empty($file_id))
+                        @if (empty($ebook_id))
                             <div class="bs-stepper-header" role="tablist">
                                 <!-- your steps here -->
                                 <div class="step" data-target="#logins-part">
@@ -44,7 +44,7 @@
                                     <button type="button" class="step-trigger" role="tab" aria-controls="logins-part"
                                         id="logins-part-trigger">
                                         <a class="nav-link active"
-                                            href="{{ url('ControlPanel/Ebook-' . $file_id . '-Basic') }}">
+                                            href="{{ url('ControlPanel/Ebook-' . $ebook_id . '-Basic') }}">
                                             <span class="bs-stepper-circle">1</span>
                                             <span class="bs-stepper-label">Ebook Basic Detail</span>
                                         </a>
@@ -55,7 +55,7 @@
                                     <button type="button" class="step-trigger" role="tab" aria-controls="logins-part"
                                         id="logins-part-trigger">
                                         <a class="nav-link active"
-                                            href="{{ url('ControlPanel/Ebook-' . $file_id . '-CoverImage') }}">
+                                            href="{{ url('ControlPanel/Ebook-' . $ebook_id . '-CoverImage') }}">
                                             <span class="bs-stepper-circle">2</span>
                                             <span class="bs-stepper-label">Ebook Cover</span>
                                         </a>
@@ -65,7 +65,7 @@
                                 <div class="step" data-target="#information-part">
                                     <button type="button" class="step-trigger" role="tab"
                                         aria-controls="information-part" id="information-part-trigger">
-                                        <a class="nav-link" href="{{ url('ControlPanel/Ebook-' . $file_id . '-Upload') }}"
+                                        <a class="nav-link" href="{{ url('ControlPanel/Ebook-' . $ebook_id . '-Upload') }}"
                                             style="color:inherit">
                                             <span class="bs-stepper-circle">3</span>
                                             <span class="bs-stepper-label">Ebook Upload</span>
@@ -84,8 +84,8 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         @csrf
-                                                        <input type="hidden" name="file_id" id="file_id"
-                                                            value="{{ $file_id }}">
+                                                        <input type="hidden" name="ebook_id" id="ebook_id"
+                                                            value="{{ $ebook_id }}">
                                                         <input type="hidden" name="ebook_attachment_id"
                                                             id="ebook_attachment_id">
                                                         <div class="row">
@@ -174,12 +174,12 @@
                                         <div class="card-footer text-center">
                                             <div style="float: right">
 
-                                                @if (!empty($file_id))
-                                                    <a href="Ebook-{{ $file_id }}-Upload"
+                                                @if (!empty($ebook_id))
+                                                    <a href="Ebook-{{ $ebook_id }}-Upload"
                                                         class="btn btn-lg btn-secondary mx-4">Skip</a>
                                                 @endif
 
-                                                <a href="Ebook-{{ $file_id }}-Upload"
+                                                <a href="Ebook-{{ $ebook_id }}-Upload"
                                                     class="btn btn-lg btn-primary">Save Next <i
                                                         class=" fas fa-solid fa-arrow-right"></i></a>
                                             </div>
@@ -204,14 +204,14 @@
         });
 
 function GetEbookCoverImage() {
-    $.get("{{route('GetEbookCoverImage')}}", {file_id: {{$file_id}}},
+    $.get("{{route('GetEbookCoverImage')}}", {ebook_id: {{$ebook_id}}},
     function (data) {
             var html = ``
             data["data"].forEach(e => {
                 html+= ` <tr>
                             <td>${e.ebook__cover_id}</td>
                             <td>
-                                <div style="height: 100px; width:100px; background-repeat: no-repeat;background-size: contain;background-position: center;background-image: url('{{ asset('public/Files/E-Book-Cover/' ) }}/${e.ebook_cover}');"
+                                <div style="height: 100px; width:100px; background-repeat: no-repeat;background-size: contain;background-position: center;background-image: url('{{ asset('public/Files/E-Book-Cover/' ) }}/${e.ebook__cover}');"
                                 ></div>
                             </td>
                             <td>${e.ebook_position }</td>
@@ -221,7 +221,6 @@ function GetEbookCoverImage() {
                             </div>
                             </td>
                             <td class="ml-5">
-                                {{-- onclick="SubCategoryEdit(' . $SubCategories->id . ')" --}}
                                 <a onclick="ImgCoverEdit(${e.ebook__cover_id })"
                                     class="btn btn-primary btn-md">
                                     <i class="fa fa-edit"></i>
@@ -327,7 +326,7 @@ function GetEbookCoverImage() {
                 $("#ebook_position").val(data.data[0]['ebook_position']);
                 $("#ebook_bg_color").val(data.data[0]['ebook_bg_color']);
 
-                $("#imageid").css("background-image", `url('{{url('public/Files/E-Book-Cover')}}/${data.data[0]['ebook_cover']}`);
+                $("#imageid").css("background-image", `url('{{url('public/Files/E-Book-Cover')}}/${data.data[0]['ebook__cover']}`);
                 // $("#imageid").css("background-image", "url('{{asset('public/Files/E-Book-Cover')}}')/"+data.data[0]['ebook_cover']);
             });
         }

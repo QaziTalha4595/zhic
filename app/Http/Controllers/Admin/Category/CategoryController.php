@@ -49,6 +49,7 @@ class CategoryController extends Controller
     }
     public function CategoryStore(Request $req){
         $data = $req->input();
+
         unset($data['_token']);
         $validator = Validator::make($req->all(), [
             'category_name' => 'required|regex:/^[a-zA-Z_ 0-9&_\.-]+$/u'
@@ -56,7 +57,7 @@ class CategoryController extends Controller
         if ($validator->fails()) {
             return response()->json(["validate" => true, "message" => $validator->errors()->all()[0]]);
         }
-        $data['category_slug'] = strtolower(str_replace(" ","_",$data('category_name')));
+        $data['category_slug'] = strtolower(str_replace(" ","_",$data['category_name']));
         try {
             $category = Category::updateOrCreate(['category_id'=> $data['category_id']],$data);
             return response()->json(["success" => true, "message" => true ? "Category Detail Create Successfully" : "Category Detail Updated Successfully"]);
@@ -86,11 +87,11 @@ class CategoryController extends Controller
             [$from, $to] = FormatData($from_date,$to_date);
 
             $query = SubCategory::join('category', 'category__sub.category_id', '=', 'category.category_id')->select('category__sub.*', 'category.category_name', 'category__sub.sub_cat_name');
-            
+
             if ($from && $to){$query->whereBetween('category__sub.created_at', [$from, $to]);}
             elseif ($from || $to){$query->whereDate('category__sub.created_at', $from?: $to);}
             if ($category_id){$query->where('category.category_id', $category_id);}
-            
+
             return Datatables::of($query->get())->editColumn('created_at', function ($data) {
                 return Carbon::createFromFormat('Y-m-d H:i:s', $data->created_at)->format('d-m-Y');
             })
@@ -141,7 +142,7 @@ class CategoryController extends Controller
         if ($req->ajax()) {
             extract($req->input());
             [$from, $to] = FormatData($from_date,$to_date);
-            $query = ThirdCategory::join('category', 'category__third.category_id', '=', 'category.category_id')->join('category__sub', 'category__third.sub_cat_id', '=', 'category__sub.sub_cat_id')->select('category__third.*', 'category.category_name', 'category__sub.sub_cat_name');    
+            $query = ThirdCategory::join('category', 'category__third.category_id', '=', 'category.category_id')->join('category__sub', 'category__third.sub_cat_id', '=', 'category__sub.sub_cat_id')->select('category__third.*', 'category.category_name', 'category__sub.sub_cat_name');
             if ($from && $to){$query->whereBetween('category__third.created_at', [$from, $to]);}
             elseif ($from || $to){$query->whereDate('category__third.created_at', $from?: $to);}
             if ($category_id){$query->where('category__third.category_id', $category_id);}
@@ -174,7 +175,7 @@ class CategoryController extends Controller
         } catch (\Throwable $th) {
             return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
         }
-    }  
+    }
     public function ThirdCategoryEdit(Request $req){
         return response()->json(["data" => ThirdCategory::where('third_cat_id', $req->input('third_cat_id'))->get()]);
     }
@@ -190,7 +191,10 @@ class CategoryController extends Controller
 
     //Common
     public function FetchSubCategory(Request $req){
+
+
         $data = SubCategory::where('category_id', $req->input('category_id'))->get();
+
         return response()->json(["data" => $data]);
     }
 

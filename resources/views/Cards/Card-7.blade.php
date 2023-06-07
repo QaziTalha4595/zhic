@@ -1,6 +1,6 @@
 <div class="card book-card my-3" style="width: 287.5px; margin-right:40px;">
     <div class="img-bg" style="background-color: {{$book->ebook_bg_color}};"> <br>
-        <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"  onerror="this.onerror=null;this.src='https://www.shutterstock.com/image-illustration/jpeg-blank-notebook-isolated-on-600w-74102503.jpg';">
+        <img src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook__cover}}"  onerror="this.onerror=null;this.src='https://www.shutterstock.com/image-illustration/jpeg-blank-notebook-isolated-on-600w-74102503.jpg';">
         {{-- <img class="" src="{{url('/public/Files/E-Book-Cover')}}/{{$book->ebook_cover}}"
             alt="{{$book->ebook_name}}"> --}}
     </div>

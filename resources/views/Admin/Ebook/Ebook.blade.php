@@ -51,7 +51,7 @@
                             <select name="cat_name" id="cat_name" class="form-control">
                                 <option value="">All Category</option>
                                 @foreach($categories as $item)
-                                <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                                <option value="{{ $item->category_id }}">{{ $item->category_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -140,13 +140,13 @@
                 },
                 },
                 columns: [{
-                    data: 'file_id',
+                    data: 'ebook_id',
                     'searchable': false,
                     'orderable': true,
                     'class': 'text-center'
                 },
                 {
-                    data: 'ebookcover.ebook_cover',
+                    data: 'ebookcover.ebook__cover',
                     'searchable': false,
                     'orderable': false,
                     render: function(data, type) {
@@ -164,13 +164,13 @@
 
                     },
                     {
-                        data: 'subcategory.sub_category_name',
+                        data: 'subcategory.sub_cat_name',
                         'searchable': false,
                         'orderable': false,
                         'class': 'text-center'
                     },
                     {
-                        data: 'thirdcategory.third_category_name',
+                        data: 'thirdcategory.third_cat_name',
                         'searchable': false,
                         'orderable': false,
                         'class': 'text-center'

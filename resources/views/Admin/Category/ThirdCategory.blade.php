@@ -34,12 +34,12 @@
                     @csrf
                     <input type="hidden" id="third_cat_id" name="third_cat_id" val="">
                     <div class="form-group">
-                  
+
                         <label>Category</label>
                         <select class="form-control select2" name="category_id"
                             id="category_id" style="width:100%;" onchange = "GetCategory(this)" >
                             <option selected disabled>Select</option>
-                           
+
                             @foreach($Category as $item)
                             <option value="{{ $item->category_id }}">{{ $item->category_name }}</option>
                             @endforeach
@@ -51,7 +51,7 @@
                         <select class="form-control select2" name="sub_cat_id"
                             id="sub_cat_id"  style="width:100%;" disabled>
                             <option selected disabled>Select</option>
-                       
+
                         </select>
 
 
@@ -151,20 +151,7 @@ $(function() {
 });
 
 
-function GetCategory (e, id="") {
-return new Promise((resolve, reject) => {
-    var select = $(`#sub_cat_id`+id);
-    select.html(' <option value="" selected>Select SubCategory</option>');
-    select.attr("disabled", false);
-    $.get('{{route("FetchSubCategory")}}', {category_id: e.value}, function(res){
-        $.each(res.data,function(i, val){
-            select.append('<option value="'+val.sub_cat_id+'">'+val.sub_cat_name+'</option>')
-        });
-        resolve();
-    })
-})
-    
-}
+
 
 
 function SelectErr(){

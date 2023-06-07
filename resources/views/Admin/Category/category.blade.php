@@ -147,7 +147,9 @@
                 })
                 .fail((err) => {
                     alertmsg("Something went wrong", "danger");
+                    $("#btnSubmit").prop("disabled", false);
                 });
+
         }
 
         function CategoryEdit(category_id) {
@@ -158,7 +160,7 @@
         }
 
         function CategoryRemove(category_id) {
-            confirmdlt(()=>{$.get("{{ route('CategoryRemove') }}", {category_id: category_id}, 
+            confirmdlt(()=>{$.get("{{ route('CategoryRemove') }}", {category_id: category_id},
                         (res)=>{
                             if (res['success']) {
                                 swal({title: "Successful...", text: res.message, icon: "success"})

@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', $BookDetail[0]->category_name. '-'.$BookDetail[0]->sub_category_name)
+@section('title', $BookDetail[0]->category_name. '-'.$BookDetail[0]->sub_cat_name)
 @section('content')
 
 <!-- breadcrumbs-area-start -->
