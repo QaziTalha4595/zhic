@@ -103,6 +103,7 @@ class CategoryController extends Controller
             ->rawColumns(['action'])->make(true);
         }
     }
+    
     public function SubCategoryStore(Request $req){
         $data = $req->input();
         unset($data['_token']);
@@ -121,9 +122,11 @@ class CategoryController extends Controller
             return response()->json(["success" => false, "message" => "Opps an Error Occured", "err" => $th]);
         }
     }
+
     public function SubCategoryEdit(Request $req){
         return response()->json(["data" => SubCategory::where('sub_cat_id', $req->input('sub_cat_id'))->get()]);
     }
+
     public function SubCategoryDestroy(Request $req){
         if (SubCategory::where('sub_cat_id', $req->input('sub_cat_id'))->delete()) {
             return response()->json(['success' => true, 'message' => 'SubCategory Remove Successfully']);
@@ -137,6 +140,7 @@ class CategoryController extends Controller
         $Category = Category::all();
         return view('Admin.Category.ThirdCategory', compact('Category'));
     }
+
     public function ThirdCategoryShow(Request $req){
         if ($req->ajax()) {
             extract($req->input());
