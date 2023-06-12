@@ -38,8 +38,10 @@ class EbookController extends Controller
     public function FetchThirdCategory(Request $req)
     {
         $Thirdcategory = new Thirdcategory();
-        $ThirdCategory['third_categories'] = ThirdCategory::where('sub_category_id', $req->third_cat_id)->get();
-        return response()->json(["data" => $ThirdCategory]);
+        $ThirdCategory_id = $req->input('third_cat_id');
+        $data = ThirdCategory::where('sub_cat_id',  $ThirdCategory_id)->get();
+
+        return response()->json(["data" => $data]);
     }
     public function EbookStore(Request $req)
     {
@@ -66,7 +68,7 @@ class EbookController extends Controller
         try {
 
             $Ebook = Ebook::updateOrCreate(
-                ['file_id'=> $req->input('file_id')],
+                ['ebook_id'=> $req->input('ebook_id')],
                 [
                     'unique_id' => $unique_id,
                     'category_id' => $req->input('category_id'),
@@ -88,7 +90,7 @@ class EbookController extends Controller
                 ]
             );
             if ($Ebook) {
-                return response()->json(["success" => true, "message" => $Ebook->wasRecentlyCreated ? "Ebook Create Successfully" : "Ebook Updated Successfully", "file_id" => $Ebook->file_id]);
+                return response()->json(["success" => true, "message" => $Ebook->wasRecentlyCreated ? "Ebook Create Successfully" : "Ebook Updated Successfully", "ebook_id" => $Ebook->ebook_id]);
             } else {
                 return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
             }
@@ -129,47 +131,43 @@ class EbookController extends Controller
             }
         }
         return Datatables::of($Ebook)
-            // ->addColumn('file_read', function ($Ebook) {
-            //     return '<a type="button" onclick="FileRead(' . $Ebook->unique_id . ')" class="">' . $Ebook->unique_id . '</a>';
-            // })
             ->editColumn('created_at', function ($SubCategories) {
                 $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $SubCategories->created_at)->format('d-m-Y');
                 return $formatedDate;
             })
             ->addColumn('action', function ($Ebook) {
-                return $Ebook->file_id;
+                return $Ebook->ebook_id;
             })
             ->rawColumns(['action'])
             ->make(true);
     }
-    public function EbookBasicView($file_id)
+    public function EbookBasicView($ebook_id)
     {
-        $Ebook = Ebook::with('category','subcategory','thirdcategory','language')->find($file_id);
-
+        $Ebook = Ebook::with('category','subcategory','thirdcategory','language')->find($ebook_id);
 
         $Category = Category::all();
         $Languages = Language::all();
-        // return $Ebook->ebook_name;
-        return view("Admin.Ebook.EbookBasicTab", ['data' => $Ebook, 'file_id' => $file_id, 'Languages' => $Languages, 'Category'=>$Category]);
+
+        return view("Admin.Ebook.EbookBasicTab", ['data' => $Ebook, 'ebook_id' => $ebook_id, 'Languages' => $Languages, 'Category'=>$Category]);
     }
 
-    public function EbookCoverImageView($file_id)
+    public function EbookCoverImageView($ebook_id)
     {
         $Ebook__Cover = new Ebook__Cover();
 
-        $Ebook = Ebook::where('file_id', $file_id)->get();
+        $Ebook = Ebook::where('ebook_id', $ebook_id)->get();
 
-        return view("Admin.Ebook.Ebook_CoverTab", ['data' => $Ebook, 'file_id' => $file_id]);
+        return view("Admin.Ebook.Ebook_CoverTab", ['data' => $Ebook, 'ebook_id' => $ebook_id]);
     }
     public function GetEbookCoverImage(Request $req)
     {
-        $Ebook__Cover = Ebook__Cover::where('file_id', $req->input('file_id'))->orderBy('ebook__cover_id','DESC')->get();
+        $Ebook__Cover = Ebook__Cover::where('ebook_id', $req->input('ebook_id'))->orderBy('ebook__cover_id','DESC')->get();
 
         return response()->json(["data"=> $Ebook__Cover]);
     }
     public function EbookCoverStore(Request $req)
     {
-        $Files = Ebook::with(['ebookcover'])->where('file_id', $req->input('file_id'))->get();
+        $Files = Ebook::with(['ebookcover'])->where('ebook_id', $req->input('ebook_id'))->get();
 
         $row = $Files[0];
         $validator = Validator::make($req->all(), [
@@ -192,30 +190,30 @@ class EbookController extends Controller
                 $Image = $req->file('ebook_cover')->move('public/Files/E-Book-Cover/', $imageThumbnail);
 
                 $findImage = Ebook__Cover::where('ebook__cover_id',$req->input('ebook_attachment_id'))->first();
-                if(!empty($findImage->ebook_cover) && file_exists('public/Files/E-Book-Cover/'.$findImage->ebook_cover))
+                if(!empty($findImage->ebook__cover) && file_exists('public/Files/E-Book-Cover/'.$findImage->ebook__cover))
                 {
-                    unlink('public/Files/E-Book-Cover/'.$findImage->ebook_cover);
+                    unlink('public/Files/E-Book-Cover/'.$findImage->ebook__cover);
                 }
 
         }
         else
             {
-                $imageThumbnail = $row->ebook_cover;
+                $imageThumbnail = $row->ebook__cover;
             }
         try {
 
             if(!$imageThumbnail){
                 $data = [
                     'ebook_position' => $req->input('ebook_position'),
-                    'file_id' => $req->input('file_id'),
+                    'ebook_id' => $req->input('ebook_id'),
                     'ebook_bg_color' => $req->input('ebook_bg_color')
                 ];
             }else{
                 $data = [
                     'ebook_position' => $req->input('ebook_position'),
-                    'file_id' => $req->input('file_id'),
+                    'ebook_id' => $req->input('ebook_id'),
                     'ebook_bg_color' => $req->input('ebook_bg_color'),
-                    'ebook_cover' => $imageThumbnail
+                    'ebook__cover' => $imageThumbnail
                 ];
             }
 
@@ -225,8 +223,8 @@ class EbookController extends Controller
               $data
             );
             if($Ebook_cover) {
-                //return response()->json(["success" => true, "message" => $Ebook_cover->wasRecentlyCreated ? "Ebook Cover Create Successfully" : "Ebook Cover Updated Successfully", "file_id" => $Ebook_cover->file_id]);
-                 return response()->json(['success' => true, 'file_id' => $req->input('file_id'), 'message' => 'Data has been uploaded successfully']);
+                //return response()->json(["success" => true, "message" => $Ebook_cover->wasRecentlyCreated ? "Ebook Cover Create Successfully" : "Ebook Cover Updated Successfully", "ebook_id" => $Ebook_cover->ebook_id]);
+                 return response()->json(['success' => true, 'ebook_id' => $req->input('ebook_id'), 'message' => 'Data has been uploaded successfully']);
             } else {
                 return response()->json(['success' => false, 'message' => 'Oops something went wrong, please check!']);
             }
@@ -239,14 +237,14 @@ class EbookController extends Controller
     }
     public function EbookRemove(Request $req)
     {
-        $Image = Ebook::where('file_id',$req->input('id'))->first();
+        $Image = Ebook::where('ebook_id',$req->input('id'))->first();
 
             if(!empty($Image->ebook_audio) && file_exists('public/Files/E-Book-Audio/'.$Image->ebook_audio))
             {
                 unlink('public/Files/E-Book-Audio/'.$Image->ebook_audio);
                 unlink('public/Files/E-Book/'.$Image->ebook_attachment);
 
-                $findImage = Ebook__Cover::where('file_id',$req->input('id'))->get();
+                $findImage = Ebook__Cover::where('ebook_id',$req->input('id'))->get();
 
                 foreach ($findImage as $row) {
 
@@ -257,11 +255,11 @@ class EbookController extends Controller
 
             }
         }
-        Ebook__Cover::where('file_id',$req->input('id'))->delete();
-        Book_Shelf::where('file_id',$req->input('id'))->delete();
-        Ebook_location::where('file_id',$req->input('id'))->delete();
-        feedback::where('file_id',$req->input('id'))->delete();
-        $data = Ebook::where('file_id',$req->input('id'))->delete();
+        Ebook__Cover::where('ebook_id',$req->input('id'))->delete();
+        Book_Shelf::where('ebook_id',$req->input('id'))->delete();
+        Ebook_location::where('ebook_id',$req->input('id'))->delete();
+        feedback::where('ebook_id',$req->input('id'))->delete();
+        $data = Ebook::where('ebook_id',$req->input('id'))->delete();
 
         if($data)
         {
@@ -291,12 +289,12 @@ class EbookController extends Controller
             return response()->json(['success' => false, 'message' => 'Remove Failed..!']);
         }
     }
-    public function EbookCoverUploadView(Request $request, $file_id)
+    public function EbookCoverUploadView(Request $request, $ebook_id)
     {
         // $data = DB::table('ebook')
-        //     ->where('file_id', $file_id)
+        //     ->where('ebook_id', $ebook_id)
         //     ->get();
-        $Ebook = Ebook::where('file_id',$file_id)->get();
+        $Ebook = Ebook::where('ebook_id',$ebook_id)->get();
         return view("Admin.Ebook.Ebook_UploadTab", ['data' => $Ebook[0], 'file_id' => $file_id]);
     }
     public function EbookUploadStore(Request $req)

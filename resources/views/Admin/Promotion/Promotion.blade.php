@@ -48,7 +48,7 @@
                                                             id="category_id" style="width:100%;">
                                                             <option selected disabled>Select</option>
                                                             @foreach ($Categories as $Category)
-                                                                <option value="{{ $Category->id }}">
+                                                                <option value="{{ $Category->category_id }}">
                                                                     {{ $Category->category_name }}</option>
                                                             @endforeach
                                                         </select>
@@ -60,8 +60,9 @@
                                                             id="sub_cat_id" style="width:100%;" disabled>
                                                             <option selected disabled>Select</option>
                                                             @foreach ($SubCategories as $SubCategory)
-                                                                <option value="{{ $SubCategory->id }}">
-                                                                    {{ $SubCategory->sub_category_name }}</option>
+                                                                <option value="{{ $SubCategory->sub_cat_id }}">
+                                                                    {{ $SubCategory->sub_cat_name }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -271,12 +272,12 @@
                     url: "{{ route('PromotionShow') }}"
                 },
                 columns: [{
-                        data: 'id'
+                        data: 'promotion_id'
                     },
                     {
                         data: 'promotion_attachment',
                         render: function(data) {
-                            return `<center><img src="{{ url('public/Promotion') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="height: 100px; width:auto; margin-auto"></center>`;
+                            return `<center><img src="{{ url('public/Files/Promotion') }}/${data}"  onerror="this.onerror=null;this.src='{{ url('public/imgerror.png') }}';" style="height: 100px; width:auto; margin-auto"></center>`;
 
                         }
                     },
@@ -287,7 +288,7 @@
                         'class': 'text-center'
                     },
                     {
-                        data: 'subcategory.sub_category_name',
+                        data: 'subcategory.sub_cat_name',
                         'searchable': false,
                         'orderable': false,
                         'class': 'text-center'
@@ -302,31 +303,6 @@
 
         }
 
-        // function GetSubCategories() {
-        //     return new Promise((resolve, reject) => {
-        //     var id = $('#category_id').val();
-        //     $("#sub_cat_id").html(' <option value="" selected>Select SubCategory</option> ');
-        //     $("#sub_cat_id").attr("disabled", false)
-
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "{{ route('FetchSubCategory') }}",
-        //         dataType: 'json',
-        //         data: {
-        //             cat_id: id
-        //         },
-        //         success: function(response) {
-
-        //             $.each(response.data.sub_categories, function(index, val) {
-        //                 $("#sub_cat_id").append('<option value="' + val.id + '">' + val
-        //                     .sub_category_name + '</option>')
-        //             });
-        //             resolve(1)
-        //         }
-        //     });
-        //       })
-        // }
-
    $("#category_id").change(function(event) {
             var idCategory = this.value;
             $("#sub_cat_id").html(' <option value="" selected>Select SubCategory</option> ');
@@ -337,13 +313,13 @@
                 url: "{{ route('FetchSubCategory') }}",
                 dataType: 'json',
                 data: {
-                    cat_id: idCategory
+                    category_id: idCategory
                 },
                 success: function(response) {
-                    $.each(response.data.sub_categories, function(index, val) {
+                    $.each(response.data, function(index, val) {
                         console.log(val);
-                        $("#sub_cat_id").append('<option value="' + val.id + '">' + val
-                            .sub_category_name + '</option>')
+                        $("#sub_cat_id").append('<option value="' + val.sub_cat_id + '">' + val
+                            .sub_cat_name + '</option>')
                     });
                 }
 
@@ -351,10 +327,10 @@
 
         });
 
-
         function PromotionStore() {
 
             let slider_form_data = document.getElementById("PromotionStoreForm");
+            console.log(slider_form_data);
             let form_data = new FormData(slider_form_data);
 
             form_data.append('promotion_attachment', croppedimg);
@@ -392,20 +368,24 @@
 
         function PromotionEdit(id) {
             $("#image_preview").show();
-            $("#sub_cat_id").val("disabled",true)
+            $("#PromotionStoreModal").modal('show');
+            $("#sub_cat_id").val("");
+
             $.get("{{ route('PromotionEdit') }}", {
                 id: id
             }, function(data) {
-
-                $("#promo_id").val(data.data[0]['id']);
-                $("#category_id").val(data.data[0]['category_id']);
-
-                // $("#sub_cat_id").val('');
-                // setTimeout(function() {
-                    $("#sub_cat_id").val(data.data[0]['sub_cat_id']);
-                // }, 100);
+                var d = data.data[0];
+                $("#promo_id").val(d['promotion_id']);
+                $("#category_id").val(d['category_id']);
                 $("#image_preview").css("background-image",
-                `url('{{ url('public/Promotion') }}/${data.data[0]['promotion_attachment']}`);
+                `url('{{ url('public/Files/Promotion') }}/${d['promotion_attachment']}`);
+             if(d['sub_cat_id']){
+                GetCategory ({value: d['category_id']}).then(()=>{
+                    $("#sub_cat_id").val(d['sub_cat_id']);
+                });
+             }
+
+
 
             })}
 

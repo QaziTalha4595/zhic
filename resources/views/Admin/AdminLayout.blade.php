@@ -332,6 +332,22 @@
                     }
                 });
     }
+
+    function GetCategory (e, id="") {
+return new Promise((resolve, reject) => {
+    var select = $(`#sub_cat_id`+id);
+    select.html(' <option value="" selected>Select SubCategory</option>');
+    select.attr("disabled", false);
+    console.log(e);
+    $.get('{{route("FetchSubCategory")}}', {category_id: e.value}, function(res){
+        $.each(res.data,function(i, val){
+            select.append('<option value="'+val.sub_cat_id+'">'+val.sub_cat_name+'</option>')
+        });
+        resolve();
+    })
+})
+
+}
     </script>
     <!-- datatable -->
     <script src="{{url('public/Admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>

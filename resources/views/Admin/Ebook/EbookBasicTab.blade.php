@@ -21,7 +21,7 @@ input[type=number] {
             <div class="card-header">
                 <h3 class="card-title">Ebook Detail</h3>
             </div>
-            @if(empty($file_id))
+            @if(empty($ebook_id))
             <div class="card-body p-0">
                 <div class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
@@ -61,7 +61,7 @@ input[type=number] {
                         <!-- your steps here -->
                         <div class="step" data-target="#logins-part">
                             <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
-                                <a class="nav-link active" href="{{ url('ControlPanel/Ebook-'.$file_id.'-Basic') }}">
+                                <a class="nav-link active" href="{{ url('ControlPanel/Ebook-'.$ebook_id.'-Basic') }}">
                                     <span class="bs-stepper-circle">1</span>
                                     <span class="bs-stepper-label">Ebook Basic Detail</span>
                                 </a>
@@ -70,7 +70,7 @@ input[type=number] {
                         <div class="line"></div>
                         <div class="step" data-target="#logins-part">
                             <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
-                                <a class="nav-link" href="{{url('ControlPanel/Ebook-'.$file_id.'-CoverImage')}}" style="color:inherit">
+                                <a class="nav-link" href="{{url('ControlPanel/Ebook-'.$ebook_id.'-CoverImage')}}" style="color:inherit">
                                     <span class="bs-stepper-circle">2</span>
                                     <span class="bs-stepper-label">Ebook Cover</span>
                                 </a>
@@ -79,7 +79,7 @@ input[type=number] {
                         <div class="line"></div>
                         <div class="step" data-target="#information-part">
                             <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
-                                <a class="nav-link" href="{{url('ControlPanel/Ebook-'.$file_id.'-Upload')}}" style="color:inherit">
+                                <a class="nav-link" href="{{url('ControlPanel/Ebook-'.$ebook_id.'-Upload')}}" style="color:inherit">
                                     <span class="bs-stepper-circle">3</span>
                                     <span class="bs-stepper-label">Ebook Upload</span>
                                 </a>
@@ -98,17 +98,17 @@ input[type=number] {
                             <div class="card-body">
                                 <form id="EbookStoreForm" enctype="multipart/form-data">
                                     @csrf
-                                    <input type="hidden" id="file_id" name="file_id" value="{{$data->file_id ?? ''}}">
+                                    <input type="hidden" id="ebook_id" name="ebook_id" value="{{$data->ebook_id ?? ''}}">
                                     <div class="form-group">
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <label>Category</label>
                                                     <select class="form-control select2" name="category_id" id="category_id" style="width:100%;" >
-                                                        @if(empty($file_id))
+                                                        @if(empty($ebook_id))
                                                         <option selected disabled>Select Category</option>
                                                         @else
-                                                        <option value="{{$data->category->id ?? ''}}">{{ $data->category->category_name ?? 'Select'}}</option>
+                                                        <option value="{{$data->category->category_id ?? ''}}">{{ $data->category->category_name ?? 'Select'}}</option>
                                                         @endif
                                                         @if(!empty($Ebook))
                                                         @foreach($Category as $item)
@@ -122,7 +122,7 @@ input[type=number] {
                                                         @endforeach
                                                         @else
                                                         @foreach($Category as $item)
-                                                        <option value="{{ $item->id }}"> {{ $item->category_name  }} </option>
+                                                        <option value="{{ $item->category_id }}"> {{ $item->category_name  }} </option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -132,10 +132,10 @@ input[type=number] {
                                                 <div class="col-md-3">
                                                     <label>Sub Category</label>
                                                     <select class="form-control select2" disabled name="sub_category_id" id="sub_category_id" style="width:100%;">
-                                                        @if(empty($file_id))
+                                                        @if(empty($ebook_id))
                                                         <option selected disabled>Select SubCategory</option>
                                                         @else
-                                                        <option value="{{$data->subcategory->id ?? ''}}">{{ $data->subcategory->sub_category_name ?? 'Select'}}</option>
+                                                        <option value="{{$data->subcategory->sub_cat_id ?? ''}}">{{ $data->subcategory->sub_cat_name ?? 'Select'}}</option>
                                                         @endif
                                                     </select>
                                                 </div>
@@ -144,10 +144,10 @@ input[type=number] {
                                                 <div class="col-md-3">
                                                     <label>Third Category</label>
                                                     <select class="form-control select2" disabled name="third_category_id" id="third_category_id" style="width:100%;">
-                                                    @if(empty($file_id))
+                                                    @if(empty($ebook_id))
                                                         <option selected disabled>Select</option>
                                                     @else
-                                                        <option value="{{$data->thirdcategory->id ?? ''}}">{{ $data->thirdcategory->third_category_name ?? 'Select'}}</option>
+                                                        <option value="{{$data->thirdcategory->third_cat_id ?? ''}}">{{ $data->thirdcategory->third_cat_name ?? 'Select'}}</option>
                                                     @endif
                                                     </select>
                                                 </div>
@@ -157,10 +157,10 @@ input[type=number] {
 
                                                     <label class="text-bold">Book Languages</label>
                                                     <select class="form-control select2" name="language_id" id="language_id" style="width:100%;" >
-                                                    @if(empty($file_id))
+                                                    @if(empty($ebook_id))
                                                     <option selected disabled>Select Language</option>
                                                     @else
-                                                    <option value="{{$data->language->id ?? ''}}">{{ $data->language->language ?? 'Select'}}</option>
+                                                    <option value="{{$data->language->language_id?? ''}}">{{ $data->language->language ?? 'Select'}}</option>
                                                     @endif
                                                     @if(!empty($Ebook))
                                                     @foreach($Languages as $item)
@@ -174,7 +174,7 @@ input[type=number] {
                                                     @endforeach
                                                     @else
                                                     @foreach($Languages as $item)
-                                                    <option value="{{ $item->id }}"> {{ $item->language  }} </option>
+                                                    <option value="{{ $item->language_id }}"> {{ $item->language  }} </option>
                                                     @endforeach
                                                     @endif
                                                 </select>
@@ -198,7 +198,7 @@ input[type=number] {
                                     </div>
                                     <div class="form-group">
                                         <label class="text-bold">Book ISBN</label>
-                                        <input type="number" class="form-control form-control-user" id="ebook_isbn" name="ebook_isbn" placeholder=" Book ISBN" value="{{ $data->ebook_isbn ?? '' }}">
+                                        <input type="text" class="form-control form-control-user" id="ebook_isbn" name="ebook_isbn" placeholder=" Book ISBN" value="{{ $data->ebook_isbn ?? '' }}">
                                     </div>
                                     <div class="form-group">
                                         <label class="text-bold">Book Author</label>
@@ -286,12 +286,12 @@ input[type=number] {
                 url: "{{route('FetchSubCategory')}}",
                 dataType: 'json',
                 data: {
-                    cat_id: idCategory
+                    category_id: idCategory
                 },
                 success: function(response) {
-                    $.each(response.data.sub_categories, function(index, val) {
+                    $.each(response.data, function(index, val) {
                         console.log(val);
-                        $("#sub_category_id").append('<option value="' + val.id + '">' + val.sub_category_name + '</option>')
+                        $("#sub_category_id").append('<option value="' + val.sub_cat_id + '">' + val.sub_cat_name + '</option>')
                     });
                 }
 
@@ -310,9 +310,9 @@ input[type=number] {
                     third_cat_id: idThirdCat
                 },
                 success: function(response) {
-                    $.each(response.data.third_categories, function(index, val) {
+                    $.each(response.data, function(index, val) {
                         console.log(val);
-                        $("#third_category_id").append('<option value="' + val.id + '">' + val.third_category_name + '</option>');
+                        $("#third_category_id").append('<option value="' + val.third_cat_id + '">' + val.third_cat_name + '</option>');
                     });
                 }
 
@@ -357,8 +357,8 @@ input[type=number] {
                         $("#Ebook_error_area").removeClass().html('').hide();
                         DataTable = $("#DataTable").dataTable();
                         DataTable.fnPageChange('first', 1);
-                        next_url = 'Ebook-' + data['file_id'] + '-CoverImage';
-                        if ($("#file_id").val() == "" || $("#file_id").val() == null) {
+                        next_url = 'Ebook-' + data['ebook_id'] + '-CoverImage';
+                        if ($("#ebook_id").val() == "" || $("#ebook_id").val() == null) {
                             window.location.href = next_url;
                         } else {
                             window.location.href = next_url;

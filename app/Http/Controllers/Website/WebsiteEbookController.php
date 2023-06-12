@@ -72,12 +72,12 @@ class WebsiteEbookController extends Controller
             ->limit(6)
             ->get();
 
-        $Article = DB::table('category__third')
-            ->leftjoin('category__sub', 'category__sub.sub_cat_id', '=', 'category__third.sub_cat_id')
-            ->where('category__third.category_id', 6)
-            ->groupBy('third_cat_name')
-            ->limit(6)
-            ->get();
+        // $Article = DB::table('category__third')
+        //     ->leftjoin('category__sub', 'category__sub.sub_cat_id', '=', 'category__third.sub_cat_id')
+        //     ->where('category__third.category_id', 6)
+        //     ->groupBy('third_cat_name')
+        //     ->limit(6)
+        //     ->get();
 
         return view('Website.Home', [
             'sliders' => $sliders,
@@ -91,15 +91,13 @@ class WebsiteEbookController extends Controller
             'IslammicCultBook' => $IslammicCultBook,
             'ChildrenBook' => $ChildrenBook,
             'ArbicLearningBook' => $ArbicLearningBook,
-            'Article' => $Article,
+            'Article' => $Article??[],
             'locale' => $locale,
         ]);
     }
 
     public function BookDetail(Request $request, $locale = 'en', $slug)
     {
-
-
         App::setLocale($locale);
         session()->put('locale', $locale);
 
@@ -177,7 +175,7 @@ class WebsiteEbookController extends Controller
             ->where(function ($query) use ($t_slug, $p_slug, $s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
                 if ($s_slug != null) {
-                    $query->where('category__sub.sub_category_slug', $s_slug);
+                    $query->where('category__sub.sub_cat_slug', $s_slug);
                 }
                 if (!empty($t_slug)) {
                     $query->where('category__third.third_category_slug', $t_slug);
@@ -206,11 +204,11 @@ class WebsiteEbookController extends Controller
             ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
-            ->leftjoin('languages','languages.id', '=', 'ebook.language_id')
+            ->leftjoin('language','language.language_id', '=', 'ebook.language_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 $query->where('category.category_slug', $p_slug);
                 if ($s_slug != null) {
-                    $query->where('category__sub.sub_category_slug', $s_slug);
+                    $query->where('category__sub.sub_cat_slug', $s_slug);
                 }
                 if (!empty($t_slug)) {
                     $query->where('category__third.third_category_slug', $t_slug);
@@ -228,10 +226,10 @@ class WebsiteEbookController extends Controller
             ->rightjoin('category', 'category.category_id', '=', 'ebook.category_id')
             ->rightjoin('category__sub', 'category__sub.sub_cat_id', '=', 'ebook.sub_cat_id')
             ->leftjoin('ebook__cover', 'ebook__cover.ebook_id', '=', 'ebook.ebook_id')
-            ->leftjoin('languages','languages.id', '=', 'ebook.language_id')
+            ->leftjoin('language','language.language_id', '=', 'ebook.language_id')
             ->where(function ($query) use ($p_slug,$s_slug,$author,$language) {
                 if ($s_slug != null) {
-                    $query->where('category__sub.sub_category_slug', $s_slug);
+                    $query->where('category__sub.sub_cat_slug', $s_slug);
                 }
                 $query->where('category.category_slug', $p_slug);
                 if (!empty($t_slug)) {

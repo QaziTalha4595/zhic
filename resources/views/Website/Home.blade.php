@@ -29,7 +29,7 @@ text-align: justify;
     <div class="slider-area">
         <div class="slider-active owl-carousel">
             @foreach($sliders as $slider)
-            <div class="single-slider pt-40 pb-40 bg-img" style="background-color:{{$slider->slider_bg_color ?? ''}}; padding: 107px 0 103px 0;">
+            <div class="single-slider pt-40 pb-40 bg-img" style="background-color:{{$slider->slider_bg ?? ''}}; padding: 107px 0 103px 0;">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8 col-md-6 order-1 order-lg-0">
@@ -40,7 +40,7 @@ text-align: justify;
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 order-0 order-lg-1 slider-animated-1">
-                            <img src="{{url('public/Files/Main-Slider')}}/{{$slider->slider_image ?? ''}}"
+                            <img src="{{url('public/Files/Main-Slider')}}/{{$slider->slider_img ?? ''}}"
                                 alt="" class="slider-auto_img mx-auto wow" data-wow-delay="1s">
                             {{--     <img class="slider-auto_img mx-auto wow" src="{{url('public\Files\E-Book-Cover\Dummy.png')}}"onerror="this.onerror=null;this.src="{{url('public\Files\E-Book-Cover\Dummy.png')}}; > --}}
                         </div>
@@ -66,6 +66,7 @@ text-align: justify;
                     <a href="{{url( (Request::segment(1) == 'ar') ? 'ar/' : 'en/' )}}/EBook/{{$bookshelf[$i]->ebook_slug ?? ""}}">
                         <img src="{{url('public/Files/E-Book-Cover')}}/{{$bookshelf[$i]->ebook__cover ?? ''}}"
                             class="img-w-120">
+
 
                     </a>
             </div>
